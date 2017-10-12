@@ -9,6 +9,11 @@ public class Main {
         ArrayList<User> users = new ArrayList<User>();
         users.add(new User((long)1,"Roman","123"));
         users.add(new User((long)2,"Roman1","000"));
+
+        ArrayList<Resourse> resourses = new ArrayList<Resourse>();
+        resourses.add(new Resourse((long)1,"a.b"));
+        resourses.add(new Resourse((long)1,"AB"));
+
         if (args.length < 2) {
             System.out.println("Недостаточно параметров");
         }
