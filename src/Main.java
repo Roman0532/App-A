@@ -15,22 +15,19 @@ public class Main {
          else if(args.length == 2) {
             for (int i = 0; i < users.size(); i++) {
                 if ((args[0].equals(users.get(i).getLogin())) & (args[1].equals(users.get(i).getPassword()))) {
-                    System.out.println("Успех");
                     System.exit(0);
                 }
             }
             for (int i = 0; i < users.size(); i++) {
                 if (args[0].equals(users.get(i).getLogin())) {
-                    if (args[1] != (users.get(i).getPassword())) {
-                        System.out.println("Неправильный пароль");
+                    if (args[1]!=(users.get(i).getPassword())) {
                         System.exit(2);
                     }
                 }
             }
             for (int i = 0; i < users.size(); i++) {
-                if ((args[0] != (users.get(i).getLogin()))) {
-                    System.out.println("Такого логина не существует");
-                    System.exit(4);
+                if ((args[0]!=(users.get(i).getLogin()))) {
+                    System.exit(1);
                 }
 
             }
