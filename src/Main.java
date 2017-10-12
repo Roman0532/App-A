@@ -14,6 +14,9 @@ public class Main {
         resourses.add(new Resourse((long)1,"a.b"));
         resourses.add(new Resourse((long)1,"AB"));
 
+        ArrayList<UserRes> userRes = new ArrayList<UserRes>();
+        userRes.add(new UserRes((long)1,(long)1,(long)1,Roles.READ.toString()));
+        userRes.add(new UserRes((long)2,(long)2,(long)2,Roles.WRITE.toString()));
         if (args.length < 2) {
             System.out.println("Недостаточно параметров");
         }

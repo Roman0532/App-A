@@ -3,6 +3,6 @@
  */
 public enum Roles {
     READ,
-    WHITE,
+    WRITE,
     EXECUTE;
 }
