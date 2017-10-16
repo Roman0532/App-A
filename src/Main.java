@@ -5,69 +5,89 @@ import java.util.ArrayList;
  */
 
 public class Main {
-    public static void main(String[] args) {
+    //Аутентификация
+    private static void isAuth(String log, String pass, ArrayList<User> users, int argslenght) {
         boolean login = false;
-        boolean role = false;
-        ArrayList<User> users = new ArrayList<User>();
-        users.add(new User((long)1,"Roman","123"));
-        users.add(new User((long)2,"Roman1","000"));
-        users.add(new User((long)3,"Roman2","0000"));
-
-        ArrayList<Resourse> resourses = new ArrayList<Resourse>();
-        resourses.add(new Resourse((long)1,"a.b"));
-        resourses.add(new Resourse((long)2,"AB"));
-
-        ArrayList<UserRes> userRes = new ArrayList<UserRes>();
-        userRes.add(new UserRes((long)1,(long)1,(long)1,Roles.READ.toString()));
-        userRes.add(new UserRes((long)2,(long)2,(long)2,Roles.WRITE.toString()));
-        userRes.add(new UserRes((long)3,(long)3,(long)3,Roles.EXECUTE.toString()));
-
-        if (args.length < 2) {
-            System.out.println("Недостаточно параметров");
-        }
-         else if(args.length == 2) {
-            for (int i = 0; i < users.size(); i++) {
-                if ((args[0].equals(users.get(i).getLogin())) & (args[1].equals(users.get(i).getPassword()))) {
+        if (argslenght == 2) {
+            for (User user : users) {
+                if ((log.equals(user.getLogin())) & (pass.equals(user.getPassword()))) {
                     System.exit(0);
                 }
             }
-            for (int i = 0; i < users.size(); i++) {
-                if (args[0].equals(users.get(i).getLogin())) {
-                    if (!args[1].equals(users.get(i).getPassword())) {
-                        System.exit(2);
-                    }
+        }
+            for (User user : users) {
+                if (log.equals(user.getLogin())) {
+                    if (!pass.equals(user.getPassword())) {
+                    System.exit(2);
                 }
             }
-            for (int i = 0; i < users.size(); i++) {
-                if ((args[0].equals(users.get(i).getLogin()))) {
-                       login = true;
-                }
-            }  if (!login){System.exit(1);}
         }
-        //Авторизация Проверка на запрашиваемую роль
-        if (args.length == 3){
-            for (int i = 0; i <userRes.size(); i++) {
-                for (int j = 0; j < users.size(); j++) {
-                    if (users.get(j).getId().equals(userRes.get(i).getUser_id()) && args[1].equals(users.get(j).getPassword()) && (args[0].equals(users.get(j).getLogin()) ))
-                    {
-                        if(args[2].equals(userRes.get(i).getRole()))
-                        {   role = true;
-                            System.exit(5);
+             for (User user : users) {
+                 if ((log.equals(user.getLogin()))) {
+                     login = true;
+            }
+        }
+            if (!login) {
+                System.exit(1);
+        }
+    }
+    public static void main(String[] args) {
+        boolean role = false;
+        boolean login = false;
+        //Коллекция пользователей
+        ArrayList<User> users = new ArrayList<User>();
+        users.add(new User((long) 1, "Roman", "123"));
+        users.add(new User((long) 2, "Roman1", "000"));
+        users.add(new User((long) 3, "Roman2", "0000"));
+        int argslenght = args.length;
+        if (argslenght < 2) {
+            System.out.println("Недостаточно параметров");
+        }
+        if (argslenght == 2) {
+            isAuth(args[0], args[1], users, args.length);
+        }
+        //Коллекция ресурсов
+        ArrayList<Resourse> resourses = new ArrayList<Resourse>();
+        resourses.add(new Resourse((long) 1, "a.b"));
+        resourses.add(new Resourse((long) 2, "AB"));
+        //Коллекция связи пользователя и ресурса
+        ArrayList<UserRes> userRes = new ArrayList<UserRes>();
+        userRes.add(new UserRes((long) 1, (long) 1, (long) 1, Roles.READ.toString()));
+        userRes.add(new UserRes((long) 2, (long) 2, (long) 2, Roles.WRITE.toString()));
+        userRes.add(new UserRes((long) 3, (long) 3, (long) 1, Roles.EXECUTE.toString()));
+        //Авторизация Проверка на запрашиваемую роль и проверка есть ли доступ к ресурсу( без дочерних )
+        if (argslenght == 4) {
+            isAuth(args[0], args[1], users, args.length);
+            for (UserRes userRe : userRes) {
+                for (User user : users) {
+                    if (user.getId().equals(userRe.getUser_id()) && args[1].equals(user.getPassword()) && (args[0].equals(user.getLogin()))) {
+                        if (args[2].equals(userRe.getRole())) {
+                            role = true;
                         }
                     }
                 }
-            } if (!role) {System.exit(3);}
-            for (int i = 0; i < users.size(); i++) {
-                if ((args[0].equals(users.get(i).getLogin()))) {
-                    login = true;
-                }
-            }  if (!login){System.exit(1);}
-            for (int i = 0; i < users.size(); i++) {
-                if (args[0].equals(users.get(i).getLogin())) {
-                    if (!args[1].equals(users.get(i).getPassword())) {
-                        System.exit(2);
+            }
+            if (!role) {
+                System.exit(3);
+            }
+            boolean res = false;
+            for (int k = 0; k < users.size(); k++) {
+                for (Resourse resourse : resourses) {
+                    if (args[1].equals(users.get(k).getPassword()) && (args[0].equals(users.get(k).getLogin()))) {
+                        if (resourse.getId().equals(userRes.get(k).getRes_id())) {
+                            if (args[3].equals(resourse.getPath())) {
+                                res = true;
+                                System.exit(0);
+                            }
+                        }
                     }
+
                 }
+            }
+
+
+            if (!res) {
+                System.exit(4);
             }
         }
     }
