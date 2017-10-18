@@ -10,7 +10,7 @@ echo "1" %ERRORLEVEL%
 java Main Roman 123 READ a.b
 echo "0" %ERRORLEVEL%
 java Main Roman 123 READ a.b.c
-echo "4" %ERRORLEVEL%
+echo "0" %ERRORLEVEL%
 java Main Roman 123 rwe a.b
 echo "3" %ERRORLEVEL%
 java Main Roman1 000 WRITE a.b
