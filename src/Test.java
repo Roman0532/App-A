@@ -1,12 +1,30 @@
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+
 //import java.util.Arrays;
 //import java.util.StringTokenizer;
 //
 ///**
 // * Created by Roman Maximov on 16.10.2017
 // */
-//public class Test {
-//    //Конвертируем String в char и char в String на java
-//    public static void main(String[] args){
+public class Test {
+//
+
+
+    public static void main(String[] args) throws ParseException {
+
+      //  System.out.println(I());
+
+
+    }
+
+}
+
+
+
+
 //        String a = "a.b";//ресурс
 //        String str = "a.b.c";//передаю
 //        boolean h = false;
@@ -50,3 +68,6 @@
 ////выводим результат
 //
 //
+//public static boolean checkString(String string) {
+////        return string.matches("^-?\\d+$");
+////    }
