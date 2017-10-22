@@ -1,5 +1,4 @@
 import org.apache.commons.cli.ParseException;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -164,18 +163,19 @@ public class Main {
         Common cmd = new Common();
         CustomDate customDate = cmd.Parse(args);
 
-
-
-       if (cmd.isAuthentication()){
+        if (cmd.isAuthentication()){
           isAuth(customDate.getLogin(),customDate.getPassword(),users); }
 
-      if (cmd.isAuthorization())
+        if (cmd.isAuthorization())
         {
           isAutoriz(customDate.getLogin(),customDate.getPassword(),customDate.getRole(),customDate.getResource(),users,resource,userRes);
         }
+
         if (cmd.isAccounting()){
             isAccount(customDate.getLogin(),customDate.getPassword(),customDate.getRole(),customDate.getResource(),users,resource,userRes,customDate.getDataStart(),customDate.getDataEnd(),customDate.getVolume());
        }
+        if (cmd.isHelp()){
+            cmd.help();
+        }
     }
 }
-

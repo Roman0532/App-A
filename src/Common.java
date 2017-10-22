@@ -9,34 +9,34 @@ public class Common {
     private static CommandLine cmd = null;
 
     public Common() {
-        option.addOption("login", true, "login");
-        option.addOption("password", true, "password");
-        option.addOption("role", true, "role");
-        option.addOption("resource", true, "resource");
-        option.addOption("dataStart", true, "dataStart");
-        option.addOption("dataEnd", true, "dataEnd");
-        option.addOption("volume", true, "Volume");
-        option.addOption( "help", false, "help");
-    }
-    public boolean isHelp(){
-        return (cmd.hasOption("help") || cmd.hasOption(null));
+        option.addOption("login", true, "Логин");
+        option.addOption("password", true, "Пароль");
+        option.addOption("role", true, "Роль");
+        option.addOption("resource", true, "Ресурс");
+        option.addOption("dataStart", true, "Дата начала");
+        option.addOption("dataEnd", true, "Дата окончания");
+        option.addOption("volume", true, "Объем");
+        option.addOption("h","help", false, "Справка");
     }
 
-    public static void help(){
+    public boolean isHelp() {
+        return (cmd.hasOption("help") || cmd.hasOption("h")) || !isAuthentication();
+    }
+
+    public void help() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("Main",option);
+        formatter.printHelp("Help", option);
     }
 
-
-    public boolean isAuthentication() {
+    boolean isAuthentication() {
         return (cmd.hasOption("login") && cmd.hasOption("password"));
     }
 
-    public boolean isAuthorization() {
+    boolean isAuthorization() {
         return (isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role"));
     }
 
-    public boolean isAccounting() {
+    boolean isAccounting() {
         return (isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume"));
     }
 

@@ -6,7 +6,6 @@ public class Resource {
     private String path;
 
     public Resource(Long id, String path) {
-
         this.id = id;
         this.path = path;
     }
