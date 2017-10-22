@@ -1,9 +1,9 @@
 @echo off
 start
-javac Main.java
-java Main Roman 123
+javac -classpath "../lib/commons-cli-1.4.jar" Main.java
+java Main -l Roman -p 123
 echo "0" %ERRORLEVEL%
-java Main Roman 321
+java Main -l Roman -p 321
 echo "2" %ERRORLEVEL%
 java Main Roman123 123
 echo "1" %ERRORLEVEL%

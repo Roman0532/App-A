@@ -1,3 +1,8 @@
+//import org.apache.commons.cli.ParseException;
+//import org.apache.commons.cli.ParseException;
+
+import org.apache.commons.cli.ParseException;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -13,18 +18,17 @@ import java.util.StringTokenizer;
 
 public class Main {
     //Генерация соли
-    public static String Salt() {
+    private static String Salt() {
         final Random RANDOM = new SecureRandom();
         byte[] s = new byte[32];
         RANDOM.nextBytes(s);
         BigInteger bigInt = new BigInteger(1, s);
-        String salt = bigInt.toString(16);
-        return salt;
+        return bigInt.toString(16);
     }
 
     //Хэш пароля
-    public static String hashPass(String st) {
-        MessageDigest messageDigest = null;
+    private static String hashPass(String st) {
+        MessageDigest messageDigest;
         byte[] digest = new byte[0];
         try {
             messageDigest = MessageDigest.getInstance("MD5");
@@ -34,24 +38,23 @@ public class Main {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
         BigInteger bigInt = new BigInteger(1, digest);
-        String md5Hex = bigInt.toString(16);
-
+        StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
         while (md5Hex.length() < 32) {
-            md5Hex = "0" + md5Hex;
+            md5Hex.insert(0, "0");
         }
-        return md5Hex;
+        return md5Hex.toString();
     }
 
     //Проверка обьема
-    private static boolean chekValue(String voluve) {
-        return voluve.matches("^-?\\d+$");
+    private static boolean checkValue(String volume) {
+        return volume.matches("^-?\\d+$");
     }
+
     //Проверка даты
-    private static boolean chekDate(String date) {
+    private static boolean checkDate(String date) {
         try {
-            LocalDate d = LocalDate.parse(date);
+            LocalDate.parse(date);
         } catch (Exception e) {
             return false;
         }
@@ -59,103 +62,71 @@ public class Main {
     }
 
     //Аккаунтинг
-    private static void isAccount(String ds, String de, String vol, int argslenght) {
-        boolean check;
-        boolean check1;
-        boolean check2;
-        if (chekDate(ds)) {
-            check = true;
-        } else {
-            check = false;
-        }
-        if (chekDate(de)) {
-            check1 = true;
-        } else {
-            check1 = false;
-        }
-        if (chekValue(vol)) {
-            check2 = true;
-        } else {
-            check2 = false;
-        }
+    private static void isAccount(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resources, ArrayList<UserRes> userRes, String ds, String de, String vol, int argsLength) {
 
-        if (!check) {
+        isAutoriz(log, pass, rol, res, users, resources, userRes, argsLength);
+
+        if (!checkDate(ds)) {
             System.exit(5);
         }
-        if (!check1) {
+        if (!checkDate(de)) {
             System.exit(5);
         }
-        if (!check2) {
+        if (!checkValue(vol)) {
             System.exit(5);
         }
     }
 
     //Авторизация
-    private static void isAutoriz(String log, String rol, String res, ArrayList<User> users, ArrayList<Resourse> resourses, ArrayList<UserRes> userRes, int argslenght) {
-        boolean role = false;
-        boolean childRes = false;
-        int count = 0;
-        boolean path = false;
+    private static void isAutoriz(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resours, ArrayList<UserRes> userRes, int argslenght) {
+        isAuth(log, pass, users, argslenght);
         for (UserRes userRe : userRes) {
             for (User user : users) {
                 if (user.getId().equals(userRe.getUser_id()) && (log.equals(user.getLogin()))) {
-                    if (rol.equals(userRe.getRole())) {
-                        role = true;
+                    if (!rol.equals(userRe.getRole())) {
+                        System.exit(3);
                     }
                 }
             }
         }
-        if (!role) {
-            System.exit(3);
-        }
         for (int k = 0; k < users.size(); k++) {
-            for (Resourse resourse : resourses) {
+            for (Resource resource : resours) {
                 if ((log.equals(users.get(k).getLogin()))) {
-                    if (resourse.getId().equals(userRes.get(k).getRes_id())) {
+                    if (resource.getId().equals(userRes.get(k).getRes_id())) {
                         {
-                            if (res.equals(resourse.getPath())) {
-                                path = true;
-                                if (argslenght == 4) {
-                                    System.exit(0);
-                                }
-                            } else if (!path) {
-                                StringTokenizer resUser = new StringTokenizer(resourse.getPath(), "\\.");
-                                StringTokenizer transfRes = new StringTokenizer(res, "\\.");
-                                String[] tRes = new String[transfRes.countTokens()];
-                                String[] rUser = new String[resUser.countTokens()];
-                                if (tRes.length < rUser.length) {
-                                    System.exit(4);
-                                }
-                                for (int i = 0; i < rUser.length; i++) {
-                                    rUser[i] = (String) resUser.nextToken();
-                                }
-                                for (int j = 0; j < tRes.length; j++) {
-                                    tRes[j] = (String) transfRes.nextToken();
-                                }
-                                for (int i = 0; i < rUser.length; i++) {
-                                    if (rUser[i].equals(tRes[i])) {
-                                        path = true;
-                                    } else {
-                                        path = false;
-                                        count++;
+                            if (!res.equals(resource.getPath())) {
+                                {
+                                    StringTokenizer resUser = new StringTokenizer(resource.getPath(), "\\.");
+                                    StringTokenizer transfRes = new StringTokenizer(res, "\\.");
+                                    String[] tRes = new String[transfRes.countTokens()];
+                                    String[] rUser = new String[resUser.countTokens()];
+                                    if (tRes.length < rUser.length) {
+                                        System.exit(4);
+                                    }
+                                    for (int i = 0; i < rUser.length; i++) {
+                                        rUser[i] = resUser.nextToken();
+                                    }
+                                    for (int j = 0; j < tRes.length; j++) {
+                                        tRes[j] = transfRes.nextToken();
+                                    }
+                                    for (int i = 0; i < rUser.length; i++) {
+                                        if (!rUser[i].equals(tRes[i])) {
+                                            System.exit(4);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-                if (count >= 1) {
-                    System.exit(4);
-                }
             }
         }
     }
 
     //Аутентификация
-    private static void isAuth(String log, String pass, ArrayList<User> users, int argslenght) {
-        boolean login = false;
-
-        if (argslenght == 2) {
+    private static void isAuth(String log, String pass, ArrayList<User> users, int argslength) {
+        boolean checkLogin = false;
+        if (argslength == 2) {
             for (User user : users) {
                 if ((log.equals(user.getLogin())) && (hashPass(hashPass(pass + user.getSalt())).equals(hashPass(hashPass(user.getPassword() + user.getSalt()))))) {
                     System.exit(0);
@@ -171,54 +142,45 @@ public class Main {
         }
         for (User user : users) {
             if ((log.equals(user.getLogin()))) {
-                login = true;
+                checkLogin = true;
             }
         }
-        if (!login) {
+        if (!checkLogin) {
             System.exit(1);
         }
     }
 
-    public static void main(String[] args) {
-
-        int argslenght = args.length;
-        //System.out.println(hashPass("qwerty "+Salt()));
+    public static void main(String[] args) throws ParseException {
         //Коллекция пользователей
-        ArrayList<User> users = new ArrayList<User>();
-        users.add(new User((long) 1, "Roman", "123", Salt()));
-        users.add(new User((long) 2, "Roman1", "000", Salt()));
-        users.add(new User((long) 3, "Roman2", "0000", Salt()));
+        ArrayList<User> users = new ArrayList<>();
+        users.add(new User(1L, "Roman", "123", Salt()));
+        users.add(new User(2L, "Roman1", "000", Salt()));
+        users.add(new User(3L, "Roman2", "0000", Salt()));
         //Коллекция ресурсов
-        ArrayList<Resourse> resourses = new ArrayList<Resourse>();
-        resourses.add(new Resourse((long) 1, "a.b"));
-        resourses.add(new Resourse((long) 2, "A.B.C.D"));
+        ArrayList<Resource> resource = new ArrayList<>();
+        resource.add(new Resource(1L, "a.b"));
+        resource.add(new Resource(2L, "A.B.C.D"));
         //Коллекция связи пользователя и ресурса
-        ArrayList<UserRes> userRes = new ArrayList<UserRes>();
-        userRes.add(new UserRes((long) 1, (long) 1, (long) 1, Roles.READ.toString()));
-        userRes.add(new UserRes((long) 2, (long) 2, (long) 2, Roles.WRITE.toString()));
-        userRes.add(new UserRes((long) 3, (long) 3, (long) 1, Roles.EXECUTE.toString()));
+        ArrayList<UserRes> userRes = new ArrayList<>();
+        userRes.add(new UserRes(1L, 1L, 1L, Roles.READ.toString()));
+        userRes.add(new UserRes(2L, 2L, 2L, Roles.WRITE.toString()));
+        userRes.add(new UserRes(3L, 3L, 1L, Roles.EXECUTE.toString()));
 
-
-        // System.out.println(users.get(0).getSalt());
+        Common cmd = new Common();
+        cmd.Parse(args);
 //        if (argslenght < 2) {
 //            System.out.println("Недостаточно параметров");
 //        }
-
-        //UserData userData = new UserData(args[0],args[1]);
-
-        if (argslenght == 2) {
-            isAuth(args[0], args[1], users, args.length);
-        }
-        if (args.length == 4) {
-            isAuth(args[0], args[1], users, args.length);
-            isAutoriz(args[0], args[2], args[3], users, resourses, userRes, argslenght);
-
-        }
-        if (args.length == 7) {
-            isAuth(args[0], args[1], users, args.length);
-            isAutoriz(args[0], args[2], args[3], users, resourses, userRes, argslenght);
-            isAccount(args[4], args[5], args[6], args.length);
-        }
+//
+//        if (argslength == 2) {
+//            isAuth(args[0], args[1], users, args.length);
+//        }
+//        if (args.length == 4) {
+//            isAutoriz(args[0], args[1], args[2], args[3], users, resours, userRes, args.length);
+//        }
+//        if (args.length == 7) {
+//            isAccount(args[0], args[1], args[2], args[3], users, resours, userRes, args[4], args[5], args[6], args.length);
+//        }
     }
 }
 

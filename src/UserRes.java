@@ -2,10 +2,10 @@
  * Created by Roman Maximov on 12.10.2017
  */
 public class UserRes {
-    Long id;
-    Long user_id;
-    Long res_id;
-    String role;
+    private Long id;
+    private Long user_id;
+    private Long res_id;
+    private String role;
 
     public UserRes(Long id, Long user_id, Long res_id, String role) {
         this.id = id;
@@ -22,27 +22,11 @@ public class UserRes {
         this.id = id;
     }
 
-    public Long getUser_id() {
-        return user_id;
-    }
+    Long getUser_id() { return user_id; }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
+    Long getRes_id() { return res_id; }
 
-    public Long getRes_id() {
-        return res_id;
-    }
-
-    public void setRes_id(Long res_id) {
-        this.res_id = res_id;
-    }
-
-    public String getRole() {
+    String getRole() {
         return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }
