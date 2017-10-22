@@ -1,5 +1,8 @@
 /**
- * Created by Roman Maximov on 12.10.2017
+ * UserRes
+ * 1.0
+ * Created by Roman Maximov
+ * 12.10.2017
  */
 public class UserRes {
     private Long id;

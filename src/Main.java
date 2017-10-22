@@ -1,4 +1,5 @@
 import org.apache.commons.cli.ParseException;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,12 +10,15 @@ import java.util.Random;
 import java.util.StringTokenizer;
 
 /**
- * Created by Roman Maximov on 11.10.2017
+ * Main
+ * 1.0
+ * Created by Roman Maximov
+ * 11.10.2017
  */
 
 public class Main {
     //Генерация соли
-    private static String Salt() {
+    private static String salt() {
         final Random RANDOM = new SecureRandom();
         byte[] s = new byte[32];
         RANDOM.nextBytes(s);
@@ -23,13 +27,13 @@ public class Main {
     }
 
     //Хэш пароля
-    private static String hashPass(String st) {
+    private static String hashPass(String str) {
         MessageDigest messageDigest;
         byte[] digest = new byte[0];
         try {
             messageDigest = MessageDigest.getInstance("MD5");
             messageDigest.reset();
-            messageDigest.update(st.getBytes());
+            messageDigest.update(str.getBytes());
             digest = messageDigest.digest();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -58,27 +62,31 @@ public class Main {
     }
 
     //Аккаунтинг
-    private static void isAccount(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resources, ArrayList<UserRes> userRes, String ds, String de, String vol) {
+    private static void isAccount(String log, String pass, String rol, String res, String ds, String de, String vol,
+                                  ArrayList<User> users, ArrayList<Resource> resources, ArrayList<UserRes> userRes) {
 
         isAutoriz(log, pass, rol, res, users, resources, userRes);
 
         if (!checkDate(ds)) {
             System.exit(5);
         }
+
         if (!checkDate(de)) {
             System.exit(5);
         }
+
         if (!checkValue(vol)) {
             System.exit(5);
         }
     }
 
     //Авторизация
-    private static void isAutoriz(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resours, ArrayList<UserRes> userRes) {
+    private static void isAutoriz(String log, String pass, String rol, String res,
+                                  ArrayList<User> users, ArrayList<Resource> resours, ArrayList<UserRes> userRes) {
         isAuth(log, pass, users);
         for (UserRes userRe : userRes) {
             for (User user : users) {
-                if (user.getId().equals(userRe.getUser_id()) && (log.equals(user.getLogin()))) {
+                if ((user.getId().equals(userRe.getUser_id())) && ((log.equals(user.getLogin())))) {
                     if (!rol.equals(userRe.getRole())) {
                         System.exit(3);
                     }
@@ -122,9 +130,10 @@ public class Main {
     //Аутентификация
     private static void isAuth(String log, String pass, ArrayList<User> users) {
         boolean checkLogin = false;
-            for (User user : users) {
-                if ((log.equals(user.getLogin())) && (hashPass(hashPass(pass + user.getSalt())).equals(hashPass(hashPass(user.getPassword() + user.getSalt()))))) {
-                    break;
+        for (User user : users) {
+            if ((log.equals(user.getLogin())) &&
+                    (hashPass(hashPass(pass + user.getSalt())).equals(hashPass(hashPass(user.getPassword() + user.getSalt()))))) {
+                break;
             }
         }
         for (User user : users) {
@@ -145,11 +154,13 @@ public class Main {
     }
 
     public static void main(String[] args) throws ParseException {
+        Common cmd = new Common();
+        CustomDate customDate = cmd.parse(args);
         //Коллекция пользователей
         ArrayList<User> users = new ArrayList<>();
-        users.add(new User(1L, "Roman", "123", Salt()));
-        users.add(new User(2L, "Roman1", "000", Salt()));
-        users.add(new User(3L, "Roman2", "0000", Salt()));
+        users.add(new User(1L, "Roman", "123", salt()));
+        users.add(new User(2L, "Roman1", "000", salt()));
+        users.add(new User(3L, "Roman2", "0000", salt()));
         //Коллекция ресурсов
         ArrayList<Resource> resource = new ArrayList<>();
         resource.add(new Resource(1L, "a.b"));
@@ -160,21 +171,21 @@ public class Main {
         userRes.add(new UserRes(2L, 2L, 2L, Roles.WRITE.toString()));
         userRes.add(new UserRes(3L, 3L, 1L, Roles.EXECUTE.toString()));
 
-        Common cmd = new Common();
-        CustomDate customDate = cmd.Parse(args);
-
-        if (cmd.isAuthentication()){
-          isAuth(customDate.getLogin(),customDate.getPassword(),users); }
-
-        if (cmd.isAuthorization())
-        {
-          isAutoriz(customDate.getLogin(),customDate.getPassword(),customDate.getRole(),customDate.getResource(),users,resource,userRes);
+        if (cmd.isAuthentication()) {
+            isAuth(customDate.getLogin(), customDate.getPassword(), users);
         }
 
-        if (cmd.isAccounting()){
-            isAccount(customDate.getLogin(),customDate.getPassword(),customDate.getRole(),customDate.getResource(),users,resource,userRes,customDate.getDataStart(),customDate.getDataEnd(),customDate.getVolume());
-       }
-        if (cmd.isHelp()){
+        if (cmd.isAuthorization()) {
+            isAutoriz(customDate.getLogin(), customDate.getPassword(), customDate.getRole(), customDate.getResource(),
+                    users, resource, userRes);
+        }
+
+        if (cmd.isAccounting()) {
+            isAccount(customDate.getLogin(), customDate.getPassword(), customDate.getRole(), customDate.getResource(), customDate.getDataStart(), customDate.getDataEnd(), customDate.getVolume(),
+                    users, resource, userRes);
+        }
+
+        if (cmd.isHelp()) {
             cmd.help();
         }
     }

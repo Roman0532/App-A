@@ -1,7 +1,10 @@
 /**
- * Created by Roman Maximov on 21.10.2017
+ * CustomDate
+ * 1.0
+ * Created by Roman Maximov
+ * 21.10.2017
  */
-class CustomDate  {
+class CustomDate {
     private String login;
     private String password;
     private String role;
@@ -9,7 +12,6 @@ class CustomDate  {
     private String dataStart;
     private String dataEnd;
     private String volume;
-
 
     String getLogin() {
         return login;

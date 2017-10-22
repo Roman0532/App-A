@@ -1,5 +1,8 @@
 /**
- * Created by Roman Maximov on 12.10.2017
+ * Recource
+ * 1.0
+ * Created by Roman Maximov
+ * 12.10.2017
  */
 public class Resource {
     private Long id;
@@ -17,6 +20,5 @@ public class Resource {
     String getPath() {
         return path;
     }
-
 
 }
