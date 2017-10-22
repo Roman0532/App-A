@@ -1,6 +1,3 @@
-//import org.apache.commons.cli.ParseException;
-//import org.apache.commons.cli.ParseException;
-
 import org.apache.commons.cli.ParseException;
 
 import java.math.BigInteger;
@@ -62,9 +59,9 @@ public class Main {
     }
 
     //Аккаунтинг
-    private static void isAccount(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resources, ArrayList<UserRes> userRes, String ds, String de, String vol, int argsLength) {
+    private static void isAccount(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resources, ArrayList<UserRes> userRes, String ds, String de, String vol) {
 
-        isAutoriz(log, pass, rol, res, users, resources, userRes, argsLength);
+        isAutoriz(log, pass, rol, res, users, resources, userRes);
 
         if (!checkDate(ds)) {
             System.exit(5);
@@ -78,8 +75,8 @@ public class Main {
     }
 
     //Авторизация
-    private static void isAutoriz(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resours, ArrayList<UserRes> userRes, int argslenght) {
-        isAuth(log, pass, users, argslenght);
+    private static void isAutoriz(String log, String pass, String rol, String res, ArrayList<User> users, ArrayList<Resource> resours, ArrayList<UserRes> userRes) {
+        isAuth(log, pass, users);
         for (UserRes userRe : userRes) {
             for (User user : users) {
                 if (user.getId().equals(userRe.getUser_id()) && (log.equals(user.getLogin()))) {
@@ -124,13 +121,11 @@ public class Main {
     }
 
     //Аутентификация
-    private static void isAuth(String log, String pass, ArrayList<User> users, int argslength) {
+    private static void isAuth(String log, String pass, ArrayList<User> users) {
         boolean checkLogin = false;
-        if (argslength == 2) {
             for (User user : users) {
                 if ((log.equals(user.getLogin())) && (hashPass(hashPass(pass + user.getSalt())).equals(hashPass(hashPass(user.getPassword() + user.getSalt()))))) {
-                    System.exit(0);
-                }
+                    break;
             }
         }
         for (User user : users) {
@@ -167,20 +162,20 @@ public class Main {
         userRes.add(new UserRes(3L, 3L, 1L, Roles.EXECUTE.toString()));
 
         Common cmd = new Common();
-        cmd.Parse(args);
-//        if (argslenght < 2) {
-//            System.out.println("Недостаточно параметров");
-//        }
-//
-//        if (argslength == 2) {
-//            isAuth(args[0], args[1], users, args.length);
-//        }
-//        if (args.length == 4) {
-//            isAutoriz(args[0], args[1], args[2], args[3], users, resours, userRes, args.length);
-//        }
-//        if (args.length == 7) {
-//            isAccount(args[0], args[1], args[2], args[3], users, resours, userRes, args[4], args[5], args[6], args.length);
-//        }
+        CustomDate customDate = cmd.Parse(args);
+
+
+
+       if (cmd.isAuthentication()){
+          isAuth(customDate.getLogin(),customDate.getPassword(),users); }
+
+      if (cmd.isAuthorization())
+        {
+          isAutoriz(customDate.getLogin(),customDate.getPassword(),customDate.getRole(),customDate.getResource(),users,resource,userRes);
+        }
+        if (cmd.isAccounting()){
+            isAccount(customDate.getLogin(),customDate.getPassword(),customDate.getRole(),customDate.getResource(),users,resource,userRes,customDate.getDataStart(),customDate.getDataEnd(),customDate.getVolume());
+       }
     }
 }
 

@@ -6,35 +6,48 @@ import org.apache.commons.cli.*;
 public class Common {
     public static Options option = new Options();
     private CommandLineParser parser = new DefaultParser();
-    private CommandLine cmd = null;
-    public Common(){
-        option.addOption("l","login",true,"login");
-        option.addOption("p","password",true,"password");
-        option.addOption("rol","role",true,"role");
-        option.addOption("res","resource",true,"res");
-        option.addOption("ds","dataStart",true,"dataStart");
-        option.addOption("de","dataEnd",true,"dataEnd");
-        option.addOption("v","volume",true,"Volume");
-        option.addOption("h","help",false,"help");
+    private static CommandLine cmd = null;
+
+    public Common() {
+        option.addOption("login", true, "login");
+        option.addOption("password", true, "password");
+        option.addOption("role", true, "role");
+        option.addOption("resource", true, "resource");
+        option.addOption("dataStart", true, "dataStart");
+        option.addOption("dataEnd", true, "dataEnd");
+        option.addOption("volume", true, "Volume");
+        option.addOption( "help", false, "help");
+    }
+    public boolean isHelp(){
+        return (cmd.hasOption("help") || cmd.hasOption(null));
     }
 
+    public static void help(){
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Main",option);
+    }
+
+
     public boolean isAuthentication() {
-        return  (cmd.hasOption("login") && cmd.hasOption("password"));
-        }
+        return (cmd.hasOption("login") && cmd.hasOption("password"));
+    }
+
     public boolean isAuthorization() {
-        return (isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role"));}
+        return (isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role"));
+    }
 
     public boolean isAccounting() {
-        return (isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume"));}
+        return (isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume"));
+    }
 
     CustomDate Parse(String[] args) throws ParseException {
         cmd = parser.parse(Common.option, args);
         CustomDate customDate = new CustomDate();
 
-
         if (isAuthentication()) {
             customDate.setLogin(cmd.getOptionValue("login"));
             customDate.setPassword(cmd.getOptionValue("password"));
+            System.out.println(customDate.getLogin());
         }
 
         if (isAuthorization()) {

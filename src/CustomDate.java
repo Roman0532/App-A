@@ -14,22 +14,6 @@ public class CustomDate  {
         return resourc;
     }
 
-
-
-
-//    public CustomDate(String login, String password, String role, String resource, String dataStart, String dataEnd, String volume) {
-//
-//        this.login = login;
-//        this.password = password;
-//        this.role = role;
-//        this.resourc = resource;
-//        this.dataStart = dataStart;
-//        this.dataEnd = dataEnd;
-//        this.volume = volume;
-//    }
-
-
-
     public String getLogin() {
         return login;
     }
