@@ -1,9 +1,3 @@
-/**
- * User
- * 1.0
- * Created by Roman Maximov
- * 12.10.2017
- */
 public class User {
     private Long id;
     private String login;
@@ -23,10 +17,6 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     String getLogin() {

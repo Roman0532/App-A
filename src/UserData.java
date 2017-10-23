@@ -1,10 +1,4 @@
-/**
- * CustomDate
- * 1.0
- * Created by Roman Maximov
- * 21.10.2017
- */
-class CustomDate {
+class UserData {
     private String login;
     private String password;
     private String role;

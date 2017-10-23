@@ -7,52 +7,69 @@ import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.StringTokenizer;
-
-/**
- * Main
- * 1.0
- * Created by Roman Maximov
- * 11.10.2017
- */
 
 public class Main {
-    //Генерация соли
+    /**
+     * Генерация соли
+     */
     private static String salt() {
+        /*Получить 32битное значение */
         final Random RANDOM = new SecureRandom();
         byte[] s = new byte[32];
         RANDOM.nextBytes(s);
+        /*Перевод в строку*/
         BigInteger bigInt = new BigInteger(1, s);
         return bigInt.toString(16);
     }
 
-    //Хэш пароля
-    private static String hashPass(String str) {
+    /**
+     * Хэш пароля
+     */
+    private static String hashPass(String str) throws NoSuchAlgorithmException {
         MessageDigest messageDigest;
-        byte[] digest = new byte[0];
-        try {
-            messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.reset();
-            messageDigest.update(str.getBytes());
-            digest = messageDigest.digest();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.reset();
+        messageDigest.update(str.getBytes());
+
+        byte[] digest;
+
+        digest = messageDigest.digest();
+
         BigInteger bigInt = new BigInteger(1, digest);
         StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
+
         while (md5Hex.length() < 32) {
             md5Hex.insert(0, "0");
         }
         return md5Hex.toString();
     }
 
-    //Проверка обьема
-    private static boolean checkValue(String volume) {
+    private static void checkChildPaths(String rU, String tR) {
+        String[] resUser = rU.split("\\.");
+        String[] resTransf = tR.split("\\.");
+
+        if (resTransf.length < resUser.length) {
+            System.exit(4);
+        }
+
+        for (int i = 0; i < resUser.length; i++) {
+            if (!resUser[i].equals(resTransf[i])) {
+                System.exit(4);
+            }
+        }
+    }
+
+    /**
+     * Проверка обьема
+     */
+    private static boolean isCheckValue(String volume) {
         return volume.matches("^-?\\d+$");
     }
 
-    //Проверка даты
-    private static boolean checkDate(String date) {
+    /**
+     * Проверка даты
+     */
+    private static boolean isCheckDate(String date) {
         try {
             LocalDate.parse(date);
         } catch (Exception e) {
@@ -61,128 +78,105 @@ public class Main {
         return true;
     }
 
-    //Аккаунтинг
-    private static void isAccount(String log, String pass, String rol, String res, String ds, String de, String vol,
-                                  ArrayList<User> users, ArrayList<Resource> resources, ArrayList<UserRes> userRes) {
+    /**
+     * Аккаунтинг
+     */
+    private static void accounting(String ds, String de, String vol) throws NoSuchAlgorithmException {
 
-        isAutoriz(log, pass, rol, res, users, resources, userRes);
-
-        if (!checkDate(ds)) {
+        if (!isCheckDate(ds)) {
             System.exit(5);
         }
 
-        if (!checkDate(de)) {
+        if (!isCheckDate(de)) {
             System.exit(5);
         }
 
-        if (!checkValue(vol)) {
+        if (!isCheckValue(vol)) {
             System.exit(5);
         }
     }
 
-    //Авторизация
-    private static void isAutoriz(String log, String pass, String rol, String res,
-                                  ArrayList<User> users, ArrayList<Resource> resours, ArrayList<UserRes> userRes) {
-        isAuth(log, pass, users);
+    /**
+     * Авторизация
+     */
+
+    private static void authorization(String log, String rol, String res,
+                                      ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
         for (UserRes userRe : userRes) {
             for (User user : users) {
-                if ((user.getId().equals(userRe.getUser_id())) && ((log.equals(user.getLogin())))) {
-                    if (!rol.equals(userRe.getRole())) {
-                        System.exit(3);
-                    }
+                if ((user.getId().equals(userRe.getUser_id())) && ((log.equals(user.getLogin()))) && (!rol.equals(userRe.getRole()))) {
+                    System.exit(3);
+
                 }
             }
         }
-        for (int k = 0; k < users.size(); k++) {
-            for (Resource resource : resours) {
-                if ((log.equals(users.get(k).getLogin()))) {
-                    if (resource.getId().equals(userRes.get(k).getRes_id())) {
-                        {
-                            if (!res.equals(resource.getPath())) {
-                                {
-                                    StringTokenizer resUser = new StringTokenizer(resource.getPath(), "\\.");
-                                    StringTokenizer transfRes = new StringTokenizer(res, "\\.");
-                                    String[] tRes = new String[transfRes.countTokens()];
-                                    String[] rUser = new String[resUser.countTokens()];
-                                    if (tRes.length < rUser.length) {
-                                        System.exit(4);
-                                    }
-                                    for (int i = 0; i < rUser.length; i++) {
-                                        rUser[i] = resUser.nextToken();
-                                    }
-                                    for (int j = 0; j < tRes.length; j++) {
-                                        tRes[j] = transfRes.nextToken();
-                                    }
-                                    for (int i = 0; i < rUser.length; i++) {
-                                        if (!rUser[i].equals(tRes[i])) {
-                                            System.exit(4);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+        for (UserRes userRe : userRes) {
+            for (User user : users) {
+                if ((user.getId().equals(userRe.getUser_id())) && ((log.equals(user.getLogin()))) && (!res.equals(userRe.getPath()))) {
+                    checkChildPaths(userRe.getPath(), res);
+
                 }
             }
         }
     }
 
-    //Аутентификация
-    private static void isAuth(String log, String pass, ArrayList<User> users) {
-        boolean checkLogin = false;
+
+    private static boolean isRightPass(String pass,String userPass,String salt) throws NoSuchAlgorithmException {
+        return hashPass(hashPass(pass + salt)).equals(hashPass(hashPass(userPass + salt)));
+    }
+
+    /**
+     * Аутентификация
+     */
+    private static void authentication(String log, String pass, ArrayList<User> users) throws NoSuchAlgorithmException {
+        boolean isCheck = false;
+        /*Проходим по списку юзеров*/
         for (User user : users) {
-            if ((log.equals(user.getLogin())) &&
-                    (hashPass(hashPass(pass + user.getSalt())).equals(hashPass(hashPass(user.getPassword() + user.getSalt()))))) {
-                break;
+            /*Проверка совпадают ли переданный логин и пароль с хранящимися в коллекции*/
+            if ((log.equals(user.getLogin())) && isRightPass(pass,user.getPassword(),user.getSalt())){
+                isCheck = true;
             }
-        }
-        for (User user : users) {
-            if (log.equals(user.getLogin())) {
-                if (!hashPass(hashPass(pass + user.getSalt())).equals(hashPass(hashPass(user.getPassword() + user.getSalt())))) {
-                    System.exit(2);
-                }
+             /*Проверка совпадает ли пароль с хранящимся в коллекции*/
+            if ((log.equals(user.getLogin()))&& !isRightPass(pass,user.getPassword(),user.getSalt())){
+                System.exit(2);
             }
-        }
-        for (User user : users) {
+             /*Проверка Существует ли логин*/
             if ((log.equals(user.getLogin()))) {
-                checkLogin = true;
+                isCheck = true;
             }
         }
-        if (!checkLogin) {
+        if (!isCheck) {
             System.exit(1);
         }
     }
 
-    public static void main(String[] args) throws ParseException {
-        Common cmd = new Common();
-        CustomDate customDate = cmd.parse(args);
-        //Коллекция пользователей
+    public static void main(String[] args) throws ParseException, NoSuchAlgorithmException {
+        Parse cmd = new Parse();
+        UserData customDate = cmd.parse(args);
+        /*Коллекция пользователей*/
         ArrayList<User> users = new ArrayList<>();
         users.add(new User(1L, "Roman", "123", salt()));
         users.add(new User(2L, "Roman1", "000", salt()));
         users.add(new User(3L, "Roman2", "0000", salt()));
-        //Коллекция ресурсов
-        ArrayList<Resource> resource = new ArrayList<>();
-        resource.add(new Resource(1L, "a.b"));
-        resource.add(new Resource(2L, "A.B.C.D"));
-        //Коллекция связи пользователя и ресурса
+        /*Коллекция ресурсов*/
         ArrayList<UserRes> userRes = new ArrayList<>();
-        userRes.add(new UserRes(1L, 1L, 1L, Roles.READ.toString()));
-        userRes.add(new UserRes(2L, 2L, 2L, Roles.WRITE.toString()));
-        userRes.add(new UserRes(3L, 3L, 1L, Roles.EXECUTE.toString()));
+        userRes.add(new UserRes(1L, 1L, "a.b", Roles.READ.toString()));
+        //userRes.add(new UserRes(4L, 1L, "A.B.C.D", Roles.READ.toString()));
+        userRes.add(new UserRes(2L, 2L, "A.B.C.D", Roles.WRITE.toString()));
+        userRes.add(new UserRes(3L, 3L, "a.b", Roles.EXECUTE.toString()));
+
 
         if (cmd.isAuthentication()) {
-            isAuth(customDate.getLogin(), customDate.getPassword(), users);
+            authentication(customDate.getLogin(), customDate.getPassword(), users);
         }
 
         if (cmd.isAuthorization()) {
-            isAutoriz(customDate.getLogin(), customDate.getPassword(), customDate.getRole(), customDate.getResource(),
-                    users, resource, userRes);
+            authorization(customDate.getLogin(), customDate.getRole(), customDate.getResource(),
+                    users, userRes);
         }
 
         if (cmd.isAccounting()) {
-            isAccount(customDate.getLogin(), customDate.getPassword(), customDate.getRole(), customDate.getResource(), customDate.getDataStart(), customDate.getDataEnd(), customDate.getVolume(),
-                    users, resource, userRes);
+            accounting(customDate.getDataStart(), customDate.getDataEnd(), customDate.getVolume());
         }
 
         if (cmd.isHelp()) {

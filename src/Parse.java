@@ -1,17 +1,11 @@
 import org.apache.commons.cli.*;
 
-/**
- * Common
- * 1.0
- * Created by Roman Maximov
- * 21.10.2017
- */
-public class Common {
+public class Parse {
     public static Options option = new Options();
     private static CommandLine cmd = null;
     private CommandLineParser parser = new DefaultParser();
 
-    public Common() {
+    public Parse() {
         option.addOption("login", true, "Логин");
         option.addOption("password", true, "Пароль");
         option.addOption("role", true, "Роль");
@@ -21,50 +15,52 @@ public class Common {
         option.addOption("volume", true, "Объем");
         option.addOption("h", "help", false, "Справка");
     }
+
     public void help() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Help", option);
     }
 
-    //Нужна ли справка
+    /**
+     * Нужна ли справка
+     */
     public boolean isHelp() {
         return cmd.hasOption("help") || cmd.hasOption("h") || !isAuthentication();
     }
 
-    //Нужна ли аутентификация
+    /**
+     * Нужна ли аутентификация
+     */
     boolean isAuthentication() {
         return cmd.hasOption("login") && cmd.hasOption("password");
     }
 
-    //Нужна ли авторизация
+    /**
+     * Нужна ли авторизация
+     */
     boolean isAuthorization() {
         return isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role");
     }
 
-    //Нужен ли аккаунтинг
+    /**
+     * Нужен ли аккаунтинг
+     */
     boolean isAccounting() {
         return isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume");
     }
 
-    CustomDate parse(String[] args) throws ParseException {
-        cmd = parser.parse(Common.option, args);
-        CustomDate customDate = new CustomDate();
+    UserData parse(String[] args) throws ParseException {
+        cmd = parser.parse(Parse.option, args);
+        UserData userData = new UserData();
 
-        if (isAuthentication()) {
-            customDate.setLogin(cmd.getOptionValue("login"));
-            customDate.setPassword(cmd.getOptionValue("password"));
-        }
+            userData.setLogin(cmd.getOptionValue("login"));
+            userData.setPassword(cmd.getOptionValue("password"));
+            userData.setResource(cmd.getOptionValue("resource"));
+            userData.setRole(cmd.getOptionValue("role"));
+            userData.setDataStart(cmd.getOptionValue("dataStart"));
+            userData.setDataEnd(cmd.getOptionValue("dataEnd"));
+            userData.setVolume(cmd.getOptionValue("volume"));
 
-        if (isAuthorization()) {
-            customDate.setResource(cmd.getOptionValue("resource"));
-            customDate.setRole(cmd.getOptionValue("role"));
-        }
-
-        if (isAccounting()) {
-            customDate.setDataStart(cmd.getOptionValue("dataStart"));
-            customDate.setDataEnd(cmd.getOptionValue("dataEnd"));
-            customDate.setVolume(cmd.getOptionValue("volume"));
-        }
-        return customDate;
+        return userData;
     }
 }
