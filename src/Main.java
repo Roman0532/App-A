@@ -13,7 +13,7 @@ public class Main {
         ArrayList<User> collectionUsers = Methods.storageCollectionsUsers();
         ArrayList<UserRes> collectionUserRes = Methods.storageCollectionsUserRes();
 
-        /*Передача аргументов парсеру*/
+        //Передача аргументов парсеру//
         Parse cmd = new Parse();
         UserData customDate = cmd.parse(args);
 
@@ -31,7 +31,7 @@ public class Main {
         }
 
         if (cmd.isHelp()) {
-            cmd.help();
+            cmd.printHelp();
         }
     }
 }

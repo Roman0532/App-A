@@ -27,7 +27,7 @@ public class Parse {
         cmd = parser.parse(Parse.option, args);
         UserData userData = new UserData();
 
-        /*Записываем аргументы через set методы в класс userData*/
+        //Записываем аргументы через set методы в класс userData//
         userData.setLogin(cmd.getOptionValue("login"));
         userData.setPassword(cmd.getOptionValue("password"));
         userData.setResource(cmd.getOptionValue("resource"));
@@ -39,8 +39,10 @@ public class Parse {
         return userData;
     }
 
-    /*Справка*/
-    public void help() {
+    /**
+     * Справка
+     */
+    public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Help", option);
     }

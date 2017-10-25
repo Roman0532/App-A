@@ -68,25 +68,7 @@ public class Methods {
      */
     public static void toAuthorize(String log, String rol, String res,
                                    ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
-        boolean isCheckRes = false;
-        if (!rol.equals("READ") && !rol.equals("WRITE") && !rol.equals("EXECUTE")) {
-            System.exit(3);
-        }
-        for (User user : users) {
-            for (UserRes userRe : userRes) {
-                /*
-                  Проверка на роль поиск дочерних ресурсов
-                 */
-                if ((log.equals(user.getLogin())) && user.getId().equals(userRe.getUser_id())
-                        && rol.equals(userRe.getRole())
-                        && Methods.checkChildPaths(userRe.getPath(), res)) {
-                    isCheckRes = true;
-                }
-            }
-        }
-        if (!isCheckRes) {
-            System.exit(4);
-        }
+        checkRolesRes(log, rol, res, users, userRes);
     }
 
     /**
@@ -109,36 +91,61 @@ public class Methods {
     }
 
     /**
+     * Проверка ролей и ресурсов
+     */
+    private static void checkRolesRes(String log, String rol, String res,
+                                      ArrayList<User> users, ArrayList<UserRes> userRes) {
+        if (!isValidRole(rol)) {
+            System.exit(3);
+        }
+        boolean isCheckRes = false;
+        for (User user : users) {
+            for (UserRes userRe : userRes) {
+                //Проверка на роль и поиск дочерних ресурсов
+                if ((log.equals(user.getLogin())) && user.getId().equals(userRe.getUser_id())
+                        && rol.equals(userRe.getRole())
+                        && Methods.isCheckChildPaths(userRe.getPath(), res)) {
+                    isCheckRes = true;
+                }
+            }
+        }
+        if (!isCheckRes) {
+            System.exit(4);
+        }
+    }
+
+    /**
      * Генерация соли
      */
     private static String generateSalt() {
-        /*Получить 32битное значение */
+        //Получить 32 битное значение //
         final Random RANDOM = new SecureRandom();
         byte[] s = new byte[32];
         RANDOM.nextBytes(s);
 
-        /*Перевод в строку*/
+        //Перевод в строку//
         BigInteger bigInt = new BigInteger(1, s);
         return bigInt.toString(16);
     }
+
 
     /**
      * Хэш пароля
      */
     private static String generateHashPassword(String str) throws NoSuchAlgorithmException {
         MessageDigest messageDigest;
-        /*Создание обьекта для использования алгоритма*/
+        //Создание обьекта для использования алгоритма//
         messageDigest = MessageDigest.getInstance("MD5");
-        /*Сброс*/
+        //Сброс//
         messageDigest.reset();
-        /*Обновляет digest используя указанный байт*/
+        //Обновляет digest используя указанный байт//
         messageDigest.update(str.getBytes());
 
         byte[] digest;
 
         digest = messageDigest.digest();
 
-        //конвертируем байт в шестнадцатеричный формат
+        //Конвертируем байт в шестнадцатеричный формат
         BigInteger bigInt = new BigInteger(1, digest);
         StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
 
@@ -149,19 +156,26 @@ public class Methods {
     }
 
     /**
+     * Проверка валидности роли
+     */
+    private static boolean isValidRole(String rol) {
+        return rol.equals("READ") || rol.equals("WRITE") || rol.equals("EXECUTE");
+    }
+
+    /**
      * Поиск дочернего ресурса
      */
-    private static boolean checkChildPaths(String rU, String tR) {
-        /*Разбитие строк на узлы*/
+    private static boolean isCheckChildPaths(String rU, String tR) {
+        //Разбитие строк на узлы//
         String[] resUser = rU.split("\\.");
         String[] resTransf = tR.split("\\.");
 
-        /*Если длина переданного ресурса меньше длины ресурса пользователя возвращать false*/
+        //Если длина переданного ресурса меньше длины ресурса пользователя возвращать false/s/
         if (resTransf.length < resUser.length) {
             return false;
         }
 
-        /*Если совпадений не найдено возвращать false*/
+        //sЕсли совпадений не найдено возвращать false//
         for (int i = 0; i < resUser.length; i++) {
             if (!resUser[i].equals(resTransf[i])) {
                 return false;
