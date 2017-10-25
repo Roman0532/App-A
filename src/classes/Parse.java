@@ -40,7 +40,7 @@ public class Parse {
     }
 
     /**
-     * Справка
+     * Справка -h
      */
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
