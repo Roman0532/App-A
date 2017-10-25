@@ -4,9 +4,9 @@ public class UserRes {
     private Long id;
     private Long user_id;
     private String path;
-    private String role;
+    private Roles role;
 
-    public UserRes(Long id, Long user_id, String path, String role) {
+    public UserRes(Long id, Long user_id, String path, Roles role) {
         this.id = id;
         this.user_id = user_id;
         this.path = path;
@@ -26,7 +26,7 @@ public class UserRes {
     }
 
     public String getRole() {
-        return role;
+        return role.toString();
     }
 
 }

@@ -31,12 +31,12 @@ public class Methods {
      */
     public static ArrayList<UserRes> storageCollectionsUserRes() {
         ArrayList<UserRes> userRes = new ArrayList<>();
-        userRes.add(new UserRes(1L, 1L, "a.b", Roles.READ.toString()));
-        userRes.add(new UserRes(2L, 1L, "A.B.C.D", Roles.READ.toString()));
-        userRes.add(new UserRes(3L, 1L, "A.B.C.D", Roles.WRITE.toString()));
-        userRes.add(new UserRes(4L, 2L, "A.B.C.D", Roles.WRITE.toString()));
-        userRes.add(new UserRes(6L, 2L, "AB", Roles.EXECUTE.toString()));
-        userRes.add(new UserRes(5L, 3L, "a.b", Roles.EXECUTE.toString()));
+        userRes.add(new UserRes(1L, 1L, "a.b", Roles.READ));
+        userRes.add(new UserRes(2L, 1L, "A.B.C.D", Roles.READ));
+        userRes.add(new UserRes(3L, 1L, "A.B.C.D", Roles.WRITE));
+        userRes.add(new UserRes(4L, 2L, "A.B.C.D", Roles.WRITE));
+        userRes.add(new UserRes(6L, 2L, "AB", Roles.EXECUTE));
+        userRes.add(new UserRes(5L, 3L, "a.b", Roles.EXECUTE));
 
         return userRes;
     }
