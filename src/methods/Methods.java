@@ -32,10 +32,11 @@ public class Methods {
     public static ArrayList<UserRes> storageCollectionsUserRes() {
         ArrayList<UserRes> userRes = new ArrayList<>();
         userRes.add(new UserRes(1L, 1L, "a.b", Roles.READ.toString()));
-        userRes.add(new UserRes(1L, 1L, "A.B.C.D", Roles.READ.toString()));
-        userRes.add(new UserRes(1L, 1L, "A.B.C.D", Roles.WRITE.toString()));
-        userRes.add(new UserRes(2L, 2L, "A.B.C.D", Roles.WRITE.toString()));
-        userRes.add(new UserRes(3L, 3L, "a.b", Roles.EXECUTE.toString()));
+        userRes.add(new UserRes(2L, 1L, "A.B.C.D", Roles.READ.toString()));
+        userRes.add(new UserRes(3L, 1L, "A.B.C.D", Roles.WRITE.toString()));
+        userRes.add(new UserRes(4L, 2L, "A.B.C.D", Roles.WRITE.toString()));
+        userRes.add(new UserRes(6L, 2L, "AB", Roles.EXECUTE.toString()));
+        userRes.add(new UserRes(5L, 3L, "a.b", Roles.EXECUTE.toString()));
 
         return userRes;
     }
@@ -68,17 +69,17 @@ public class Methods {
     public static void toAuthorize(String log, String rol, String res,
                                    ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
         boolean isCheckRes = false;
+
+        if (!rol.equals("READ") && !rol.equals("WRITE") && !rol.equals("EXECUTE")) {
+            System.exit(3);
+        }
         for (User user : users) {
             for (UserRes userRe : userRes) {
-                if (!rol.equals("READ") && !rol.equals("WRITE") && !rol.equals("EXECUTE")) {
-                    System.exit(3);
-                }
-
                 /*
-                  Проверка на существование запрашивамого ресурса у пользователя, если совпадений нет ,
-                  вызывается метод поиска дочерних ресурсов
+                  Проверка на роль поиск дочерних ресурсов
                  */
-                if (((log.equals(user.getLogin()))) && rol.equals(userRe.getRole())
+                if ((log.equals(user.getLogin())) && user.getId().equals(userRe.getUser_id())
+                        && rol.equals(userRe.getRole())
                         && Methods.checkChildPaths(userRe.getPath(), res)) {
                     isCheckRes = true;
                 }
