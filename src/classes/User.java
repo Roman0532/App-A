@@ -1,3 +1,5 @@
+package classes;
+
 public class User {
     private Long id;
     private String login;
@@ -11,20 +13,19 @@ public class User {
         this.salt = salt;
     }
 
-    String getSalt() {
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() { //password = Main.hashPass(Main.hashPass(getPassword())+ getSalt());
+        return password;
+    }
+
+    public String getSalt() {
         return salt;
     }
 
     public Long getId() {
         return id;
     }
-
-    String getLogin() {
-        return login;
-    }
-
-    String getPassword() { //password = Main.hashPass(Main.hashPass(getPassword())+ getSalt());
-        return password;
-    }
-
 }
