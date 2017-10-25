@@ -69,7 +69,6 @@ public class Methods {
     public static void toAuthorize(String log, String rol, String res,
                                    ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
         boolean isCheckRes = false;
-
         if (!rol.equals("READ") && !rol.equals("WRITE") && !rol.equals("EXECUTE")) {
             System.exit(3);
         }
