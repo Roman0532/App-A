@@ -102,7 +102,7 @@ public class Methods {
         for (User user : users) {
             for (UserRes userRe : userRes) {
                 //Проверка на роль и поиск дочерних ресурсов
-                if ((log.equals(user.getLogin())) && user.getId().equals(userRe.getUser_id())
+                if ((log.equals(user.getLogin())) && user.getId().equals(userRe.getUserId())
                         && rol.equals(userRe.getRole())
                         && Methods.isCheckChildPaths(userRe.getPath(), res)) {
                     isCheckRes = true;
