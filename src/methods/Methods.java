@@ -68,7 +68,24 @@ public class Methods {
      */
     public static void toAuthorize(String log, String rol, String res,
                                    ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
-        checkRolesRes(log, rol, res, users, userRes);
+        boolean isCheckRes = false;
+
+        if (!isValidRole(rol)) {
+            System.exit(3);
+        }
+
+        for (User user : users) {
+            for (UserRes userRe : userRes) {
+                //Проверка на роль и поиск дочерних ресурсов
+                if (isCheckData(log,user.getLogin(),user.getId(),userRe.getUserId(),rol,userRe.getRole())
+                        && Methods.isCheckChildPaths(userRe.getPath(), res)) {
+                    isCheckRes = true;
+                }
+            }
+        }
+        if (!isCheckRes) {
+            System.exit(4);
+        }
     }
 
     /**
@@ -93,25 +110,8 @@ public class Methods {
     /**
      * Проверка ролей и ресурсов
      */
-    private static void checkRolesRes(String log, String rol, String res,
-                                      ArrayList<User> users, ArrayList<UserRes> userRes) {
-        if (!isValidRole(rol)) {
-            System.exit(3);
-        }
-        boolean isCheckRes = false;
-        for (User user : users) {
-            for (UserRes userRe : userRes) {
-                //Проверка на роль и поиск дочерних ресурсов
-                if ((log.equals(user.getLogin())) && user.getId().equals(userRe.getUserId())
-                        && rol.equals(userRe.getRole())
-                        && Methods.isCheckChildPaths(userRe.getPath(), res)) {
-                    isCheckRes = true;
-                }
-            }
-        }
-        if (!isCheckRes) {
-            System.exit(4);
-        }
+    private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole){
+        return login.equals(userLogin) && userId.equals(resourceId) && role.equals(userRole);
     }
 
     /**
