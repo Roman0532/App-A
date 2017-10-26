@@ -108,13 +108,6 @@ public class Methods {
     }
 
     /**
-     * Проверка ролей и ресурсов
-     */
-    private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole){
-        return login.equals(userLogin) && userId.equals(resourceId) && role.equals(userRole);
-    }
-
-    /**
      * Генерация соли
      */
     private static String generateSalt() {
@@ -153,6 +146,13 @@ public class Methods {
             md5Hex.insert(0, "0");
         }
         return md5Hex.toString();
+    }
+
+    /**
+     * Проверка совпадения данных
+     */
+    private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole){
+        return login.equals(userLogin) && userId.equals(resourceId) && role.equals(userRole);
     }
 
     /**
