@@ -19,9 +19,9 @@ public class Methods {
      */
     public static ArrayList<User> storageCollectionsUsers() {
         ArrayList<User> users = new ArrayList<>();
-        users.add(new User(1L, "Roman", "123", Methods.generateSalt()));
-        users.add(new User(2L, "Roman1", "000", Methods.generateSalt()));
-        users.add(new User(3L, "Roman2", "0000", Methods.generateSalt()));
+        users.add(new User(1L, "Roman", "123", generateSalt()));
+        users.add(new User(2L, "Roman1", "000", generateSalt()));
+        users.add(new User(3L, "Roman2", "0000", generateSalt()));
 
         return users;
     }
@@ -49,7 +49,7 @@ public class Methods {
         boolean isCheck = false;
         for (User user : users) {
              /*Проверка совпадает ли пароль с хранящимся в коллекции*/
-            if ((log.equals(user.getLogin())) && !Methods.isRightPass(pass, user.getPassword(), user.getSalt())) {
+            if ((log.equals(user.getLogin())) && !isRightPass(pass, user.getPassword(), user.getSalt())) {
                 System.exit(2);
             }
 
@@ -77,8 +77,8 @@ public class Methods {
         for (User user : users) {
             for (UserRes userRe : userRes) {
                 //Проверка на роль и поиск дочерних ресурсов
-                if (isCheckData(log,user.getLogin(),user.getId(),userRe.getUserId(),rol,userRe.getRole())
-                        && Methods.isCheckChildPaths(userRe.getPath(), res)) {
+                if (isCheckData(log, user.getLogin(), user.getId(), userRe.getUserId(), rol, userRe.getRole())
+                        && isCheckChildPaths(userRe.getPath(), res)) {
                     isCheckRes = true;
                 }
             }
@@ -92,17 +92,9 @@ public class Methods {
      * Аккаунтинг
      */
     public static void toAccounting(String ds, String de, String vol) throws NoSuchAlgorithmException {
-        /*Проверки валидности даты*/
-        if (!Methods.isCheckDate(ds)) {
-            System.exit(5);
-        }
-
-        if (!Methods.isCheckDate(de)) {
-            System.exit(5);
-        }
-
-        /*Проверка валидности объема*/
-        if (!Methods.isCheckValue(vol)) {
+        /*Проверки валидности дат и обьема*/
+        if (!isCheckDate(ds) || !isCheckDate(de)
+                || !isCheckValue(vol)) {
             System.exit(5);
         }
     }
@@ -151,7 +143,7 @@ public class Methods {
     /**
      * Проверка совпадения данных
      */
-    private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole){
+    private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole) {
         return login.equals(userLogin) && userId.equals(resourceId) && role.equals(userRole);
     }
 
