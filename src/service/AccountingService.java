@@ -14,7 +14,6 @@ public class AccountingService {
         //Проверки валидности дат и обьема
         if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
                 || !isCheckValue(volume)) {
-
             System.exit(5);
         } else {
             Accouning accouning = new Accouning(userDataService.getLogin(),userDataService.getResource(),dateStart,dateEnd,volume);
