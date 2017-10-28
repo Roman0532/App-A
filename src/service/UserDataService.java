@@ -1,6 +1,8 @@
-package classes;
+package service;
 
-public class UserData {
+import static service.ParseService.cmd;
+
+public class UserDataService {
     private String login;
     private String password;
     private String role;
@@ -64,5 +66,31 @@ public class UserData {
     void setVolume(String volume) {
         this.volume = volume;
     }
+    /**
+     * Нужна ли справка
+     */
+    public static boolean isHelp() {
+        return cmd.hasOption("help") || cmd.hasOption("h") || !isAuthentication();
+    }
 
+    /**
+     * Нужна ли аутентификация
+     */
+    public static boolean isAuthentication() {
+        return cmd.hasOption("login") && cmd.hasOption("password");
+    }
+
+    /**
+     * Нужна ли авторизация
+     */
+    public static boolean isAuthorization() {
+        return isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role");
+    }
+
+    /**
+     * Нужен ли аккаунтинг
+     */
+    public static boolean isAccounting() {
+        return isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume");
+    }
 }

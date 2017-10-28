@@ -189,7 +189,7 @@ o CLI-86:  The exceptions have been enhanced with methods to retrieve easily
            the related options.
 o CLI-141: Option.toString() now reports arguments properly.
 o CLI-142: The Parser class has been changed to be more easily extendable.
-o CLI-140: The following classes are now serializable: Option, OptionGroup,
+o CLI-140: The following service are now serializable: Option, OptionGroup,
            CommandLine and Options.
 o --     : OptionValidator is no longer public, its methods were all private.
 

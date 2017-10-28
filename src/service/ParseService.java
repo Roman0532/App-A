@@ -1,17 +1,16 @@
-package classes;
+package service;
 
 import org.apache.commons.cli.*;
 
-public class Parse {
+public class ParseService {
 
     public static Options option = new Options();
-    private static CommandLine cmd = null;
     private CommandLineParser parser = new DefaultParser();
-
+    static CommandLine cmd = null;
     /**
      * Добавление опций
      */
-    public Parse() {
+    public ParseService() {
         option.addOption("login", true, "login");
         option.addOption("password", true, "password");
         option.addOption("role", true, "role");
@@ -20,12 +19,11 @@ public class Parse {
         option.addOption("dataEnd", true, "dataEnd");
         option.addOption("volume", true, "volume");
         option.addOption("h", "help", false, "help");
-
     }
 
-    public UserData parse(String[] args) throws ParseException {
-        cmd = parser.parse(Parse.option, args);
-        UserData userData = new UserData();
+    public UserDataService parse(String[] args) throws ParseException {
+        cmd = parser.parse(ParseService.option, args);
+        UserDataService userData = new UserDataService();
 
         //Записываем аргументы через set методы в класс userData//
         userData.setLogin(cmd.getOptionValue("login"));
@@ -45,33 +43,5 @@ public class Parse {
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Help", option);
-    }
-
-    /**
-     * Нужна ли справка
-     */
-    public boolean isHelp() {
-        return cmd.hasOption("help") || cmd.hasOption("h") || !isAuthentication();
-    }
-
-    /**
-     * Нужна ли аутентификация
-     */
-    public boolean isAuthentication() {
-        return cmd.hasOption("login") && cmd.hasOption("password");
-    }
-
-    /**
-     * Нужна ли авторизация
-     */
-    public boolean isAuthorization() {
-        return isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role");
-    }
-
-    /**
-     * Нужен ли аккаунтинг
-     */
-    public boolean isAccounting() {
-        return isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume");
     }
 }

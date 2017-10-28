@@ -1,6 +1,8 @@
-package classes;
+package domain;
 
-public class UserRes {
+import java.util.ArrayList;
+
+public class UserRes extends ArrayList<UserRes> {
     private Long id;
     private Long userId;
     private String path;
@@ -25,8 +27,12 @@ public class UserRes {
         return path;
     }
 
-    public String getRole() {
-        return role.toString();
+    public Roles getRole() {
+        return role;
     }
 
+    public String getRoleName()
+    {
+        return role.name();
+    }
 }

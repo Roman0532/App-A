@@ -1,6 +1,5 @@
-
 @echo off
-start
+chcp 1251
 javac -sourcepath ./src -classpath lib/commons-cli-1.4.jar src/Main.java
 
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main
