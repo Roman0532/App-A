@@ -7,7 +7,6 @@ public class ParseService {
     public static Options option = new Options();
     private CommandLineParser parser = new DefaultParser();
     static CommandLine cmd = null;
-
     /**
      * Добавление опций
      */
@@ -20,6 +19,7 @@ public class ParseService {
         option.addOption("dataEnd", true, "dataEnd");
         option.addOption("volume", true, "volume");
         option.addOption("h", "help", false, "help");
+
     }
 
     public UserDataService parse(String[] args) throws ParseException {
@@ -37,7 +37,6 @@ public class ParseService {
 
         return userData;
     }
-
     /**
      * Справка -h
      */

@@ -16,20 +16,18 @@ public class AccountingService {
                 || !isCheckValue(volume)) {
             System.exit(5);
         } else {
-            Accouning accouning = new Accouning(userDataService.getLogin(), userDataService.getResource(), dateStart, dateEnd, volume);
+            Accouning accouning = new Accouning(userDataService.getLogin(),userDataService.getResource(),dateStart,dateEnd,volume);
             ArrayList<Accouning> data = new ArrayList<>();
             data.add(accouning);
             System.exit(0);
         }
     }
-
     /**
      * Проверка валидности обьема
      */
     private static boolean isCheckValue(String volume) {
         return volume.matches("^-?\\d+$");
     }
-
     /**
      * Проверка валидности даты
      */

@@ -33,16 +33,13 @@ public class AuthorizationService {
             System.exit(4);
         }
     }
-
     /**
      * Проверка совпадения данных
      */
-
     private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole) {
         return login.equals(userLogin) && userId.equals(resourceId)
                 && role.equals(userRole);
     }
-
     /**
      * Поиск дочернего ресурса
      */

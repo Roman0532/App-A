@@ -7,7 +7,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 public class PasswordService {
-
     /**
      * Генерация хэша пароля
      */
@@ -35,15 +34,12 @@ public class PasswordService {
         }
         return md5Hex.toString();
     }
-
     /**
      * Хэш пароля + соль
      */
-
     private static String getHash(String password, String salt) throws NoSuchAlgorithmException {
         return generateHashPassword(generateHashPassword((password)) + salt);
     }
-
     /**
      * Генерация соли
      */
@@ -53,11 +49,12 @@ public class PasswordService {
         byte[] s = new byte[32];
         random.nextBytes(s);
 
-        //Перевод в строку
+        /*Переводим представление знаковой величины в BigInteger
+        -1 для отрицательных, 0 для 0, 1 для положительных)*/
         BigInteger bigInt = new BigInteger(1, s);
+        //16-формат
         return bigInt.toString(16);
     }
-
     /**
      * Проверка совпадает ли переданный хэшированный пароль с паролем пользователя
      */
