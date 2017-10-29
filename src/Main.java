@@ -1,3 +1,4 @@
+import domain.Accouning;
 import domain.Roles;
 import domain.User;
 import domain.UserRes;
@@ -37,6 +38,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws ParseException, NoSuchAlgorithmException {
+        ArrayList<Accouning> data = new ArrayList<>();
         ArrayList<User> collectionUsers = storageCollectionsUsers();
         ArrayList<UserRes> collectionUserRes = storageCollectionsUserRes();
         //Передача аргументов парсеру
@@ -52,7 +54,7 @@ public class Main {
                     collectionUsers, collectionUserRes);
         }
         if (userData.isAccounting()) {
-            AccountingService.accounting(userData.getDataStart(), userData.getDataEnd(), userData.getVolume(), userData);
+            AccountingService.accounting(userData.getDataStart(), userData.getDataEnd(), userData.getVolume(), userData,data);
         }
     }
 }

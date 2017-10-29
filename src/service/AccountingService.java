@@ -10,16 +10,13 @@ public class AccountingService {
     /**
      * Аккаунтинг
      */
-    public static void accounting(String dateStart, String dateEnd, String volume, UserDataService userDataService) throws NoSuchAlgorithmException {
+    public static void accounting(String dateStart, String dateEnd, String volume, UserDataService userDataService,ArrayList<Accouning> data) throws NoSuchAlgorithmException {
         //Проверки валидности дат и обьема
         if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
                 || !isCheckValue(volume)) {
             System.exit(5);
         } else {
-            Accouning accouning = new Accouning(userDataService.getLogin(), userDataService.getResource(), dateStart, dateEnd, volume);
-            ArrayList<Accouning> data = new ArrayList<>();
-            data.add(accouning);
-            System.exit(0);
+            data.add(new Accouning(userDataService.getLogin(), userDataService.getResource(), dateStart, dateEnd, volume));
         }
     }
 
