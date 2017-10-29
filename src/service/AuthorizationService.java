@@ -15,7 +15,9 @@ public class AuthorizationService {
                                  ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
         boolean isCheckRes = false;
 
-        if (!Roles.isCheckValidRole(role)) {System.exit(3);}
+        if (!Roles.isCheckValidRole(role)) {
+            System.exit(3);
+        }
 
         for (User user : users) {
             for (UserRes userRe : userRes) {

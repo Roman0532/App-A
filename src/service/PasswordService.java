@@ -6,9 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 
-/**
- * Created by Roman Maximov on 27.10.2017
- */
 public class PasswordService {
 
     /**

@@ -16,12 +16,13 @@ public class AccountingService {
                 || !isCheckValue(volume)) {
             System.exit(5);
         } else {
-            Accouning accouning = new Accouning(userDataService.getLogin(),userDataService.getResource(),dateStart,dateEnd,volume);
-            ArrayList<Accouning> Data = new ArrayList<>();
-            Data.add(accouning);
+            Accouning accouning = new Accouning(userDataService.getLogin(), userDataService.getResource(), dateStart, dateEnd, volume);
+            ArrayList<Accouning> data = new ArrayList<>();
+            data.add(accouning);
             System.exit(0);
         }
     }
+
     /**
      * Проверка валидности обьема
      */

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AuthenticationService {
     /**
-     * Аутентификация 
+     * Аутентификация
      */
     public static void authenticate(String login, String password,
                                     ArrayList<User> users) throws NoSuchAlgorithmException {

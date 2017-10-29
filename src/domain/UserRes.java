@@ -31,8 +31,7 @@ public class UserRes extends ArrayList<UserRes> {
         return role;
     }
 
-    public String getRoleName()
-    {
+    public String getRoleName() {
         return role.name();
     }
 }

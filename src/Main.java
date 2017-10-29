@@ -44,7 +44,7 @@ public class Main {
         UserDataService userData = cmd.parse(args);
 
         if (UserDataService.isAuthentication()) {
-           AuthenticationService.authenticate(userData.getLogin(), userData.getPassword(), collectionUsers);
+            AuthenticationService.authenticate(userData.getLogin(), userData.getPassword(), collectionUsers);
         }
 
         if (UserDataService.isAuthorization()) {

@@ -7,6 +7,7 @@ public class ParseService {
     public static Options option = new Options();
     private CommandLineParser parser = new DefaultParser();
     static CommandLine cmd = null;
+
     /**
      * Добавление опций
      */

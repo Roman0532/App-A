@@ -7,7 +7,7 @@ public class Accouning {
     private String dataEnd;
     private String volume;
 
-    public Accouning(String login,String resource, String dataStart, String dataEnd, String volume) {
+    public Accouning(String login, String resource, String dataStart, String dataEnd, String volume) {
         this.login = login;
         this.resource = resource;
         this.dataStart = dataStart;

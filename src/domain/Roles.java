@@ -13,6 +13,7 @@ public enum Roles {
             if (roles.name().equals(role)) {
                 return true;
             }
-        }  return false;
+        }
+        return false;
     }
 }
