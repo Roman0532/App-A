@@ -1,7 +1,5 @@
 package service;
 
-import static service.ParseService.cmd;
-
 public class UserDataService {
     private String login;
     private String password;
@@ -68,30 +66,23 @@ public class UserDataService {
     }
 
     /**
-     * Нужна ли справка
-     */
-    public static boolean isHelp() {
-        return cmd.hasOption("help") || cmd.hasOption("h") || !isAuthentication();
-    }
-
-    /**
      * Нужна ли аутентификация
      */
-    public static boolean isAuthentication() {
-        return cmd.hasOption("login") && cmd.hasOption("password");
+    public boolean isAuthentication() {
+        return this.login != null && this.password != null;
     }
 
     /**
      * Нужна ли авторизация
      */
-    public static boolean isAuthorization() {
-        return isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role");
+    public boolean isAuthorization() {
+        return isAuthentication() && this.resource != null && this.role != null;
     }
 
     /**
      * Нужен ли аккаунтинг
      */
-    public static boolean isAccounting() {
-        return isAuthorization() && cmd.hasOption("dataStart") && cmd.hasOption("dataEnd") && cmd.hasOption("volume");
+    public boolean isAccounting() {
+        return isAuthorization() && this.dataStart != null && this.dataEnd != null && this.volume != null;
     }
 }

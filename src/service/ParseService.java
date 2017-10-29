@@ -3,10 +3,9 @@ package service;
 import org.apache.commons.cli.*;
 
 public class ParseService {
-
-    public static Options option = new Options();
     private CommandLineParser parser = new DefaultParser();
-    static CommandLine cmd = null;
+    public static Options option = new Options();
+
     /**
      * Добавление опций
      */
@@ -23,6 +22,7 @@ public class ParseService {
     }
 
     public UserDataService parse(String[] args) throws ParseException {
+        CommandLine cmd;
         cmd = parser.parse(ParseService.option, args);
         UserDataService userData = new UserDataService();
 
@@ -35,13 +35,17 @@ public class ParseService {
         userData.setDataEnd(cmd.getOptionValue("dataEnd"));
         userData.setVolume(cmd.getOptionValue("volume"));
 
+        //Если нужна справка, вызов
+        if (cmd.hasOption("h") || cmd.hasOption("help") || !userData.isAuthentication()) {
+            printHelp();
+        }
         return userData;
     }
 
     /**
      * Справка
      */
-    public void printHelp() {
+    private void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Help", option);
     }

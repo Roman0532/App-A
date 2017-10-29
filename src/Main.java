@@ -43,20 +43,16 @@ public class Main {
         ParseService cmd = new ParseService();
         UserDataService userData = cmd.parse(args);
 
-        if (UserDataService.isAuthentication()) {
+        if (userData.isAuthentication()) {
             AuthenticationService.authenticate(userData.getLogin(), userData.getPassword(), collectionUsers);
         }
 
-        if (UserDataService.isAuthorization()) {
+        if (userData.isAuthorization()) {
             AuthorizationService.authorize(userData.getLogin(), userData.getRole(), userData.getResource(),
                     collectionUsers, collectionUserRes);
         }
-        if (UserDataService.isAccounting()) {
+        if (userData.isAccounting()) {
             AccountingService.accounting(userData.getDataStart(), userData.getDataEnd(), userData.getVolume(), userData);
-        }
-
-        if (UserDataService.isHelp()) {
-            cmd.printHelp();
         }
     }
 }
