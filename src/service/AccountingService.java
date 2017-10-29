@@ -22,12 +22,14 @@ public class AccountingService {
             System.exit(0);
         }
     }
+
     /**
      * Проверка валидности обьема
      */
     private static boolean isCheckValue(String volume) {
         return volume.matches("^-?\\d+$");
     }
+
     /**
      * Проверка валидности даты
      */

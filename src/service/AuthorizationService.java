@@ -33,6 +33,7 @@ public class AuthorizationService {
             System.exit(4);
         }
     }
+
     /**
      * Проверка совпадения данных
      */
@@ -40,6 +41,7 @@ public class AuthorizationService {
         return login.equals(userLogin) && userId.equals(resourceId)
                 && role.equals(userRole);
     }
+
     /**
      * Поиск дочернего ресурса
      */

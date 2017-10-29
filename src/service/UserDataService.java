@@ -73,18 +73,21 @@ public class UserDataService {
     public static boolean isHelp() {
         return cmd.hasOption("help") || cmd.hasOption("h") || !isAuthentication();
     }
+
     /**
      * Нужна ли аутентификация
      */
     public static boolean isAuthentication() {
         return cmd.hasOption("login") && cmd.hasOption("password");
     }
+
     /**
      * Нужна ли авторизация
      */
     public static boolean isAuthorization() {
         return isAuthentication() && cmd.hasOption("resource") && cmd.hasOption("role");
     }
+
     /**
      * Нужен ли аккаунтинг
      */

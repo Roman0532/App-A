@@ -34,12 +34,14 @@ public class PasswordService {
         }
         return md5Hex.toString();
     }
+
     /**
      * Хэш пароля + соль
      */
     private static String getHash(String password, String salt) throws NoSuchAlgorithmException {
         return generateHashPassword(generateHashPassword((password)) + salt);
     }
+
     /**
      * Генерация соли
      */
@@ -55,6 +57,7 @@ public class PasswordService {
         //16-формат
         return bigInt.toString(16);
     }
+
     /**
      * Проверка совпадает ли переданный хэшированный пароль с паролем пользователя
      */
