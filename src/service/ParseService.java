@@ -38,7 +38,7 @@ public class ParseService {
         return userData;
     }
     /**
-     * Справка -h
+     * Справка
      */
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
