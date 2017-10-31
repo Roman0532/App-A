@@ -13,23 +13,11 @@ public class AuthorizationService {
      */
     public static void authorize(String login, String role, String resource,
                                  ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
-        boolean isCheckRes = false;
-
         if (!Roles.isCheckValidRole(role)) {
             System.exit(3);
         }
 
-        for (User user : users) {
-            for (UserRes userRe : userRes) {
-                //Проверка на роль и поиск дочерних ресурсов
-                if (isCheckData(login, user.getLogin(), user.getId(), userRe.getUserId(), role, userRe.getRoleName())
-                        && isCheckChildPaths(userRe.getPath(), resource)) {
-                    isCheckRes = true;
-                    break;
-                }
-            }
-        }
-        if (!isCheckRes) {
+        if (!isFindResource(login, role, resource, users, userRes)) {
             System.exit(4);
         }
     }
@@ -62,5 +50,21 @@ public class AuthorizationService {
             }
         }
         return true;
+    }
+
+    /**
+     * Проверка ресурсов
+     */
+    private static boolean isFindResource(String login, String role, String resource, ArrayList<User> users, ArrayList<UserRes> userRes) {
+        for (User user : users) {
+            for (UserRes userRe : userRes) {
+                //Проверка на роль и поиск дочерних ресурсов
+                if (isCheckData(login, user.getLogin(), user.getId(), userRe.getUserId(), role, userRe.getRoleName())
+                        && isCheckChildPaths(userRe.getPath(), resource)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

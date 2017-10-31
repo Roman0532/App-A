@@ -18,7 +18,6 @@ public class ParseService {
         option.addOption("dataEnd", true, "dataEnd");
         option.addOption("volume", true, "volume");
         option.addOption("h", "help", false, "help");
-
     }
 
     public UserDataService parse(String[] args) throws ParseException {
@@ -35,17 +34,13 @@ public class ParseService {
         userData.setDataEnd(cmd.getOptionValue("dataEnd"));
         userData.setVolume(cmd.getOptionValue("volume"));
 
-        //Если нужна справка, вызов
-        if (cmd.hasOption("h") || cmd.hasOption("help") || !userData.isAuthentication()) {
-            printHelp();
-        }
         return userData;
     }
 
     /**
      * Справка
      */
-    private void printHelp() {
+    public static void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Help", option);
     }

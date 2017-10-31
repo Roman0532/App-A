@@ -10,7 +10,8 @@ public class AccountingService {
     /**
      * Аккаунтинг
      */
-    public static void accounting(String dateStart, String dateEnd, String volume, UserDataService userDataService,ArrayList<Accouning> data) throws NoSuchAlgorithmException {
+    public static void accounting(String dateStart, String dateEnd, String volume,
+                                  UserDataService userDataService, ArrayList<Accouning> data) throws NoSuchAlgorithmException {
         //Проверки валидности дат и обьема
         if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
                 || !isCheckValue(volume)) {
@@ -33,9 +34,9 @@ public class AccountingService {
     private static boolean isCheckDate(String date) {
         try {
             LocalDate.parse(date);
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 }

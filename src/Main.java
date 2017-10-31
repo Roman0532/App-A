@@ -41,9 +41,14 @@ public class Main {
         ArrayList<Accouning> data = new ArrayList<>();
         ArrayList<User> collectionUsers = storageCollectionsUsers();
         ArrayList<UserRes> collectionUserRes = storageCollectionsUserRes();
+
         //Передача аргументов парсеру
         ParseService cmd = new ParseService();
         UserDataService userData = cmd.parse(args);
+
+        if (!userData.isAuthentication()) {
+            ParseService.printHelp();
+        }
 
         if (userData.isAuthentication()) {
             AuthenticationService.authenticate(userData.getLogin(), userData.getPassword(), collectionUsers);
@@ -54,7 +59,8 @@ public class Main {
                     collectionUsers, collectionUserRes);
         }
         if (userData.isAccounting()) {
-            AccountingService.accounting(userData.getDataStart(), userData.getDataEnd(), userData.getVolume(), userData,data);
+            AccountingService.accounting(userData.getDataStart(), userData.getDataEnd(), userData.getVolume(), userData, data);
         }
+
     }
 }

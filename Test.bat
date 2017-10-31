@@ -31,6 +31,8 @@ echo "4" %ERRORLEVEL%
 
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 2017-10-08 -dataEnd 2017-10-08 -volume 100
 echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 2017-10-08 -dataEnd 2017-10-08 -volume 100
+echo "0" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 1111111111 -dataEnd 2017-10-08 -volume 100
 echo "5" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 2017-10-08 -dataEnd 2017-10-08 -volume str100
