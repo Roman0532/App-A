@@ -3,13 +3,14 @@ package service;
 import org.apache.commons.cli.*;
 
 public class ParseService {
-    private CommandLineParser parser = new DefaultParser();
-    public static Options option = new Options();
+
+    private static Options option = new Options();
 
     /**
      * Добавление опций
      */
     public ParseService() {
+
         option.addOption("login", true, "login");
         option.addOption("password", true, "password");
         option.addOption("role", true, "role");
@@ -20,10 +21,10 @@ public class ParseService {
         option.addOption("h", "help", false, "help");
     }
 
-    public UserDataService parse(String[] args) throws ParseException {
-        CommandLine cmd;
-        cmd = parser.parse(ParseService.option, args);
-        UserDataService userData = new UserDataService();
+    public UserData parse(String[] args) throws ParseException {
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(ParseService.option, args);
+        UserData userData = new UserData();
 
         //Записываем аргументы через set методы в класс userData//
         userData.setLogin(cmd.getOptionValue("login"));

@@ -1,6 +1,6 @@
 package service;
 
-public class UserDataService {
+public class UserData {
     private String login;
     private String password;
     private String role;
@@ -83,6 +83,7 @@ public class UserDataService {
      * Нужен ли аккаунтинг
      */
     public boolean isAccounting() {
-        return isAuthorization() && this.dataStart != null && this.dataEnd != null && this.volume != null;
+        return isAuthorization() && this.dataStart != null
+                && this.dataEnd != null && this.volume != null;
     }
 }

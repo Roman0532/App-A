@@ -17,7 +17,7 @@ public class User {
         return login;
     }
 
-    public String getPassword() { //password = Main.hashPass(Main.hashPass(getPassword())+ getSalt());
+    public String getPassword() {
         return password;
     }
 

@@ -36,7 +36,8 @@ public class AuthenticationService {
     /**
      * Проверка Пароля
      */
-    private static boolean isCheckPassword(String login, String password, ArrayList<User> users) throws NoSuchAlgorithmException {
+    private static boolean isCheckPassword(String login, String password,
+                                           ArrayList<User> users) throws NoSuchAlgorithmException {
         for (User user : users) {
             //Проверка совпадает ли пароль с хранящимся в коллекции
             if ((login.equals(user.getLogin()))

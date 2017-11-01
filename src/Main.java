@@ -44,22 +44,24 @@ public class Main {
 
         //Передача аргументов парсеру
         ParseService cmd = new ParseService();
-        UserDataService userData = cmd.parse(args);
+        UserData userData = cmd.parse(args);
 
         if (!userData.isAuthentication()) {
             ParseService.printHelp();
         }
 
         if (userData.isAuthentication()) {
-            AuthenticationService.authenticate(userData.getLogin(), userData.getPassword(), collectionUsers);
+            AuthenticationService.authenticate(userData.getLogin(),
+                    userData.getPassword(), collectionUsers);
         }
 
         if (userData.isAuthorization()) {
-            AuthorizationService.authorize(userData.getLogin(), userData.getRole(), userData.getResource(),
-                    collectionUsers, collectionUserRes);
+            AuthorizationService.authorize(userData.getLogin(), userData.getRole(),
+                    userData.getResource(), collectionUsers, collectionUserRes);
         }
         if (userData.isAccounting()) {
-            AccountingService.accounting(userData.getDataStart(), userData.getDataEnd(), userData.getVolume(), userData, data);
+            AccountingService.accounting(userData.getDataStart(),
+                    userData.getDataEnd(), userData.getVolume(), userData, data);
         }
 
     }

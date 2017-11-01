@@ -25,7 +25,8 @@ public class AuthorizationService {
     /**
      * Проверка совпадения данных
      */
-    private static boolean isCheckData(String login, String userLogin, Long userId, Long resourceId, String role, String userRole) {
+    private static boolean isCheckData(String login, String userLogin, Long userId,
+                                       Long resourceId, String role, String userRole) {
         return login.equals(userLogin) && userId.equals(resourceId)
                 && role.equals(userRole);
     }
@@ -33,7 +34,8 @@ public class AuthorizationService {
     /**
      * Поиск дочернего ресурса
      */
-    private static boolean isCheckChildPaths(String resourceUser, String suppliedResource) {
+    private static boolean isCheckChildPaths(String resourceUser,
+                                             String suppliedResource) {
         //Разбитие строк на узлы
         String[] resUser = resourceUser.split("\\.");
         String[] resSupplied = suppliedResource.split("\\.");
@@ -55,11 +57,13 @@ public class AuthorizationService {
     /**
      * Проверка ресурсов
      */
-    private static boolean isFindResource(String login, String role, String resource, ArrayList<User> users, ArrayList<UserRes> userRes) {
+    private static boolean isFindResource(String login, String role, String resource,
+                                          ArrayList<User> users, ArrayList<UserRes> userRes) {
         for (User user : users) {
             for (UserRes userRe : userRes) {
                 //Проверка на роль и поиск дочерних ресурсов
-                if (isCheckData(login, user.getLogin(), user.getId(), userRe.getUserId(), role, userRe.getRoleName())
+                if (isCheckData(login, user.getLogin(), user.getId(),
+                        userRe.getUserId(), role, userRe.getRoleName())
                         && isCheckChildPaths(userRe.getPath(), resource)) {
                     return true;
                 }
