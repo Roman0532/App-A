@@ -4,7 +4,7 @@ SRC="src/"
 OUT="out/classes/"
 
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-     CP="$LIB"
+    CP="$LIB"
 fi
 
 java -cp ""$OUT";"$CP"" Main $@

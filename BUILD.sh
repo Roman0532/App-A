@@ -3,9 +3,9 @@ LIB="lib/*"
 SRC="src"
 OUT="out/classes"
 JAR="Main.jar"
- if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     CP="$LIB"
- fi
+fi
 
 rm -rf "$OUT"
 mkdir -p $OUT
