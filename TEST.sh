@@ -1,7 +1,7 @@
 #!/bin/bash
 error=0;
 check () {
-   ./RUN.sh $2
+   ./RUN.sh $1
     result=$?
     if [[ $result -eq $2 ]]; then
         echo "'$2'" $result  
