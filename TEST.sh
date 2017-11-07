@@ -10,6 +10,9 @@ check () {
  	 error=1;
     fi
 }
+git update-index 
+
+chmod +x *.sh
 
 ./BUILD.sh
 
