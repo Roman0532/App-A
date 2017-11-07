@@ -1,6 +1,6 @@
 #!/bin/bash
 error=0;
-check () {
+ check () {
    ./RUN.sh $1
     result=$?
     if [[ $result -eq $2 ]]; then
