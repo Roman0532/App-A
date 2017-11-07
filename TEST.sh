@@ -15,6 +15,7 @@ check () {
 
 check "" 0
 check "-h" 0
+
 check "-login Roman -password 123" 0
 check "-login Roman -password 321" 2
 check "-login Roman123 -password 123" 1

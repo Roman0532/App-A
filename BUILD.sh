@@ -6,7 +6,7 @@ JAR="Main.jar"
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     CP="$LIB"
 fi
-
+ 
 rm -rf "$OUT"
 mkdir -p $OUT
 
