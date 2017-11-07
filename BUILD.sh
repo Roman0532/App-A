@@ -12,7 +12,7 @@ if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
 fi
 
 rm -rf out/classes
-mkdir out/classes
+mkdir -p out/classes
 
 find . -name "*.java" | xargs javac -sourcepath "SRC" -classpath "$CP" -d "$OUT" 
 
