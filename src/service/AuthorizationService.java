@@ -1,7 +1,6 @@
 package service;
 
 import domain.Roles;
-import domain.User;
 import domain.UserRes;
 
 import java.security.NoSuchAlgorithmException;
@@ -11,24 +10,15 @@ public class AuthorizationService {
     /**
      * Авторизация
      */
-    public static void authorize(String login, String role, String resource,
-                                 ArrayList<User> users, ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
+    public static void authorize(String role, String resource,
+                                 ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
         if (!Roles.isCheckValidRole(role)) {
             System.exit(3);
         }
 
-        if (!isFindResource(login, role, resource, users, userRes)) {
+        if (!isFindResource(role, resource, userRes)) {
             System.exit(4);
         }
-    }
-
-    /**
-     * Проверка совпадения данных
-     */
-    private static boolean isCheckData(String login, String userLogin, Long userId,
-                                       Long resourceId, String role, String userRole) {
-        return login.equals(userLogin) && userId.equals(resourceId)
-                && role.equals(userRole);
     }
 
     /**
@@ -57,18 +47,15 @@ public class AuthorizationService {
     /**
      * Проверка ресурсов
      */
-    private static boolean isFindResource(String login, String role, String resource,
-                                          ArrayList<User> users, ArrayList<UserRes> userRes) {
-        for (User user : users) {
+    private static boolean isFindResource(String role, String resource,
+                                          ArrayList<UserRes> userRes) {
             for (UserRes userRe : userRes) {
                 //Проверка на роль и поиск дочерних ресурсов
-                if (isCheckData(login, user.getLogin(), user.getId(),
-                        userRe.getUserId(), role, userRe.getRoleName())
+                if (role.equals(userRe.getRoleName())
                         && isCheckChildPaths(userRe.getPath(), resource)) {
                     return true;
                 }
             }
-        }
         return false;
     }
 }

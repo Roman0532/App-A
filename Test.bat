@@ -29,16 +29,54 @@ echo "4" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman1 -password 000 -role WRITE -resource a.QQ
 echo "4" %ERRORLEVEL%
 
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 2017-10-08 -dataEnd 2017-10-08 -volume 100
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dateStart 2017-10-08 -dateEnd 2017-10-08 -volume 100
 echo "0" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 2017-10-08 -dataEnd 2017-10-08 -volume 100
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dateStart 2017-10-08 -dateEnd 2017-10-08 -volume 100
 echo "0" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 1111111111 -dataEnd 2017-10-08 -volume 100
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dateStart 1111111111 -dateEnd 2017-10-08 -volume 100
 echo "5" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dataStart 2017-10-08 -dataEnd 2017-10-08 -volume str100
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role READ -resource a.b -dateStart 2017-10-08 -dateEnd 2017-10-08 -volume str100
 echo "5" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role WRITE -resource a.b -dataStart 1111111111 -dataEnd 2222222222 -volume 100
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123 -role WRITE -resource a.b -dateStart 1111111111 -dateEnd 2222222222 -volume 100
 echo "4" %ERRORLEVEL%
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Vasya -password qwerty -role READ -resource A.B -dataStart 1111111111 -dataEnd 2222222222 -volume str100
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Vasya -password qwerty -role READ -resource A.B -dateStart 1111111111 -dateEnd 2222222222 -volume str100
 echo "1" %ERRORLEVEL%
+
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -h
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login XXX -password XXX
+echo "1" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login jdoe -password XXX
+echo "2" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login jdoe -password sup3rpaZZ
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login xxx -password yyy
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login jdoe -password sup3rpaZZ
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role READ -resource a
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role READ -resource a.b
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role XXX -resource a.b
+echo "3" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role READ -resource XXX
+echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role WRITE -resource a
+echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role WRITE -resource a.bc
+echo "4" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume 100
+echo "0" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 01-01-2015 -dateEnd 2015-12-31 -volume 100
+echo "5" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX
+echo "5" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login X -password X -role READ -resource X -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX
+echo "1" %ERRORLEVEL%
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main  -login X -password X -role READ -resource X
+echo "1" %ERRORLEVEL%
+
 PAUSE

@@ -15,8 +15,8 @@ public class ParseService {
         option.addOption("password", true, "password");
         option.addOption("role", true, "role");
         option.addOption("resource", true, "resource");
-        option.addOption("dataStart", true, "dataStart");
-        option.addOption("dataEnd", true, "dataEnd");
+        option.addOption("dateStart", true, "dateStart");
+        option.addOption("dateEnd", true, "dateEnd");
         option.addOption("volume", true, "volume");
         option.addOption("h", "help", false, "help");
     }
@@ -31,8 +31,8 @@ public class ParseService {
         userData.setPassword(cmd.getOptionValue("password"));
         userData.setResource(cmd.getOptionValue("resource"));
         userData.setRole(cmd.getOptionValue("role"));
-        userData.setDataStart(cmd.getOptionValue("dataStart"));
-        userData.setDataEnd(cmd.getOptionValue("dataEnd"));
+        userData.setDataStart(cmd.getOptionValue("dateStart"));
+        userData.setDataEnd(cmd.getOptionValue("dateEnd"));
         userData.setVolume(cmd.getOptionValue("volume"));
 
         return userData;
