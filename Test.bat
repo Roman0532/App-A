@@ -3,7 +3,7 @@ chcp 1251
 javac -sourcepath ./src -classpath lib/commons-cli-1.4.jar src/Main.java
 
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main
-java -classpath "src/;lib/commons-cli-1.4.jar"; Main -h
+java -classpath "src/;lib/commons-cli-1.4.jar"; Main
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 123
 echo "0" %ERRORLEVEL%
 java -classpath "src/;lib/commons-cli-1.4.jar"; Main -login Roman -password 321
