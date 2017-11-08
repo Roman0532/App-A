@@ -1,5 +1,4 @@
 #!/bin/bash
-error=0;
 check() {
  ./RUN.sh $1
   result=$?
@@ -7,8 +6,7 @@ check() {
         echo "'$2'" $result  
  else 
         echo "'$2'" $result 
- 	     error=1;
-       exit 1
+        exit 1
  fi
 }
 
@@ -57,8 +55,3 @@ check "-login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-
 check "-login X -password X -role READ -resource X -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX" 1
 check "-login X -password X -role READ -resource X" 1
 
-if [[ $error -eq 1 ]]; then
-    echo 1
-else
-    echo 0
-fi
