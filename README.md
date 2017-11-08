@@ -1,6 +1,6 @@
 # APP-A 
 
- APP-A - консольное Java приложение для аутентификации, авторизации и аккаунтинга пользователей которое разрабатывается студентами кафедры <a href="http://kafedra-goodline.info/software-engineering">"Программная инженерия"</a> основанная компанией <a href="https://goodline.info/">Goodline</a>
+ APP-A - консольное Java приложение для аутентификации, авторизации и аккаунтинга пользователей которое разрабатывается студентами кафедры <a href="http://kafedra-goodline.info/software-engineering">"Программная инженерия"</a> основанная компанией <a href="https://goodline.info/">Good Line</a>
 
 <img src="https://user-images.githubusercontent.com/32132937/32546326-4c3face0-c4b1-11e7-887e-99a4efd30703.jpg">
 
@@ -34,17 +34,20 @@
 
      Для запуска тестов используйте команду ./TEST.sh
    
-## Travis-ci  
+## Автоматическая сборка и тестирование проекта с travis-ci  
 
-<img src="https://travis-ci.org/Roman0532/App-A.svg?branch=master">
+[![Build Status](https://travis-ci.org/Roman0532/App-A.svg?branch=master)](https://travis-ci.org/Roman0532/App-A)
 
-Travis CI — распределённый веб-сервис для сборки и тестирования программного обеспечения, использующий GitHub в качестве хостинга исходного кода.
+<a href="https://travis-ci.org/">Travis CI </a> — распределённый веб-сервис для сборки и тестирования программного обеспечения, использующий GitHub в качестве хостинга исходного кода.
+
+Для настройки travis-ci используется файл <a href="https://github.com/Roman0532/App-A/blob/master/.travis.yml">.travis.yml</a>
 
 Проект был успешно собран и протестирован на <a href="https://travis-ci.org/">travis-ci.org</a>
      
 ## Git Hub pages 
 <img src="https://user-images.githubusercontent.com/32132937/32547212-0ea77ec8-c4b4-11e7-90b7-a915504b6d15.jpg">
 
-В настройках репозитория включена опция Github Page и выбрана тема для сайта. 
+В настройках репозитория включена опция Github Page. 
 Эта опция позволяет генерировать свой сайт из файла README.md
+В файле _config.yml прописана тема которая используется для сайта.
 <a href="https://roman0532.github.io/App-A/">My GitHub page<a/>
