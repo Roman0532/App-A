@@ -8,7 +8,7 @@ check() {
  else 
         echo "'$2'" $result 
  	     error=1;
-       exit
+       System.exit(1)
  fi
 }
 
