@@ -1,17 +1,17 @@
 #!/bin/bash
 error=0;
-check () {
-   ./RUN.sh $1
-    result=$?
-    if [[ $result -eq $2 ]]; then
+check() {
+ ./RUN.sh $1
+  result=$?
+ if [[ $result -eq $2 ]]; then
         echo "'$2'" $result  
-    else 
-         echo "'$2'" $result 
- 	 error=1;
-    fi
+ else 
+        echo "'$2'" $result 
+ 	     error=1;
+ fi
 }
-git update-index 
 
+git update-index 
 chmod +x *.sh
 
 ./BUILD.sh
