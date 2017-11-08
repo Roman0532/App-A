@@ -11,9 +11,6 @@ check() {
  fi
 }
 
-git update-index 
-chmod +x *.sh
-
 ./BUILD.sh
 
 check "" 1
