@@ -6,7 +6,7 @@ JAR="out/classes/Main.jar"
 
 if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
     CP="$LIB"
-elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+elif [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
     CP="$LIB"
 fi
 
