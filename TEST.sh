@@ -12,7 +12,7 @@ check() {
 
 ./BUILD.sh
 
-check "" 1
+check "" 0
 check "-h" 0
 
 check "-login Roman -password 123" 0
