@@ -16,7 +16,7 @@ chmod +x *.sh
 
 ./BUILD.sh
 
-check "" 0
+check "" 1
 check "-h" 0
 
 check "-login Roman -password 123" 0
