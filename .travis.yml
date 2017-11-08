@@ -2,5 +2,5 @@ language: java
 script: bash TEST.sh
 jdk: oraclejdk8
 before_script:
- - bash BUILD.sh
+ - chmod +x BUILD.sh
  - chmod +x RUN.sh
