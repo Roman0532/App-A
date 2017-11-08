@@ -40,11 +40,11 @@
 
 Travis CI — распределённый веб-сервис для сборки и тестирования программного обеспечения, использующий GitHub в качестве хостинга исходного кода.
 
-Проект был успешно собран и протестирован да <a href="https://travis-ci.org/">travis-ci.org</a>
+Проект был успешно собран и протестирован на <a href="https://travis-ci.org/">travis-ci.org</a>
      
 ## Git Hub pages 
 <img src="https://user-images.githubusercontent.com/32132937/32547212-0ea77ec8-c4b4-11e7-90b7-a915504b6d15.jpg">
 
-В настройках репозитория включена опция Github Page и выбрана тема для сайта  . 
+В настройках репозитория включена опция Github Page и выбрана тема для сайта. 
 Эта опция позволяет генерировать свой сайт из файла README.md
 <a href="https://roman0532.github.io/App-A/">My GitHub page<a/>
