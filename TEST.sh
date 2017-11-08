@@ -8,6 +8,7 @@ check() {
  else 
         echo "'$2'" $result 
  	     error=1;
+       exit
  fi
 }
 
