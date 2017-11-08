@@ -1,5 +1,4 @@
 # APP-A 
-<img src="https://travis-ci.org/Roman0532/App-A.svg?branch=master">
 
  APP-A - консольное Java приложение для аутентификации, авторизации и аккаунтинга пользователей которое разрабатывается студентами кафедры <a href="http://kafedra-goodline.info/software-engineering">"Программная инженерия"</a> основаной компанией <a href="https://goodline.info/">Goodline</a>
 
@@ -7,7 +6,7 @@
 
 ## Преподователь кафедры:
 
-#### <b>Константин Линник<b/>
+#### <b>Константин Линник</b>
      
 ## Разработка проекта
 
@@ -15,13 +14,13 @@
 
  составляется план его дальнейшей работы. После того как план успешно написан , начинается работа по плану.
     
-##### Список требований для 1 этапа
+#### Список требований для 1 этапа
 
 <a href="https://docs.google.com/document/d/1iRLP4Ny7FlIds6QWtQvfYvHsetl9Qgc6cYLETVAGqUY/edit">Список требований №1</a>
 
 <a href="https://github.com/Roman0532/App-A/blob/master/Roadmap1.md">План работы  №1</a>
 
-##### Набор требований для 2 этапа
+#### Список требований для 2 этапа
 
 <a href="https://docs.google.com/document/d/16bcm3DMuo7p__102sDtBn3YqOk5ezetShYxHvH62Ec0/edit">Список требований №2</a>
 
@@ -34,6 +33,14 @@
      Для запуска проекта используйте команду ./RUN.sh
 
      Для запуска тестов используйте команду ./TEST.sh
+   
+## Travis-ci  
+
+<img src="https://travis-ci.org/Roman0532/App-A.svg?branch=master">
+
+Travis CI — распределённый веб-сервис для сборки и тестирования программного обеспечения, использующий GitHub в качестве хостинга исходного кода.
+
+Проект был успешно собран и протестирован да <a href="https://travis-ci.org/">travis-ci.org</a>
      
 ## Git Hub pages 
 <img src="https://user-images.githubusercontent.com/32132937/32547212-0ea77ec8-c4b4-11e7-90b7-a915504b6d15.jpg">
