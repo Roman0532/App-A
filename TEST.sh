@@ -11,6 +11,8 @@ check() {
  fi
 }
 
+chmod +x *.sh
+
 ./BUILD.sh
 
 check "" 1
