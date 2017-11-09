@@ -1,15 +1,20 @@
 #!/bin/bash
-error=0
-count=0
-check(){
+# Счетсчик тестов которые не прошли
+errors=0
+# Счетсчик тестов которые прошли
+passed=0
+ check() {
  ./RUN.sh $1
   result=$?
-if [[ $result -eq $2 ]]; then
-        echo "'$2'" $result
-        ((count++))
+# Если полученый код после вызова RUN.sh равен желаемому
+# увеличиваем количество пройденых тестов
+if [[  $result -eq $2 ]]; then
+    echo "'$2'" $result
+    ((passed++))
+# Иначе увеличиваем количество не пройденых
 else
-        echo "'$2'" $result
-        ((error++))
+     echo "'$2'" $result
+     ((errors++))
 fi
 }
 
@@ -58,9 +63,10 @@ check "-login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-
 check "-login X -password X -role READ -resource X -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX" 1
 check "-login X -password X -role READ -resource X" 1
 
-echo $error test not passed
-echo $count test passed
+echo $errors test not passed
+echo $passed test passed
 
-if [[ $error -gt 0 ]]; then
+#  количество не пройденых тестов больше 0 возвращать код 1
+if [[ $errors -gt 0 ]]; then
 	exit 1
 fi
