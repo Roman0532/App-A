@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source ./CONFIG.sh
+ source ./CONFIG.sh
 
-java -cp "$CP" Main $@
+ java -cp "$CP" Main $@
