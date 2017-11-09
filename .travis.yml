@@ -4,3 +4,4 @@ jdk: oraclejdk8
 before_script:
  - chmod +x BUILD.sh
  - chmod +x RUN.sh
+ 

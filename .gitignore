@@ -6,3 +6,6 @@ out/
 hooks/
 objects/
 refs/
+HEAD
+description
+ config
