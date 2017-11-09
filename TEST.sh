@@ -1,24 +1,23 @@
 #!/bin/bash
-error=0
-count=0
-check() {
- ./RUN.sh $1
-  result=$?
- if [[ $result -eq $2 ]]; then
-        echo "'$2'" $result
-        ((count++))
- else 
-        echo "'$2'" $result 
-        ((error++))
-		
-		return $result
- fi
+error=0;
+check () {
+   ./RUN.sh $1
+    result=$?
+    if [[ $result -eq $2 ]]; then
+        echo "'$2'" $result  
+    else 
+         echo "'$2'" $result 
+ 	 error=1;
+    fi
 }
+git update-index 
+
+chmod +x *.sh
 
 ./BUILD.sh
 
-check "" 1
-check "-h" 1
+check "" 0
+check "-h" 0
 
 check "-login Roman -password 123" 0
 check "-login Roman -password 321" 2
@@ -41,7 +40,7 @@ check "-login Roman -password 123 -role READ -resource a.b -dateStart 2017-10-08
 check "-login Roman -password 123 -role WRITE -resource a.b -dateStart 1111111111 -dateEnd 2222222222 -volume 100" 4
 check "-login Vasya -password qwerty -role READ -resource A.B -dateStart 1111111111 -dateEnd 2222222222 -volume str100" 1
 
-check "-login XXX -password XXX" 0
+check "-login XXX -password XXX" 1
 check "-login jdoe -password XXX" 2
 check "-login jdoe -password sup3rpaZZ" 0
 check "-login xxx -password yyy" 0
@@ -60,9 +59,8 @@ check "-login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-
 check "-login X -password X -role READ -resource X -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX" 1
 check "-login X -password X -role READ -resource X" 1
 
-echo $error test not passed
-echo $count test passed
-
-if [[ $error -gt 0 ]]; then
-	exit 1
+if [[ $error -eq 1 ]]; then
+    echo 1
+else
+    echo 0
 fi

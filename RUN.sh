@@ -1,4 +1,5 @@
 #!/bin/bash
+<<<<<<< HEAD
 LIB="lib/*"
 SRC="src/"
 OUT="out/classes/"
@@ -9,5 +10,8 @@ if [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
 elif [ "$(expr substr $(uname -s) 1 10)" == "Linux" ]; then
     CP="$LIB:$JAR"
 fi
+=======
+
+source ./CONFIG.sh
 
 java -cp "$CP" Main $@
