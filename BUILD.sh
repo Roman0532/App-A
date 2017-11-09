@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./CONFIG.sh
+ source ./CONFIG.sh
 
 rm -rf $OUT
 mkdir -p $OUT
