@@ -11,14 +11,14 @@ count=0
 ((count++))
 # Если полученый код после вызова RUN.sh равен желаемому
 # увеличиваем количество пройденых тестов
-if [[ $result -eq $2 ]]; then
-    ((passed++))
-    echo $count $1 PASSED "'$2'" $result
+    if [[ $result -eq $2 ]]; then
+       ((passed++))
+       echo $count $1 PASSED "'$2'" $result
 # Иначе увеличиваем количество не пройденых
-else
-     ((errors++))
-     echo $count $1 FAILED "'$2'" $result
-fi
+    else
+       ((errors++))
+       echo $count $1 FAILED "'$2'" $result
+    fi
 }
 
 ./BUILD.sh
@@ -72,5 +72,5 @@ echo $passed test passed
 
 #  количество не пройденых тестов больше 0 возвращать код 1
 if [[ $errors -gt 0 ]]; then
-	exit 1
+    exit 1
 fi
