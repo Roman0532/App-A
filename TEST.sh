@@ -23,7 +23,7 @@ count=0
 
 ./BUILD.sh
 
-check "" 1
+check "" 0
 check "-h" 0
 
 check "-login Roman -password 123" 0
@@ -47,7 +47,7 @@ check "-login Roman -password 123 -role READ -resource a.b -dateStart 2017-10-08
 check "-login Roman -password 123 -role WRITE -resource a.b -dateStart 1111111111 -dateEnd 2222222222 -volume 100" 4
 check "-login Vasya -password qwerty -role READ -resource A.B -dateStart 1111111111 -dateEnd 2222222222 -volume str100" 1
 
-check "-login XXX -password XXX" 0
+check "-login XXX -password XXX" 1
 check "-login jdoe -password XXX" 2
 check "-login jdoe -password sup3rpaZZ" 0
 check "-login xxx -password yyy" 0
