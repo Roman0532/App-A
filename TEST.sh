@@ -1,21 +1,24 @@
 #!/bin/bash
-# Счетсчик тестов которые не прошли
+# Счетчик тестов которые не прошли
 errors=0
-# Счетсчик тестов которые прошли
+# Счетчик тестов которые прошли
 passed=0
-check () {
+# Общий счетчик тестов
+count=0
+ check () {
  ./RUN.sh $1
   result=$?
+((count++))
 # Если полученый код после вызова RUN.sh равен желаемому
 # увеличиваем количество пройденых тестов
-    if [[  $result -eq $2 ]]; then
-        ((passed++))
-        echo $passed $1 PASSED "'$2'" $result
+if [[ $result -eq $2 ]]; then
+    ((passed++))
+    echo $count $1 PASSED "'$2'" $result
 # Иначе увеличиваем количество не пройденых
-    else
-        ((errors++))
-        echo $errors $1 FAILED "'$2'" $result
-    fi
+else
+     ((errors++))
+     echo $count $1 FAILED "'$2'" $result
+fi
 }
 
 ./BUILD.sh
