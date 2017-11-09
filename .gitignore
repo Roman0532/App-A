@@ -2,3 +2,7 @@
 *.iml
 out/
 *.class
+*.sample
+hooks/
+objects/
+refs/
