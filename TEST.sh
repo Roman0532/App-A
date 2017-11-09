@@ -3,19 +3,20 @@
 errors=0
 # Счетсчик тестов которые прошли
 passed=0
- check () {
+
+check () {
  ./RUN.sh $1
   result=$?
 # Если полученый код после вызова RUN.sh равен желаемому
 # увеличиваем количество пройденых тестов
-if [[  $result -eq $2 ]]; then
-    echo "'$2'" $result
-    ((passed++))
+    if [[  $result -eq $2 ]]; then
+        echo "'$2'" $result
+        ((passed++))
 # Иначе увеличиваем количество не пройденых
-else
-     echo "'$2'" $result
-     ((errors++))
-fi
+    else
+        echo "'$2'" $result
+        ((errors++))
+   fi
 }
 
 ./BUILD.sh
