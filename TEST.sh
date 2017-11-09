@@ -10,7 +10,7 @@ if [[ $result -eq $2 ]]; then
 else
         echo "'$2'" $result
         ((error++))
- fi
+fi
 }
 
 ./BUILD.sh

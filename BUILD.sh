@@ -1,5 +1,4 @@
 #!/bin/bash
-
 source ./CONFIG.sh
 
 rm -rf $OUT
