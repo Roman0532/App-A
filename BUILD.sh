@@ -4,9 +4,9 @@ source ./CONFIG.sh
 rm -rf $OUT
 mkdir -p $OUT
 
-# Компиляция проекта
+ # Компиляция проекта
 find . -name "*.java" | xargs javac -sourcepath "SRC" -classpath "$CP"  -d "$OUT"
 
-# Создание jar файла
+ # Создание jar файла
 jar -cfe $JAR Main -C $OUT .
 

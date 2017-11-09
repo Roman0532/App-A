@@ -15,8 +15,8 @@ fi
 
 ./BUILD.sh
 
-check "" 1
-check "-h" 1
+check "" 0
+check "-h" 0
 
 check "-login Roman -password 123" 0
 check "-login Roman -password 321" 2
