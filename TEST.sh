@@ -5,20 +5,20 @@ errors=0
 passed=0
 # Общий счетчик тестов
 count=0
- check () {
+check () {
  ./RUN.sh $1
   result=$?
+  ((count++))
 # Если полученый код после вызова RUN.sh равен желаемому
 # увеличиваем количество пройденых тестов
-((count++))
-if [[ $result -eq $2 ]]; then
-    ((passed++))
-    echo $count $1 PASSED "'$2'" $result
+    if [[ $result -eq $2 ]]; then
+       ((passed++))
+       echo $count  PASSED $1 "'$2'" $result
 # Иначе увеличиваем количество не пройденых
-else
-     ((errors++))
-     echo $count $1 FAILED "'$2'" $result
-fi
+    else
+       ((errors++))
+       echo $count FAILED $1  "'$2'" $result
+    fi
 }
 
 ./BUILD.sh
@@ -47,7 +47,7 @@ check "-login Roman -password 123 -role READ -resource a.b -dateStart 2017-10-08
 check "-login Roman -password 123 -role WRITE -resource a.b -dateStart 1111111111 -dateEnd 2222222222 -volume 100" 4
 check "-login Vasya -password qwerty -role READ -resource A.B -dateStart 1111111111 -dateEnd 2222222222 -volume str100" 1
 
-check "-login XXX -password XXX" 0
+check "-login XXX -password XXX" 1
 check "-login jdoe -password XXX" 2
 check "-login jdoe -password sup3rpaZZ" 0
 check "-login xxx -password yyy" 0
@@ -72,5 +72,5 @@ echo $passed test passed
 
 #  количество не пройденых тестов больше 0 возвращать код 1
 if [[ $errors -gt 0 ]]; then
-	exit 1
+    exit 1
 fi
