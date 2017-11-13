@@ -51,7 +51,7 @@
 
 -3.2 Создать файл миграции через который будем вставлять тестовые данные в БД
 
-* Поместить его в resource/db/migration/V1__Create_mg.sql  
+* Поместить его в resource/db/migration/V2__Create_mg.sql  
 
 #### 4. Добавить слой DAO
 
