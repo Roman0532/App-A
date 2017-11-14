@@ -2,10 +2,11 @@ import domain.Accouning;
 import domain.Roles;
 import domain.User;
 import domain.UserRes;
-import org.apache.commons.cli.ParseException;
+import recource.db.migration.Connection;
 import service.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Main {
@@ -44,7 +45,15 @@ public class Main {
         return userRes;
     }
 
-    public static void main(String[] args) throws ParseException, NoSuchAlgorithmException {
+    public static void main(String[] args) throws ParseException, NoSuchAlgorithmException, org.apache.commons.cli.ParseException, SQLException {
+
+        java.sql.Connection dbConn = Connection.getDbConnection();
+
+        if (dbConn != null) {
+            System.out.println("Соедененился");
+            dbConn.close();
+        }
+
         ArrayList<Accouning> data = new ArrayList<>();
         ArrayList<User> collectionUsers = storageCollectionsUsers();
         ArrayList<UserRes> collectionUserRes = storageCollectionsUserRes();
@@ -71,5 +80,8 @@ public class Main {
                     userData.getDataEnd(), userData.getVolume(), userData, data);
         }
 
+    }
+
+    private static class ParseException extends Exception {
     }
 }
