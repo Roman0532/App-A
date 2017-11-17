@@ -18,7 +18,7 @@
 
 <a href="https://docs.google.com/document/d/1iRLP4Ny7FlIds6QWtQvfYvHsetl9Qgc6cYLETVAGqUY/edit">Список требований №1</a>
 
-<a href="https://github.com/Roman0532/App-A/blob/master/Roadmap1.md">План работы  №1</a>
+<a href="Roadmap1.md">План работы  №1</a>
 
 #### Список требований для 2 этапа
 
