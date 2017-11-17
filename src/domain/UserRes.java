@@ -1,8 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-
-public class UserRes extends ArrayList<UserRes> {
+public class UserRes {
     private Long id;
     private Long userId;
     private String path;

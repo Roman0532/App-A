@@ -28,19 +28,10 @@ public class PasswordService {
         BigInteger bigInt = new BigInteger(1, digest);
         //Перевод в 16 формат
         StringBuilder md5Hex = new StringBuilder(bigInt.toString(16));
-
         while (md5Hex.length() < 32) {
             md5Hex.insert(0, "0");
         }
         return md5Hex.toString();
-    }
-
-    /**
-     * Хэш пароля + соль
-     */
-    private static String getHash(String password,
-                                  String salt) throws NoSuchAlgorithmException {
-        return generateHashPassword(generateHashPassword((password)) + salt);
     }
 
     /**
@@ -62,8 +53,18 @@ public class PasswordService {
     /**
      * Проверка совпадает ли переданный хэшированный пароль с паролем пользователя
      */
+
     static boolean isRightPass(String password, String userPassword,
                                String salt) throws NoSuchAlgorithmException {
-        return PasswordService.getHash(password, salt).equals(PasswordService.getHash(userPassword, salt));
+        return getHash(password, salt).equals(userPassword);
     }
+
+    /**
+     * Хэш пароля + соль
+     */
+    private static String getHash(String password,
+                                  String salt) throws NoSuchAlgorithmException {
+        return generateHashPassword(generateHashPassword(password) + salt);
+    }
+
 }

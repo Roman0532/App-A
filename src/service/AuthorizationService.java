@@ -1,31 +1,38 @@
 package service;
 
+import dao.AuthorizationDao;
 import domain.Roles;
-import domain.UserRes;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.sql.SQLException;
 
 public class AuthorizationService {
+    private static final Logger logger = LogManager.getLogger(AuthorizationService.class);
+
     /**
      * Авторизация
      */
-    public static void authorize(String role, String resource,
-                                 ArrayList<UserRes> userRes) throws NoSuchAlgorithmException {
+    public static int authorize(String login, String role, String resource)
+            throws NoSuchAlgorithmException, SQLException {
         if (!Roles.isCheckValidRole(role)) {
-            System.exit(3);
+            logger.error("Роль " + role + " не существует");
+            return 3;
         }
 
-        if (!isFindResource(role, resource, userRes)) {
-            System.exit(4);
+        if (!AuthorizationDao.isFindRes(login, resource, role)) {
+            logger.error("Пользователь " + login + " не имеет доступ к ресурсу " + resource);
+            return 4;
         }
+        return 0;
     }
 
     /**
-     * Поиск дочернего ресурса
+     * Проверка дочерних ресурсов
      */
-    private static boolean isCheckChildPaths(String resourceUser,
-                                             String suppliedResource) {
+    public static boolean isCheckChildPaths(String resourceUser,
+                                            String suppliedResource) {
         //Разбитие строк на узлы
         String[] resUser = resourceUser.split("\\.");
         String[] resSupplied = suppliedResource.split("\\.");
@@ -42,20 +49,5 @@ public class AuthorizationService {
             }
         }
         return true;
-    }
-
-    /**
-     * Проверка ресурсов
-     */
-    private static boolean isFindResource(String role, String resource,
-                                          ArrayList<UserRes> userRes) {
-            for (UserRes userRe : userRes) {
-                //Проверка на роль и поиск дочерних ресурсов
-                if (role.equals(userRe.getRoleName())
-                        && isCheckChildPaths(userRe.getPath(), resource)) {
-                    return true;
-                }
-            }
-        return false;
     }
 }

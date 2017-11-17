@@ -1,25 +1,30 @@
 package service;
 
-import domain.Accouning;
+import dao.AccountingDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class AccountingService {
+    private static final Logger logger = LogManager.getLogger(AccountingService.class);
+
     /**
      * Аккаунтинг
      */
-    public static void accounting(String dateStart, String dateEnd, String volume,
-                                  UserData userData, ArrayList<Accouning> data) throws NoSuchAlgorithmException {
+    public static int accounting(String dateStart, String dateEnd, String volume,
+                                 UserData userData) throws NoSuchAlgorithmException, SQLException {
         //Проверки валидности дат и обьема
         if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
                 || !isCheckValue(volume)) {
-            System.exit(5);
+            logger.error("Невалидно" + " " + volume + " " + dateStart + "или " + dateEnd);
+            return 5;
         } else {
-            data.add(new Accouning(userData.getLogin(), userData.getResource(),
-                    dateStart, dateEnd, volume));
+            AccountingDao.addAccounting(userData);
         }
+        return 0;
     }
 
     /**
@@ -37,6 +42,7 @@ public class AccountingService {
             LocalDate.parse(date);
             return true;
         } catch (Exception e) {
+            logger.error("Дата не может быть проверена" + e);
             return false;
         }
     }

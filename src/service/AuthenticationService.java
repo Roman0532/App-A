@@ -1,50 +1,39 @@
 package service;
 
-import domain.User;
+import dao.AuthenticationDao;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.sql.SQLException;
 
 public class AuthenticationService {
+    private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
 
     /**
      * Аутентификация
      */
-    public static void authenticate(String login, String password,
-                                    ArrayList<User> users) throws NoSuchAlgorithmException {
-        if (!isCheckLogin(login, users)) {
-            System.exit(1);
+    public static int authenticate(String login, String password)
+            throws NoSuchAlgorithmException, SQLException {
+        if (AuthenticationDao.findLogin(login) == null) {
+            logger.error("Логин " + login + " не найден");
+            return 1;
         }
 
-        if (isCheckPassword(login, password, users)) {
-            System.exit(2);
+        if (isCheckPassword(login, password)) {
+            logger.error("Пароль " + password + " не верный для пользователя " + login);
+            return 2;
         }
+        return 0;
     }
 
     /**
-     * Проверка существования логина
+     * Проверка пароля
      */
-    private static boolean isCheckLogin(String login, ArrayList<User> users) {
-        for (User user : users) {
-            if (login.equals(user.getLogin())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Проверка Пароля
-     */
-    private static boolean isCheckPassword(String login, String password,
-                                           ArrayList<User> users) throws NoSuchAlgorithmException {
-        for (User user : users) {
-            //Проверка совпадает ли пароль с хранящимся в коллекции
-            if ((login.equals(user.getLogin()))
-                    && !PasswordService.isRightPass(password, user.getPassword(), user.getSalt())) {
-                return true;
-            }
-        }
-        return false;
+    private static boolean isCheckPassword(String login, String password)
+            throws NoSuchAlgorithmException, SQLException {
+        String userPassword = AuthenticationDao.findPassword(login);
+        String userSalt = AuthenticationDao.findSalt(login);
+        return (AuthenticationDao.findLogin(login) != null && !PasswordService.isRightPass(password, userPassword, userSalt));
     }
 }

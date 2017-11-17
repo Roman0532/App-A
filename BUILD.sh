@@ -13,6 +13,7 @@ mkdir -p $OUT
 # В данном случае передает то что нашел find
 find . -name "*.java" | xargs javac -sourcepath "$SRC" -classpath "$LIB"  -d "$OUT"
 
+cp -r $RES $OUT
 # Создание jar файла
 jar -cfe $JAR Main -C $OUT .
 
