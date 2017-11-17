@@ -24,7 +24,7 @@
 
 <a href="https://docs.google.com/document/d/16bcm3DMuo7p__102sDtBn3YqOk5ezetShYxHvH62Ec0/edit">Список требований №2</a>
 
-<a href="https://github.com/Roman0532/App-A/blob/master/Roadmap2.md">План работы №2 </a>
+<a href="Roadmap2.md">План работы №2 </a>
 
 ## Инструкция по сборке и запуску приложения
 
