@@ -8,32 +8,32 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class AuthenticationService {
-    private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
+    private static final Logger logger = LogManager.getLogger(AuthenticationService.class.getName());
+    private AuthenticationDao authenticationDao;
+    private PasswordService passwordService = new PasswordService();
+
+    public AuthenticationService(AuthenticationDao authenticationDao) {
+        this.authenticationDao = authenticationDao;
+    }
+
+    private AuthenticationDao getAuthenticationDao() {
+        return authenticationDao;
+    }
 
     /**
      * Аутентификация
      */
-    public static int authenticate(String login, String password)
+    public int authenticate(String login, String password)
             throws NoSuchAlgorithmException, SQLException {
-        if (AuthenticationDao.findLogin(login) == null) {
-            logger.error("Логин " + login + " не найден");
+        if (getAuthenticationDao().findLogin(login) == null) {
+            logger.error("Логин {} не найден", login);
             return 1;
-        }
-
-        if (isCheckPassword(login, password)) {
-            logger.error("Пароль " + password + " не верный для пользователя " + login);
+        } else if (!passwordService.isRightPass(password,
+                getAuthenticationDao().findPassword(login), getAuthenticationDao().findSalt(login))) {
+            logger.error("Пароль {} не верный для пользователя {}", password, login);
             return 2;
+        } else {
+            return 0;
         }
-        return 0;
-    }
-
-    /**
-     * Проверка пароля
-     */
-    private static boolean isCheckPassword(String login, String password)
-            throws NoSuchAlgorithmException, SQLException {
-        String userPassword = AuthenticationDao.findPassword(login);
-        String userSalt = AuthenticationDao.findSalt(login);
-        return (AuthenticationDao.findLogin(login) != null && !PasswordService.isRightPass(password, userPassword, userSalt));
     }
 }

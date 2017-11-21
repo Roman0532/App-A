@@ -9,45 +9,32 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class AuthorizationService {
-    private static final Logger logger = LogManager.getLogger(AuthorizationService.class);
+    private static final Logger logger = LogManager.getLogger(AuthorizationService.class.getName());
+    private AuthorizationDao authorizationDao;
+
+    public AuthorizationService(AuthorizationDao authorizationDao) {
+        this.authorizationDao = authorizationDao;
+    }
+
+    private AuthorizationDao getAuthorizationDao() {
+        return authorizationDao;
+    }
 
     /**
      * Авторизация
      */
-    public static int authorize(String login, String role, String resource)
+    public int authorize(String login, String role, String resource)
             throws NoSuchAlgorithmException, SQLException {
         if (!Roles.isCheckValidRole(role)) {
-            logger.error("Роль " + role + " не существует");
+            logger.error("Роль {} не существует", role);
             return 3;
         }
 
-        if (!AuthorizationDao.isFindRes(login, resource, role)) {
-            logger.error("Пользователь " + login + " не имеет доступ к ресурсу " + resource);
+        if (getAuthorizationDao().isFindRes(login, resource, role) == null) {
+            logger.error("Пользователь {} не имеет доступ к ресурсу {}", login, resource);
             return 4;
+        } else {
+            return 0;
         }
-        return 0;
-    }
-
-    /**
-     * Проверка дочерних ресурсов
-     */
-    public static boolean isCheckChildPaths(String resourceUser,
-                                            String suppliedResource) {
-        //Разбитие строк на узлы
-        String[] resUser = resourceUser.split("\\.");
-        String[] resSupplied = suppliedResource.split("\\.");
-
-        //Если длина переданного ресурса меньше длины ресурса пользователя возвращать false
-        if (resSupplied.length < resUser.length) {
-            return false;
-        }
-
-        //Если совпадений не найдено возвращать false
-        for (int i = 0; i < resUser.length; i++) {
-            if (!resUser[i].equals(resSupplied[i])) {
-                return false;
-            }
-        }
-        return true;
     }
 }

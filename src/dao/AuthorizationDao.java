@@ -3,51 +3,50 @@ package dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service.AuthorizationService;
 
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AuthorizationDao {
-    private static Connection dbConn;
-    private static final Logger logger = LogManager.getLogger(AuthorizationDao.class);
+    private static final Logger logger = LogManager.getLogger(AuthorizationDao.class.getName());
+    private Connection dbConn;
+    private AuthenticationDao authenticationDao;
 
-    public AuthorizationDao(Connection dbConn) {
-        AuthorizationDao.dbConn = dbConn;
+    public AuthorizationDao(Connection dbConn, AuthenticationDao authenticationDao) {
+        this.authenticationDao = authenticationDao;
+        if (dbConn != null) {
+            this.dbConn = dbConn;
+        }
     }
 
-    private static Connection getDbConn() {
+    private Connection getDbConn() {
         return dbConn;
     }
 
     /**
      * Поиск PATH в БД
      */
-    public static boolean isFindRes(String login, String resource, String role) throws NoSuchAlgorithmException, SQLException {
-        PreparedStatement prsmt = null;
-        try {
-            prsmt = getDbConn().prepareStatement("SELECT PATH FROM USER_RES WHERE USER_ID = ? AND ROLE =?");
-            prsmt.setInt(1, AuthenticationDao.findId(login));
+    public String isFindRes(String login, String resource, String role) {
+        try (PreparedStatement prsmt = getDbConn().prepareStatement
+                ("SELECT PATH FROM USER_RES WHERE USER_ID = ? AND ROLE = ?  AND PATH||'.'= LEFT(?||'.',length(PATH)+1)")) {
+            prsmt.setInt(1, authenticationDao.findId(login));
             prsmt.setString(2, role);
+            prsmt.setString(3, resource);
 
-            logger.debug("Выполняется поиск переданного ресурса - " + resource + " пользователя " + login + " в базе");
+            logger.debug("Выполняется поиск переданного ресурса - {} пользователя {} в БД", resource, login);
 
             ResultSet res = prsmt.executeQuery();
-            while (res.next()) {
-                if (AuthorizationService.isCheckChildPaths(res.getString("PATH"), resource)) {
-                    return true;
-                }
+            if (res.next()) {
+                return res.getString("PATH");
+            } else {
+                logger.debug("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                return null;
             }
         } catch (SQLException e) {
-            logger.error("Запрос не может быть выполнен " + e);
-        } finally {
-            if (prsmt != null) {
-                prsmt.close();
-            }
+            logger.error("В методе isFindRes произошла ошибка бд ", e);
+            return null;
         }
-        return false;
     }
 }

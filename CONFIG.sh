@@ -5,7 +5,8 @@ LIB="lib/*"
 RES="src/resources/*"
 # Папка с исходниками
 SRC="src"
-
+export login="sa"
+export password=""
 # Папка в которой лежат откомпилированные классы
 OUT="out/classes"
 

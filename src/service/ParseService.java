@@ -4,7 +4,7 @@ import org.apache.commons.cli.*;
 
 public class ParseService {
 
-    private static Options option = new Options();
+    private Options option = new Options();
 
     /**
      * Добавление опций
@@ -23,7 +23,7 @@ public class ParseService {
 
     public UserData parse(String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(ParseService.option, args);
+        CommandLine cmd = parser.parse(option, args);
         UserData userData = new UserData();
 
         //Записываем аргументы через set методы в класс userData//
@@ -41,7 +41,7 @@ public class ParseService {
     /**
      * Справка
      */
-    public static void printHelp() {
+    public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("Help", option);
     }

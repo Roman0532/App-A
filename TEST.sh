@@ -21,7 +21,7 @@ check () {
     fi
 }
 
-./BUILD.sh
+./BUILD.sh LOGIN PASSWORD
 
 check "" 0
 check "-h" 0
