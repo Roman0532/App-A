@@ -3,9 +3,11 @@ package service;
 import dao.AuthorizationDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.flywaydb.core.Flyway;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -16,7 +18,7 @@ public class ConnectionService {
     /**
      * Подключение к БД
      */
-    public java.sql.Connection getDbConnection() {
+    public Connection getDbConnection() {
         Properties property = new Properties();
         try {
             property.load(new FileInputStream("src/resources/config.properties"));
@@ -36,5 +38,13 @@ public class ConnectionService {
             logger.error("Подключение не удалось ", e);
             return null;
         }
+    }
+
+    public void DbMigration(){
+        Flyway flyway = new Flyway();
+
+        flyway.setDataSource("jdbc:h2:./src/resources/db/migration/aaa", "sa", "");
+
+        flyway.migrate();
     }
 }

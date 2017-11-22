@@ -5,9 +5,6 @@ import domain.Roles;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-
 public class AuthorizationService {
     private static final Logger logger = LogManager.getLogger(AuthorizationService.class.getName());
     private AuthorizationDao authorizationDao;
@@ -23,8 +20,7 @@ public class AuthorizationService {
     /**
      * Авторизация
      */
-    public int authorize(String login, String role, String resource)
-            throws NoSuchAlgorithmException, SQLException {
+    public int authorize(String login, String role, String resource) {
         if (!Roles.isCheckValidRole(role)) {
             logger.error("Роль {} не существует", role);
             return 3;

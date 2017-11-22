@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 
 public class AuthenticationService {
     private static final Logger logger = LogManager.getLogger(AuthenticationService.class.getName());
@@ -24,7 +23,7 @@ public class AuthenticationService {
      * Аутентификация
      */
     public int authenticate(String login, String password)
-            throws NoSuchAlgorithmException, SQLException {
+            throws NoSuchAlgorithmException {
         if (getAuthenticationDao().findLogin(login) == null) {
             logger.error("Логин {} не найден", login);
             return 1;

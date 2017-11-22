@@ -4,8 +4,6 @@ import dao.AccountingDao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class AccountingService {
@@ -21,7 +19,7 @@ public class AccountingService {
      * Аккаунтинг
      */
     public int accounting(String dateStart, String dateEnd, String volume,
-                          UserData userData) throws NoSuchAlgorithmException, SQLException {
+                          UserData userData){
         //Проверки валидности дат и обьема
         if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
                 || !isCheckValue(volume)) {
