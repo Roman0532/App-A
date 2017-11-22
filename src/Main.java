@@ -25,7 +25,7 @@ public class Main {
         ConnectionService connectionService = new ConnectionService();
 
         logger.debug("Выполнение миграций");
-        connectionService.DbMigration();
+        connectionService.dbMigration();
 
         try (Connection dbConn = connectionService.getDbConnection()) {
             logger.debug("---Установка соеденения---");
