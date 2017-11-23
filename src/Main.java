@@ -13,7 +13,7 @@ public class Main {
 
     private static final Logger logger = LogManager.getLogger(Main.class);
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, org.apache.commons.cli.ParseException {
+    public static void main(String[] args) throws NoSuchAlgorithmException, org.apache.commons.cli.ParseException, SQLException {
         int exitCode = 0;
 
         logger.debug("Приложение App-A запущено");
@@ -29,10 +29,6 @@ public class Main {
 
         try (Connection dbConn = connectionService.getDbConnection()) {
             logger.debug("---Установка соеденения---");
-            if (dbConn == null) {
-                logger.error("Соеденение не удалось");
-                System.exit(255);
-            }
             logger.debug("Соеденение прошло успешно");
 
             AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
@@ -70,8 +66,9 @@ public class Main {
                     exitCode = accountingService.accounting(userData.getDataStart(),
                             userData.getDataEnd(), userData.getVolume(), userData);
             }
-        } catch (SQLException e) {
-            logger.error("Произошка ошибка БД", e);
+        } catch (DbException e) {
+            logger.error("Ошибка БД", e);
+            System.exit(255);
         }
         System.exit(exitCode);
     }

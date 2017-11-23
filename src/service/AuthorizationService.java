@@ -17,7 +17,7 @@ public class AuthorizationService {
     /**
      * Авторизация
      */
-    public int authorize(String login, String role, String resource) {
+    public int authorize(String login, String role, String resource) throws DbException {
         if (!Roles.isCheckValidRole(role)) {
             logger.error("Роль {} не существует", role);
             return 3;

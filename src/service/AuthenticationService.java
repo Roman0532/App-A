@@ -19,7 +19,7 @@ public class AuthenticationService {
      * Аутентификация
      */
     public int authenticate(String login, String password)
-            throws NoSuchAlgorithmException{
+            throws NoSuchAlgorithmException, DbException {
         if (authenticationDao.findLogin(login) == null) {
             logger.error("Логин {} не найден", login);
             return 1;

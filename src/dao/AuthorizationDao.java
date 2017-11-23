@@ -3,6 +3,7 @@ package dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import service.DbException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +17,13 @@ public class AuthorizationDao {
 
     public AuthorizationDao(Connection dbConn, AuthenticationDao authenticationDao) {
         this.authenticationDao = authenticationDao;
-            this.dbConn = dbConn;
+        this.dbConn = dbConn;
     }
 
     /**
      * Поиск PATH в БД
      */
-    public String isFindRes(String login, String resource, String role){
+    public String isFindRes(String login, String resource, String role) throws DbException {
         try (PreparedStatement prsmt = dbConn.prepareStatement
                 ("SELECT PATH FROM USER_RES WHERE USER_ID = ? AND ROLE = ?  AND PATH||'.'= LEFT(?||'.',length(PATH)+1)")) {
             prsmt.setInt(1, authenticationDao.findId(login));
@@ -40,8 +41,7 @@ public class AuthorizationDao {
             }
         } catch (SQLException e) {
             logger.error("В методе isFindRes произошла ошибка бд ", e);
-           // throw new DbException("В методе isFindRes произошла ошибка бд", e);
-            return null;
+            throw new DbException("В методе isFindRes произошла ошибка бд", e);
         }
     }
 }

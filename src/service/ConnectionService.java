@@ -18,7 +18,7 @@ public class ConnectionService {
     /**
      * Подключение к БД
      */
-    public Connection getDbConnection() {
+    public Connection getDbConnection() throws DbException {
         Properties property = new Properties();
         try {
             property.load(new FileInputStream("src/resources/config.properties"));
@@ -36,8 +36,7 @@ public class ConnectionService {
             return DriverManager.getConnection(property.getProperty("url"), System.getenv("login"), System.getenv("password"));
         } catch (SQLException e) {
             logger.error("Подключение не удалось ", e);
-           // throw new DbException("Подключение не удалось",e);
-            return null;
+            throw new DbException("Подключение не удалось", e);
         }
     }
 
@@ -47,7 +46,6 @@ public class ConnectionService {
             property.load(new FileInputStream("src/resources/config.properties"));
         } catch (IOException e) {
             logger.error("Файл не найден ", e);
-          //  throw new IOException("Файл не найден",e);
         }
 
         Flyway flyway = new Flyway();

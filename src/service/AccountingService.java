@@ -18,7 +18,7 @@ public class AccountingService {
      * Аккаунтинг
      */
     public int accounting(String dateStart, String dateEnd, String volume,
-                          UserData userData){
+                          UserData userData) throws DbException {
         //Проверки валидности дат и обьема
         if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
                 || !isCheckValue(volume)) {
