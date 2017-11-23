@@ -26,6 +26,12 @@
 
 [План работы  №2](Roadmap2.md)
 
+#### Список требований для 3 этапа
+
+<a href="https://docs.google.com/document/d/19TgIK3O9X2VsB9FsjxifAdg3XclFzyJ9JdsWUaCv-RI/edit?usp=sharing">Список требований №3</a>
+
+[План работы  №3](Roadmap3.md)
+
 ## Инструкция по сборке и запуску приложения
 
      Для сборки проекта используйте команду ./BUILD.sh
