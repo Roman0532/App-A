@@ -15,23 +15,20 @@ public class AuthenticationService {
         this.authenticationDao = authenticationDao;
     }
 
-    private AuthenticationDao getAuthenticationDao() {
-        return authenticationDao;
-    }
-
     /**
      * Аутентификация
      */
     public int authenticate(String login, String password)
-            throws NoSuchAlgorithmException {
-        if (getAuthenticationDao().findLogin(login) == null) {
+            throws NoSuchAlgorithmException{
+        if (authenticationDao.findLogin(login) == null) {
             logger.error("Логин {} не найден", login);
             return 1;
         } else if (!passwordService.isRightPass(password,
-                getAuthenticationDao().findPassword(login), getAuthenticationDao().findSalt(login))) {
+                authenticationDao.findPassword(login), authenticationDao.findSalt(login))) {
             logger.error("Пароль {} не верный для пользователя {}", password, login);
             return 2;
         } else {
+            logger.debug("Пароль {} верный для пользователя {}", password, login);
             return 0;
         }
     }

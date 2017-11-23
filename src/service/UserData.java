@@ -66,21 +66,21 @@ public class UserData {
     }
 
     /**
-     * Нужна ли аутентификация
+     * Нужно ли выполнить аутентификацию
      */
     public boolean isAuthentication() {
         return this.login != null && this.password != null;
     }
 
     /**
-     * Нужна ли авторизация
+     * Нужно ли выполнить авторизация
      */
     public boolean isAuthorization() {
         return isAuthentication() && this.resource != null && this.role != null;
     }
 
     /**
-     * Нужен ли аккаунтинг
+     * Нужно ли выполнить аккаунтинг
      */
     public boolean isAccounting() {
         return isAuthorization() && this.dataStart != null

@@ -1,6 +1,6 @@
 package domain;
 
-public class UserRes {
+public class UserRes{
     private Long id;
     private Long userId;
     private String path;

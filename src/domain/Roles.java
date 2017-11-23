@@ -9,7 +9,7 @@ public enum Roles {
      * Проверка валидности роли
      */
     public static boolean isCheckValidRole(String role) {
-        for (Roles roles : values()) {
+        for (Roles roles : values()){
             if (roles.name().equals(role)) {
                 return true;
             }

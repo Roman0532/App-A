@@ -13,14 +13,7 @@ public class AuthenticationDao {
     private Connection dbConn;
 
     public AuthenticationDao(Connection dbConn) {
-        if (dbConn != null) {
             this.dbConn = dbConn;
-        }
-    }
-
-    private Connection getDbConn() {
-        return dbConn;
-
     }
 
     /**
@@ -29,7 +22,7 @@ public class AuthenticationDao {
     int findId(String login) {
         logger.debug("Выполняется поиск id пользователя - {} в базе", login);
 
-        try (PreparedStatement pstmt = getDbConn().prepareStatement("SELECT ID FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT ID FROM USER WHERE LOGIN = ?")) {
             pstmt.setString(1, login);
             ResultSet res = pstmt.executeQuery();
             if (res.next()) {
@@ -40,7 +33,7 @@ public class AuthenticationDao {
                 return 1;
             }
         } catch (SQLException e) {
-            logger.error(" В методе findID произошла ошибка бд", e);
+            //throw new DbException("Произошла ошибка бд",e);
             return 1;
         }
     }
@@ -51,7 +44,7 @@ public class AuthenticationDao {
     public String findLogin(String login) {
         logger.debug("Выполняется поиск перданного логина - {} в базе", login);
 
-        try (PreparedStatement pstmt = getDbConn().prepareStatement("SELECT LOGIN FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE LOGIN = ?")) {
             pstmt.setString(1, login);
             ResultSet res = pstmt.executeQuery();
             if (res.next()) {
@@ -63,17 +56,19 @@ public class AuthenticationDao {
             }
         } catch (SQLException e) {
             logger.error("В методе findLogin произошла ошибка бд", e);
+            //throw new DbException("В методе findLogin произошла ошибка бд", e);
             return null;
         }
     }
 
+
     /**
      * Поиск PASSWORD в БД
      */
-    public String findPassword(String login) {
+    public String findPassword(String login){
         logger.debug("Выполняется поиск пароля пользователя- {} в базе", login);
 
-        try (PreparedStatement prsmt = getDbConn().prepareStatement("SELECT PASSWORD FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT PASSWORD FROM USER WHERE LOGIN = ?")) {
             prsmt.setString(1, login);
             ResultSet res = prsmt.executeQuery();
             if (res.next()) {
@@ -85,6 +80,7 @@ public class AuthenticationDao {
             }
         } catch (SQLException e) {
             logger.error(" В методе findPassword произошла ошибка бд", e);
+           // throw new DbException("В методе findPassword произошла ошибка бд", e);
             return null;
         }
     }
@@ -94,7 +90,7 @@ public class AuthenticationDao {
      */
     public String findSalt(String login) {
         logger.debug("Выполняется поиск соли пользователя - {} в базе", login);
-        try (PreparedStatement prsmt = getDbConn().prepareStatement("SELECT SALT FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT SALT FROM USER WHERE LOGIN = ?")) {
             prsmt.setString(1, login);
             ResultSet res = prsmt.executeQuery();
             if (res.next()) {
@@ -106,6 +102,7 @@ public class AuthenticationDao {
             }
         } catch (SQLException e) {
             logger.error(" В методе findSalt произошла ошибка бд", e);
+            //throw new DbException("В методе findPassword произошла ошибка бд", e);
             return null;
         }
     }

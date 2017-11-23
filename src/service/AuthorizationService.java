@@ -13,9 +13,6 @@ public class AuthorizationService {
         this.authorizationDao = authorizationDao;
     }
 
-    private AuthorizationDao getAuthorizationDao() {
-        return authorizationDao;
-    }
 
     /**
      * Авторизация
@@ -26,10 +23,11 @@ public class AuthorizationService {
             return 3;
         }
 
-        if (getAuthorizationDao().isFindRes(login, resource, role) == null) {
+        if (authorizationDao.isFindRes(login, resource, role) == null) {
             logger.error("Пользователь {} не имеет доступ к ресурсу {}", login, resource);
             return 4;
         } else {
+            logger.error("Пользователь {} имеет доступ к ресурсу {}", login, resource);
             return 0;
         }
     }

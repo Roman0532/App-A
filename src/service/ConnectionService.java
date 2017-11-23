@@ -36,14 +36,23 @@ public class ConnectionService {
             return DriverManager.getConnection(property.getProperty("url"), System.getenv("login"), System.getenv("password"));
         } catch (SQLException e) {
             logger.error("Подключение не удалось ", e);
+           // throw new DbException("Подключение не удалось",e);
             return null;
         }
     }
 
-    public void DbMigration(){
+    public void dbMigration() {
+        Properties property = new Properties();
+        try {
+            property.load(new FileInputStream("src/resources/config.properties"));
+        } catch (IOException e) {
+            logger.error("Файл не найден ", e);
+          //  throw new IOException("Файл не найден",e);
+        }
+
         Flyway flyway = new Flyway();
 
-        flyway.setDataSource("jdbc:h2:./src/resources/db/migration/aaa", "sa", "");
+        flyway.setDataSource(property.getProperty("url"), "sa", "");
 
         flyway.migrate();
     }

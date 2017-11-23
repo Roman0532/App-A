@@ -12,7 +12,7 @@
 
 -3.2.Создать коллекцию пользователей и добавить тестовые данные в коллекцию. (3 мин)
 
-* id = 1 login = roman ,   password = 123
+* id = 1 login = roman ,  password = 123
 
 * id = 2 login = roman1 , password = 000
 

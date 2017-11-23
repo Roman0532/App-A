@@ -13,13 +13,7 @@ public class AccountingDao {
     private Connection dbConn;
 
     public AccountingDao(Connection dbConn) {
-        if (dbConn != null) {
             this.dbConn = dbConn;
-        }
-    }
-
-    private Connection getDbConn() {
-        return dbConn;
     }
 
     /**
@@ -27,7 +21,7 @@ public class AccountingDao {
      */
     public void addAccounting(UserData userData) {
         logger.debug("Пользователь {} успешно прошел аккаунтинг выполняется добавление в базу", userData.getLogin());
-        try (PreparedStatement prsmt = getDbConn().prepareStatement
+        try (PreparedStatement prsmt = dbConn.prepareStatement
                 ("INSERT INTO ACCOUNTING (LOGIN,DATA_START,DATA_END,VOLUME) VALUES (?,?,?,?)")) {
             prsmt.setString(1, userData.getLogin());
             prsmt.setString(2, userData.getDataStart());
@@ -36,6 +30,8 @@ public class AccountingDao {
             prsmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("В методе addAccounting произошла ошибка бд", e);
+           // throw new DbException("Произошла ошибка бд",e);
         }
+
     }
 }

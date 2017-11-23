@@ -8,7 +8,6 @@ import java.time.LocalDate;
 
 public class AccountingService {
     private static final Logger logger = LogManager.getLogger(AccountingService.class.getName());
-
     private AccountingDao accountingDao;
 
     public AccountingService(AccountingDao accountingDao) {
@@ -27,7 +26,7 @@ public class AccountingService {
             return 5;
         } else {
             accountingDao.addAccounting(userData);
-            logger.debug("Данные успешно добавлены в БД");
+            logger.debug("Данные валидны и успешно добавлены в БД");
             return 0;
         }
     }

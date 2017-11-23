@@ -5,6 +5,7 @@ LIB="lib/*"
 RES="src/resources/*"
 # Папка с исходниками
 SRC="src"
+# Переменные окружения
 export login="sa"
 export password=""
 # Папка в которой лежат откомпилированные классы

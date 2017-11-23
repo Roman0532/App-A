@@ -33,7 +33,7 @@ class PasswordService {
     }
 
     /**
-     * Проверка совпадает ли переданный хэшированный пароль с паролем пользователя
+     * Проверка совпадает ли переданный пароль с паролем пользователя
      */
 
     boolean isRightPass(String password, String userPassword,
