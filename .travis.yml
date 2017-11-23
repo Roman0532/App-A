@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-language:  java
-=======
 language: java
->>>>>>> origin/master
 script: ./TEST.sh
 jdk: oraclejdk8
