@@ -55,9 +55,7 @@ public class ConnectionService {
 
         try {
             Flyway flyway = new Flyway();
-
             flyway.setDataSource(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
-
             flyway.migrate();
         } catch (Exception e) {
             throw new DbException("Не могу мигрировать", e);
