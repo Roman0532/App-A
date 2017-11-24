@@ -66,8 +66,8 @@ check "-login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-
 check "-login X -password X -role READ -resource X -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX" 1
 check "-login X -password X -role READ -resource X" 1
 # Последний тест , переопределяем переменную окружения
-export LOGIN="xxx"
-export PASSWORD="yyy"
+export login="xxx"
+export password="yyy"
 check "-login jdoe -password sup3rpaZZ" 255
 echo
 echo $errors test not passed
