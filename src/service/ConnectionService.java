@@ -16,8 +16,8 @@ public class ConnectionService {
     private static final Logger logger = LogManager.getLogger(AuthorizationDao.class.getName());
     private static final String DRIVER = "driver";
     private static final String URL = "url";
-    public static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
+    public static final String LOGIN = "LOGIN";
+    private static final String PASSWORD = "PASSWORD";
     private static final String CONFIG_PROPERTIES = "/config.properties";
 
     /**
