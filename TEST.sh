@@ -68,7 +68,7 @@ check "-login X -password X -role READ -resource X" 1
 # Последний тест , переопределяем переменную окружения
 export LOGIN="xxx"
 export PASSWORD="yyy"
-check "" 255
+check "-login jdoe -password sup3rpaZZ" 255
 echo
 echo $errors test not passed
 echo $passed test passed
