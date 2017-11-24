@@ -86,4 +86,17 @@ public class UserData {
         return isAuthorization() && this.dataStart != null
                 && this.dataEnd != null && this.volume != null;
     }
+
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", resource='" + resource + '\'' +
+                ", dataStart='" + dataStart + '\'' +
+                ", dataEnd='" + dataEnd + '\'' +
+                ", volume='" + volume + '\'' +
+                '}';
+    }
 }

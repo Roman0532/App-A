@@ -66,10 +66,13 @@ check "-login jdoe -password sup3rpaZZ -role READ -resource a.b -dateStart 2015-
 check "-login X -password X -role READ -resource X -dateStart 2015-01-01 -dateEnd 2015-12-31 -volume XXX" 1
 check "-login X -password X -role READ -resource X" 1
 
+# Последний тест , переопределяем переменную окружения
+export LOGIN="xxx"
+export PASSWORD="yyy"
+check "" 255
 echo
 echo $errors test not passed
 echo $passed test passed
-
 #  количество не пройденых тестов больше 0 возвращать код 1
 if [[ $errors -gt 0 ]]; then
     exit 1

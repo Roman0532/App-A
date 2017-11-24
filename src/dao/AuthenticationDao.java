@@ -20,22 +20,22 @@ public class AuthenticationDao {
     /**
      * Поиск ID в БД
      */
-    int findId(String login) {
+    int findId(String login) throws DbException {
         logger.debug("Выполняется поиск id пользователя - {} в базе", login);
 
         try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT ID FROM USER WHERE LOGIN = ?")) {
             pstmt.setString(1, login);
-            ResultSet res = pstmt.executeQuery();
-            if (res.next()) {
-                logger.debug("Запрос выполнен успешно");
-                return res.getInt("ID");
-            } else {
-                logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
-                return 1;
+            try (ResultSet res = pstmt.executeQuery()) {
+                if (res.next()) {
+                    logger.debug("Запрос выполнен успешно");
+                    return res.getInt("ID");
+                } else {
+                    logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    return 1;
+                }
             }
         } catch (SQLException e) {
-            //throw new DbException("Произошла ошибка бд",e);
-            return 1;
+            throw new DbException("Произошла ошибка бд", e);
         }
     }
 
@@ -47,13 +47,14 @@ public class AuthenticationDao {
 
         try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE LOGIN = ?")) {
             pstmt.setString(1, login);
-            ResultSet res = pstmt.executeQuery();
-            if (res.next()) {
-                logger.debug("Запрос выполнен успешно");
-                return res.getString("LOGIN");
-            } else {
-                logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
-                return null;
+            try (ResultSet res = pstmt.executeQuery()) {
+                if (res.next()) {
+                    logger.debug("Запрос выполнен успешно");
+                    return res.getString("LOGIN");
+                } else {
+                    logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    return null;
+                }
             }
         } catch (SQLException e) {
             logger.error("В методе findLogin произошла ошибка бд", e);
@@ -61,7 +62,6 @@ public class AuthenticationDao {
 
         }
     }
-
 
     /**
      * Поиск PASSWORD в БД
@@ -71,13 +71,14 @@ public class AuthenticationDao {
 
         try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT PASSWORD FROM USER WHERE LOGIN = ?")) {
             prsmt.setString(1, login);
-            ResultSet res = prsmt.executeQuery();
-            if (res.next()) {
-                logger.debug("Запрос выполнен успешно.");
-                return res.getString("PASSWORD");
-            } else {
-                logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
-                return null;
+            try (ResultSet res = prsmt.executeQuery()) {
+                if (res.next()) {
+                    logger.debug("Запрос выполнен успешно.");
+                    return res.getString("PASSWORD");
+                } else {
+                    logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    return null;
+                }
             }
         } catch (SQLException e) {
             logger.error(" В методе findPassword произошла ошибка бд", e);
@@ -92,13 +93,14 @@ public class AuthenticationDao {
         logger.debug("Выполняется поиск соли пользователя - {} в базе", login);
         try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT SALT FROM USER WHERE LOGIN = ?")) {
             prsmt.setString(1, login);
-            ResultSet res = prsmt.executeQuery();
-            if (res.next()) {
-                logger.debug("Запрос выполнен успешно.");
-                return res.getString("SALT");
-            } else {
-                logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
-                return null;
+            try (ResultSet res = prsmt.executeQuery()) {
+                if (res.next()) {
+                    logger.debug("Запрос выполнен успешно.");
+                    return res.getString("SALT");
+                } else {
+                    logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    return null;
+                }
             }
         } catch (SQLException e) {
             logger.error(" В методе findSalt произошла ошибка бд", e);

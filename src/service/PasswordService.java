@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-class PasswordService {
+public class PasswordService {
     /**
      * Генерация хэша пароля
      */

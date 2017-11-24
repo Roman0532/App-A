@@ -1,6 +1,7 @@
 import dao.AccountingDao;
 import dao.AuthenticationDao;
 import dao.AuthorizationDao;
+import org.apache.commons.cli.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.*;
@@ -13,7 +14,7 @@ public class Main {
 
     private static final Logger logger = LogManager.getLogger(Main.class);
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, org.apache.commons.cli.ParseException, SQLException {
+    public static void main(String[] args) throws ParseException, NoSuchAlgorithmException, SQLException {
         int exitCode = 0;
 
         logger.debug("Приложение App-A запущено");
@@ -23,19 +24,19 @@ public class Main {
         UserData userData = cmd.parse(args);
 
         ConnectionService connectionService = new ConnectionService();
-
-        logger.debug("Выполнение миграций");
-        connectionService.dbMigration();
-
+        PasswordService passwordService = new PasswordService();
+        
+        logger.debug("---Установка соеденения---");
         try (Connection dbConn = connectionService.getDbConnection()) {
-            logger.debug("---Установка соеденения---");
+            logger.debug("Выполнение миграций");
+            connectionService.dbMigration();
             logger.debug("Соеденение прошло успешно");
 
             AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
             AuthorizationDao authorizationDao = new AuthorizationDao(dbConn, authenticationDao);
             AccountingDao accountingDao = new AccountingDao(dbConn);
 
-            AuthenticationService authenticationService = new AuthenticationService(authenticationDao);
+            AuthenticationService authenticationService = new AuthenticationService(authenticationDao, passwordService);
             AuthorizationService authorizationService = new AuthorizationService(authorizationDao);
             AccountingService accountingService = new AccountingService(accountingDao);
 
@@ -45,23 +46,19 @@ public class Main {
             }
 
             if (userData.isAuthentication()) {
-                logger.debug("Передано 2 параметра {} {} , выполняется аутентификация",
-                        userData.getLogin(), userData.getPassword());
+                logger.debug("Передано 2 параметра {} , выполняется аутентификация", userData);
                 exitCode = authenticationService.authenticate(userData.getLogin(), userData.getPassword());
             }
 
             if (userData.isAuthorization()) {
-                logger.debug("Передано 4 параметра {} {} {} {}, выполняется авторизация", userData.getLogin(),
-                        userData.getPassword(), userData.getRole(), userData.getResource());
+                logger.debug("Передано 4 параметра {}, выполняется авторизация", userData);
                 if (exitCode == 0) {
                     exitCode = authorizationService.authorize(userData.getLogin(), userData.getRole(), userData.getResource());
                 }
             }
 
             if (userData.isAccounting()) {
-                logger.debug("Передано 7 параметров {} {} {} {} {} {} {}, выполняется аккаунтинг", userData.getLogin(),
-                        userData.getPassword(), userData.getRole(), userData.getResource(),
-                        userData.getDataStart(), userData.getDataEnd(), userData.getVolume());
+                logger.debug("Передано 7 параметров {}, выполняется аккаунтинг", userData);
                 if (exitCode == 0)
                     exitCode = accountingService.accounting(userData.getDataStart(),
                             userData.getDataEnd(), userData.getVolume(), userData);

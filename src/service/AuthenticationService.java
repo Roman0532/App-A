@@ -9,12 +9,12 @@ import java.security.NoSuchAlgorithmException;
 public class AuthenticationService {
     private static final Logger logger = LogManager.getLogger(AuthenticationService.class.getName());
     private AuthenticationDao authenticationDao;
-    private PasswordService passwordService = new PasswordService();
+    private PasswordService passwordService;
 
-    public AuthenticationService(AuthenticationDao authenticationDao) {
+    public AuthenticationService(AuthenticationDao authenticationDao,PasswordService passwordService) {
         this.authenticationDao = authenticationDao;
+        this.passwordService = passwordService;
     }
-
     /**
      * Аутентификация
      */
