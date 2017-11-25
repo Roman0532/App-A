@@ -35,6 +35,7 @@ public class AuthenticationDao {
                 }
             }
         } catch (SQLException e) {
+            logger.error("В методе findId произошла ошибка бд", e);
             throw new DbException("Произошла ошибка бд", e);
         }
     }

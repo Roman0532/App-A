@@ -16,8 +16,8 @@ public class ConnectionService {
     private static final Logger logger = LogManager.getLogger(AuthorizationDao.class.getName());
     private static final String DRIVER = "driver";
     private static final String URL = "url";
-    public static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
+    private static final String LOGIN = "LOGIN";
+    private static final String PASSWORD = "PASSWORD";
     private static final String CONFIG_PROPERTIES = "/config.properties";
 
     /**
@@ -29,12 +29,14 @@ public class ConnectionService {
             property.load(fileInputStream);
         } catch (IOException e) {
             logger.error("Файл не найден ", e);
+            throw new DbException("Файл не найден ", e);
         }
 
         try {
             Class.forName(property.getProperty(DRIVER));
         } catch (ClassNotFoundException e) {
             logger.error("Ошибка драйвера ", e);
+            throw new DbException("Ошибка драйвера",e);
         }
 
         try {
@@ -51,15 +53,15 @@ public class ConnectionService {
             property.load(fileInputStream);
         } catch (IOException e) {
             logger.error("Файл не найден ", e);
+            throw new DbException("Файл не найден",e);
         }
 
         try {
             Flyway flyway = new Flyway();
-
             flyway.setDataSource(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
-
             flyway.migrate();
         } catch (Exception e) {
+            logger.error("Не могу мигрировать",e);
             throw new DbException("Не могу мигрировать", e);
         }
     }
