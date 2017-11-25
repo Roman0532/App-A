@@ -17,12 +17,11 @@ public class AccountingService {
     /**
      * Аккаунтинг
      */
-    public int accounting(String dateStart, String dateEnd, String volume,
-                          UserData userData) throws DbException {
+    public int accounting(UserData userData) throws DbException {
         //Проверки валидности дат и обьема
-        if (!isCheckDate(dateStart) || !isCheckDate(dateEnd)
-                || !isCheckValue(volume)) {
-            logger.error("Невалидно {} , {} или {}", volume, dateStart, dateEnd);
+        if (!isCheckDate(userData.getDataStart()) || !isCheckDate(userData.getDataEnd())
+                || !isCheckValue(userData.getVolume())) {
+            logger.error("Невалидно {} , {} или {}", userData.getVolume(), userData.getDataStart(), userData.getDataEnd());
             return 5;
         } else {
             accountingDao.addAccounting(userData);
