@@ -25,7 +25,7 @@ public class Main {
 
         ConnectionService connectionService = new ConnectionService();
         PasswordService passwordService = new PasswordService();
-        
+
         logger.debug("---Установка соеденения---");
         try (Connection dbConn = connectionService.getDbConnection()) {
             logger.debug("Выполнение миграций");
@@ -60,8 +60,7 @@ public class Main {
             if (userData.isAccounting()) {
                 logger.debug("Передано 7 параметров {}, выполняется аккаунтинг", userData);
                 if (exitCode == 0)
-                    exitCode = accountingService.accounting(userData.getDataStart(),
-                            userData.getDataEnd(), userData.getVolume(), userData);
+                    exitCode = accountingService.accounting(userData);
             }
         } catch (DbException e) {
             logger.error("Ошибка БД", e);
