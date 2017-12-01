@@ -1,8 +1,9 @@
 language: java
-script: mvn test
+
+script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script: mvn test -B
 jdk: oraclejdk8
 install: true
-sudo: false
 addons:
   apt:
     packages:
