@@ -2,15 +2,11 @@
 # Папка где хранятся библиотеки
 LIB="lib/*"
 # Папка с ресурсами
-RES="src/resources/*"
+RES="src/main.resources/*"
 # Папка с исходниками
 SRC="src"
-# Переменные окружения
-export login="sa"
-export password=""
 # Папка в которой лежат откомпилированные классы
 OUT="out/classes"
-
 # Имя Jar файла
 JAR="out/classes/Main.jar"
 
