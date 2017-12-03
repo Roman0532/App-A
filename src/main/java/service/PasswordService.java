@@ -35,7 +35,6 @@ public class PasswordService {
     /**
      * Проверка совпадает ли переданный пароль с паролем пользователя
      */
-
     boolean isRightPass(String password, String userPassword,
                         String salt) throws NoSuchAlgorithmException {
         return generateHashPassword(generateHashPassword(password) + salt).equals(userPassword);

@@ -20,26 +20,27 @@ public class AccountingServiceTest {
     //Тест считается успешным если все данные верны 0=0;
     @Test
     public void accountingSuccessTest() throws Exception {
-        exitCode = accounting("2017-10-10", "2017-10-10", "100");
+        exitCode = accountingService.accounting("Roman","2017-10-10", "2017-10-10", "100");
         assertEquals(0, exitCode);
     }
 
     //Тест считается успешным если дата не валидна 5=5
     @Test
-    public void accountingInvalidDateTest() throws Exception {
-        exitCode = accounting("2017-10-X", "2017-10-X", "100");
+    public void accountingInvalidDateStartTest() throws Exception {
+        exitCode = accountingService.accounting("Roman","2017-10-X", "2017-10-10", "100");
+        assertEquals(5, exitCode);
+    }
+
+    @Test
+    public void accountingInvalidDateEndTest() throws Exception {
+        exitCode = accountingService.accounting("Roman","2017-10-10", "2017-10-X", "100");
         assertEquals(5, exitCode);
     }
 
     //Тест считается успешным если обьем не валиден 5=5
     @Test
     public void accountingInvalidVolumeTest() throws Exception {
-        exitCode = accounting("2017-10-10", "2017-10-10", "X");
+        exitCode = accountingService.accounting("Roman","2017-10-10", "2017-10-10", "X");
         assertEquals(5, exitCode);
-    }
-
-    private int accounting(String dateStart, String dateEnd, String volume) throws DbException {
-        exitCode = accountingService.accounting("Roman", dateStart, dateEnd, volume);
-        return exitCode;
     }
 }
