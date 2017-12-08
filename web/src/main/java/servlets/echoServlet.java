@@ -1,7 +1,6 @@
 package servlets;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,14 +11,8 @@ public class echoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletOutputStream out = resp.getOutputStream();
         req.setCharacterEncoding("UTF-8");
-
-            out.println("<html>");
-            out.println("<body>");
-            out.println("<p>" + req.getParameter("id") + "</p>");
-            out.println("</body>");
-            out.println("</html>");
+        getServletContext().getRequestDispatcher("/get.jsp").forward(req,resp);
     }
 
     @Override
