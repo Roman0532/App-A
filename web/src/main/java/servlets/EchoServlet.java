@@ -1,8 +1,5 @@
 package servlets;
 
-import config.InjectLogger;
-import org.apache.logging.log4j.Logger;
-
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,9 +9,6 @@ import java.io.IOException;
 
 @Singleton
 public class EchoServlet extends HttpServlet {
-
-    @InjectLogger
-    Logger logger;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
