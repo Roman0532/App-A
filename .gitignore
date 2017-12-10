@@ -8,7 +8,6 @@ objects/*
 refs/*
 HEAD
 description
-config
 .log
 target/
 .classpath
