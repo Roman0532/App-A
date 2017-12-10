@@ -4,8 +4,7 @@
 </head>
 <body>
 <p>
-    <%String id = request.getParameter("id");%>
-    <%=id%>
+    <%=%>request.getParameter("id");%>
 </p>
 </body>
 </html>
