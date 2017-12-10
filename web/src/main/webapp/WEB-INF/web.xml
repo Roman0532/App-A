@@ -4,13 +4,15 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
 
-  <servlet>
-    <servlet-name>echoServlet</servlet-name>
-    <servlet-class>servlets.echoServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>echoServlet</servlet-name>
-    <url-pattern>/echo/get</url-pattern>
-    <url-pattern>/echo/post</url-pattern>
-  </servlet-mapping>
+  <listener>
+    <listener-class>config.GuiceServletConfig</listener-class>
+  </listener>
+  <filter>
+    <filter-name>guiceFilter</filter-name>
+    <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>guiceFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 </web-app>

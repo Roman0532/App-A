@@ -1,9 +1,20 @@
 package domain;
 
-public class User{
+import lombok.Getter;
+import lombok.Setter;
+
+public class User {
+    @Getter
+    @Setter
     private Long id;
+    @Getter
+    @Setter
     private String login;
+    @Getter
+    @Setter
     private String password;
+    @Getter
+    @Setter
     private String salt;
 
     public User(Long id, String login, String password, String salt) {
@@ -11,21 +22,5 @@ public class User{
         this.login = login;
         this.password = password;
         this.salt = salt;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public Long getId() {
-        return id;
     }
 }

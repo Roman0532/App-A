@@ -1,15 +1,14 @@
 package dao;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Log4j2
 public class AccountingDao {
-    private static final Logger logger = LogManager.getLogger(AccountingDao.class.getName());
     private Connection dbConn;
 
     public AccountingDao(Connection dbConn) {
@@ -20,7 +19,7 @@ public class AccountingDao {
      * Добавление данных о пользователе успешно прошедших аккаунтинг БД
      */
     public void addAccounting(String login, String dateStart, String dateEnd, String volume) throws DbException {
-        logger.debug("Пользователь {} успешно прошел аккаунтинг выполняется добавление в базу", login);
+        log.debug("Пользователь {} успешно прошел аккаунтинг выполняется добавление в базу", login);
         try (PreparedStatement prsmt = dbConn.prepareStatement
                 ("INSERT INTO ACCOUNTING (LOGIN,DATA_START,DATA_END,VOLUME) VALUES (?,?,?,?)")) {
             prsmt.setString(1, login);
@@ -29,9 +28,8 @@ public class AccountingDao {
             prsmt.setString(4, volume);
             prsmt.executeUpdate();
         } catch (SQLException e) {
-            logger.error("В методе addAccounting произошла ошибка бд", e);
+            log.error("В методе addAccounting произошла ошибка бд", e);
             throw new DbException("Произошла ошибка бд", e);
         }
-
     }
 }

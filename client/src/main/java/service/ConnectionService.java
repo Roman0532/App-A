@@ -1,8 +1,6 @@
 package service;
 
-import dao.AuthorizationDao;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.flywaydb.core.Flyway;
 
 import java.io.IOException;
@@ -12,8 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@Log4j2
 public class ConnectionService {
-    private static final Logger logger = LogManager.getLogger(AuthorizationDao.class.getName());
     private static final String DRIVER = "driver";
     private static final String URL = "url";
     private static final String LOGIN = "LOGIN";
@@ -28,21 +26,21 @@ public class ConnectionService {
         try (InputStream fileInputStream = this.getClass().getResourceAsStream(CONFIG_PROPERTIES)) {
             property.load(fileInputStream);
         } catch (IOException e) {
-            logger.error("Файл не найден ", e);
+            log.error("Файл не найден ", e);
             throw new DbException("Файл не найден ", e);
         }
 
         try {
             Class.forName(property.getProperty(DRIVER));
         } catch (ClassNotFoundException e) {
-            logger.error("Ошибка драйвера ", e);
+            log.error("Ошибка драйвера ", e);
             throw new DbException("Ошибка драйвера", e);
         }
 
         try {
             return DriverManager.getConnection(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
         } catch (SQLException e) {
-            logger.error("Подключение не удалось ", e);
+            log.error("Подключение не удалось ", e);
             throw new DbException("Подключение не удалось", e);
         }
     }
@@ -52,7 +50,7 @@ public class ConnectionService {
         try (InputStream fileInputStream = this.getClass().getResourceAsStream(CONFIG_PROPERTIES)) {
             property.load(fileInputStream);
         } catch (IOException e) {
-            logger.error("Файл не найден ", e);
+            log.error("Файл не найден ", e);
             throw new DbException("Файл не найден", e);
         }
 
@@ -61,7 +59,7 @@ public class ConnectionService {
             flyway.setDataSource(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
             flyway.migrate();
         } catch (Exception e) {
-            logger.error("Не могу мигрировать", e);
+            log.error("Не могу мигрировать", e);
             throw new DbException("Не могу мигрировать", e);
         }
     }
