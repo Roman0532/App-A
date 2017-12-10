@@ -56,7 +56,7 @@
 
 Приложение развернуто на Heroku 
 
-https://git.heroku.com/app-aaa.git
+https://app-aaa.herokuapp.com/
 
 <a href="https://travis-ci.org/">Travis CI </a> — распределённый веб-сервис для сборки и тестирования программного обеспечения, использующий GitHub в качестве хостинга исходного кода.
 
