@@ -3,7 +3,15 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
-
+  <servlet>
+  <servlet-name>echoServlet</servlet-name>
+  <servlet-class>servlets.EchoServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>echoServlet</servlet-name>
+<url-pattern>/echo/get</url-pattern>
+<url-pattern>/echo/post</url-pattern>
+</servlet-mapping>
   <listener>
     <listener-class>config.GuiceServletConfig</listener-class>
   </listener>
