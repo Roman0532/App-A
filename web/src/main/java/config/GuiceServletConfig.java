@@ -9,7 +9,6 @@ import servlets.EchoServlet;
 import servlets.UserServlet;
 
 public class GuiceServletConfig extends GuiceServletContextListener {
-
     @Override
     protected Injector getInjector() {
         return Guice.createInjector(new ServletModule() {
