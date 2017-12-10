@@ -5,6 +5,8 @@ import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
+import servlets.ActivityServlet;
+import servlets.AuthorityServlet;
 import servlets.EchoServlet;
 import servlets.UserServlet;
 
@@ -17,8 +19,8 @@ public class GuiceServletConfig extends GuiceServletContextListener {
                 serve("/echo/get").with(EchoServlet.class);
                 serve("/echo/post").with(EchoServlet.class);
                 serve("/ajax/user").with(UserServlet.class);
-                serve("/ajax/authority").with(UserServlet.class);
-                serve("/ajax/activity").with(UserServlet.class);
+                serve("/ajax/authority").with(ActivityServlet.class);
+                serve("/ajax/activity").with(AuthorityServlet.class);
                 bindListener(Matchers.any(), new Log4JTypeListener());
             }
         });
