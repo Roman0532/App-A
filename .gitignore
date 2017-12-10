@@ -10,14 +10,10 @@ HEAD
 description
 .log
 target/
-.classpath
-.project
 BUILD.sh
 CONFIG.sh
 RUN.sh
 TEST.sh
-Eclipse
-dependency-reduced-pom.xml
 lib/*
 info/*
 Test.bat
