@@ -9,7 +9,6 @@ import java.io.IOException;
 
 @Singleton
 public class AuthorityServlet extends HttpServlet {
-
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.service(req, resp);
