@@ -10,9 +10,9 @@
 
 -2.3 В GuiseServletConfig привязать SerializeProvider к поставщику Gson (10 мин)
 
-### 3.В UserServler инжектить провайдер GSON (5 мин)
+### 3.В UserServlet инжектить провайдер GSON (5 мин)
 
-### 4.В AuthorityServler инжектить провайдер GSON (5 мин) 
+### 4.В AuthorityServlet инжектить провайдер GSON (5 мин) 
 
 ### 5.В ActivityServlet инжектить провайдер GSON (5 мин)
 
