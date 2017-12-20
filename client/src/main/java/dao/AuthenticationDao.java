@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @Log4j2
 public class AuthenticationDao {
@@ -14,6 +15,27 @@ public class AuthenticationDao {
 
     public AuthenticationDao(Connection dbConn) {
         this.dbConn = dbConn;
+    }
+
+    /**
+     * Поиск всех пользователей
+     */
+    public ArrayList<String> findAllUsers() throws DbException {
+        log.debug("Выполняется поиск пользователей в базе данных");
+
+        ArrayList<String> users = new ArrayList<String>();
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER")) {
+            try (ResultSet res = pstmt.executeQuery()) {
+                while (res.next()) {
+                    log.debug("Запрос выполнен успешно");
+                    users.add(res.getString("LOGIN"));
+                }
+                return users;
+            }
+        } catch (SQLException e) {
+            log.error("В методе findAllUsers произошла ошибка бд", e);
+            throw new DbException("Произошла ошибка бд", e);
+        }
     }
 
     /**
@@ -40,6 +62,30 @@ public class AuthenticationDao {
     }
 
     /**
+     * Поиск пользователя по id
+     */
+
+    public String findLoginById(int id) throws DbException {
+        log.debug("Выполняется поиск пользователя в базе данных");
+
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE ID1 = ?")) {
+            pstmt.setInt(1, id);
+            try (ResultSet res = pstmt.executeQuery()) {
+                if (res.next()) {
+                    log.debug("Запрос выполнен успешно");
+                    return res.getString("LOGIN");
+                } else {
+                    log.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            log.error("В методе findLoginById произошла ошибка бд", e);
+            throw new DbException("Произошла ошибка бд", e);
+        }
+    }
+
+    /**
      * Поиск LOGIN в БД
      */
     public String findLogin(String login) throws DbException {
@@ -59,7 +105,6 @@ public class AuthenticationDao {
         } catch (SQLException e) {
             log.error("В методе findLogin произошла ошибка бд", e);
             throw new DbException("В методе findLogin произошла ошибка бд", e);
-
         }
     }
 
@@ -95,10 +140,10 @@ public class AuthenticationDao {
             prsmt.setString(1, login);
             try (ResultSet res = prsmt.executeQuery()) {
                 if (res.next()) {
-                    //       logger.debug("Запрос выполнен успешно.");
+                    log.debug("Запрос выполнен успешно.");
                     return res.getString("SALT");
                 } else {
-                    //logger.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    log.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
                     return null;
                 }
             }

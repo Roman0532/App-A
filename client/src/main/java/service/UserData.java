@@ -5,27 +5,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString()
-public class UserData {
-    @Getter
-    @Setter
+public @Getter @Setter class UserData {
     private String login;
-    @Getter
-    @Setter
     private String password;
-    @Getter
-    @Setter
     private String role;
-    @Getter
-    @Setter
     private String resource;
-    @Getter
-    @Setter
     private String dataStart;
-    @Getter
-    @Setter
     private String dataEnd;
-    @Getter
-    @Setter
     private String volume;
 
     /**

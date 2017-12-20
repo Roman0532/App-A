@@ -17,3 +17,8 @@ TEST.sh
 lib/*
 info/*
 Test.bat
+lombok-plugin/*
+.classpath
+.project
+Eclipse
+dependency-reduced-pom.xml

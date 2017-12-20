@@ -25,7 +25,6 @@ public class Main {
             log.debug("Выполнение миграций");
             connectionService.dbMigration();
             log.debug("Соеденение прошло успешно");
-
             AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
             AuthorizationDao authorizationDao = new AuthorizationDao(dbConn, authenticationDao);
             AccountingDao accountingDao = new AccountingDao(dbConn);

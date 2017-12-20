@@ -1,20 +1,17 @@
 package domain;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 
-public class User {
-    @Getter
-    @Setter
+public @Getter
+@Setter
+class User {
+    @Expose
     private Long id;
-    @Getter
-    @Setter
+    @Expose
     private String login;
-    @Getter
-    @Setter
     private String password;
-    @Getter
-    @Setter
     private String salt;
 
     public User(Long id, String login, String password, String salt) {

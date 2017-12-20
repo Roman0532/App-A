@@ -1,26 +1,20 @@
 package domain;
 
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 
-
-public class Accouning {
-
-    @Getter
-    @Setter
+public @Getter
+@Setter
+class Accouning {
     private String login;
-    @Getter
-    @Setter
     private String resource;
-    @Getter
-    @Setter
+    @Expose
     private String dataStart;
-    @Getter
-    @Setter
+    @Expose
     private String dataEnd;
-    @Getter
-    @Setter
+    @Expose
     private String volume;
 
     public Accouning(String login, String resource, String dataStart,

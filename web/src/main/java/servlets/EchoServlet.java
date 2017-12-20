@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 @Singleton
 public class EchoServlet extends HttpServlet {
+
     @InjectLogger
     Logger logger;
 

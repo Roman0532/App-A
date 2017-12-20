@@ -1,5 +1,6 @@
 package config;
 
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
@@ -15,13 +16,14 @@ public class GuiceServletConfig extends GuiceServletContextListener {
     protected Injector getInjector() {
         return Guice.createInjector(new ServletModule() {
             @Override
-            protected void configureServlets () {
+            protected void configureServlets() {
                 serve("/echo/get").with(EchoServlet.class);
                 serve("/echo/post").with(EchoServlet.class);
                 serve("/ajax/user").with(UserServlet.class);
-                serve("/ajax/authority").with(ActivityServlet.class);
-                serve("/ajax/activity").with(AuthorityServlet.class);
+                serve("/ajax/activity").with(ActivityServlet.class);
+                serve("/ajax/authority").with(AuthorityServlet.class);
                 bindListener(Matchers.any(), new Log4JTypeListener());
+                bind(Gson.class).toProvider(SerializeProvider.class);
             }
         });
     }
