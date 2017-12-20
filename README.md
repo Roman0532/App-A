@@ -54,6 +54,10 @@
 
 [![Build Status](https://travis-ci.org/Roman0532/App-A.svg?branch=master)](https://travis-ci.org/Roman0532/App-A)
 
+Приложение развернуто на Heroku 
+
+https://app-aaa.herokuapp.com/
+
 <a href="https://travis-ci.org/">Travis CI </a> — распределённый веб-сервис для сборки и тестирования программного обеспечения, использующий GitHub в качестве хостинга исходного кода.
 
 Для настройки travis-ci используется файл <a href="https://github.com/Roman0532/App-A/blob/master/.travis.yml">.travis.yml</a>
