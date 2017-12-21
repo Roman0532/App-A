@@ -16,6 +16,7 @@ public class Log4JMembersInjector<T> implements MembersInjector<T> {
         this.logger = LogManager.getLogger(field.getDeclaringClass());
         field.setAccessible(true);
     }
+
     public void injectMembers(T t) {
         try {
             field.set(t, logger);

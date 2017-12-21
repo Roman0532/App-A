@@ -64,11 +64,10 @@ public class AuthenticationDao {
     /**
      * Поиск пользователя по id
      */
-
     public String findLoginById(int id) throws DbException {
         log.debug("Выполняется поиск пользователя в базе данных");
 
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE ID1 = ?")) {
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE ID = ?")) {
             pstmt.setInt(1, id);
             try (ResultSet res = pstmt.executeQuery()) {
                 if (res.next()) {

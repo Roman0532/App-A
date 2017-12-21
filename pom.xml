@@ -10,6 +10,7 @@
         <module>client</module>
     </modules>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>

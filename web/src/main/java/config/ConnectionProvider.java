@@ -1,5 +1,6 @@
 package config;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import exception.ExceptionProviders;
 import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
@@ -7,13 +8,14 @@ import service.DbException;
 
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 public class ConnectionProvider implements ExceptionProviders<Connection> {
     @InjectLogger
     private
     Logger logger;
+    private ComboPooledDataSource cpds = new ComboPooledDataSource();
+
     private static final String DRIVER = "driver";
     private static final String URL = "url";
     private static final String LOGIN = "LOGIN";
@@ -24,20 +26,32 @@ public class ConnectionProvider implements ExceptionProviders<Connection> {
      * Подключение к БД
      */
     @Override
-    public Connection get() throws service.DbException {
+    public Connection get() throws DbException {
         Properties property = new Properties();
+
         try (InputStream fileInputStream = this.getClass().getResourceAsStream(CONFIG_PROPERTIES)) {
             property.load(fileInputStream);
-            Class.forName(property.getProperty(DRIVER));
+
+            cpds.setDriverClass(property.getProperty(DRIVER));
+            cpds.setJdbcUrl(property.getProperty(URL));
+            cpds.setUser(System.getenv(LOGIN));
+            cpds.setPassword(System.getenv(PASSWORD));
+
+            cpds.setMaxStatements(180);
+            cpds.setMaxStatementsPerConnection(180);
+            cpds.setMinPoolSize(50);
+            cpds.setAcquireIncrement(10);
+            cpds.setMaxPoolSize(60);
+            cpds.setMaxIdleTime(30);
             dbMigration(property);
-            return DriverManager.getConnection(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
+            return cpds.getConnection();
         } catch (Exception e) {
             logger.error("Ошибка соеденения с базой данных");
-            throw new DbException("Connection failed", e);
+            throw new DbException("Соеденение не установленно", e);
         }
     }
 
-    private void dbMigration(Properties property) {
+    private void dbMigration(Properties property) throws DbException {
         logger.debug("Выполнение миграций");
         try {
             Flyway flyway = new Flyway();
@@ -45,6 +59,7 @@ public class ConnectionProvider implements ExceptionProviders<Connection> {
             flyway.migrate();
         } catch (Exception e) {
             logger.error("Не могу выполнить миграцию");
+            throw new DbException("Не могу выполнить миграцию", e);
         }
     }
 }

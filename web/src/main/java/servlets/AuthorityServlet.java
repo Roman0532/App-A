@@ -36,6 +36,7 @@ public class AuthorityServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
+
         logger.debug("Установка соеденения");
         try (Connection dbConn = connectionProvider.get()) {
             logger.debug("Соединение прошло успешно");
@@ -53,7 +54,6 @@ public class AuthorityServlet extends HttpServlet {
         } catch (DbException | SQLException e) {
             logger.error("Произошла ошибка связанная с работой базы данных");
             getServletContext().getRequestDispatcher("/error500.jsp").forward(req, resp);
-
         }
     }
 

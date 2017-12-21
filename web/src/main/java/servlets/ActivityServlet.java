@@ -35,6 +35,7 @@ public class ActivityServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
+
         logger.debug("Установка соеденения");
         try (Connection dbConn = connectionProvider.get()) {
             logger.debug("Соединение прошло успешно");
