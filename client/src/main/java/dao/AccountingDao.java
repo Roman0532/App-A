@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Accouning;
 import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
@@ -39,20 +40,16 @@ public class AccountingDao {
     /**
      * Поиск всех действий
      */
-    public ArrayList<String> findAllActivity() throws DbException {
+    public ArrayList<Accouning> findAllActivity() throws DbException {
 
         try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM ACCOUNTING")) {
-            ArrayList<String> activity = new ArrayList<String>();
+            ArrayList<Accouning> activity = new ArrayList<Accouning>();
             log.debug("Выполняется поиск всех действий");
             try (ResultSet res = prsmt.executeQuery()) {
                 while (res.next()) {
-                    activity.add(res.getString("ID"));
-                    activity.add(res.getString("LOGIN"));
-                    activity.add(res.getString("ROLE"));
-                    activity.add(res.getString("DATA_START"));
-                    activity.add(res.getString("DATA_END"));
-                    activity.add(res.getString("VOLUME"));
-                    activity.add(res.getString("AUTHORITY_ID"));
+                    activity.add(new Accouning(res.getLong("ID"),
+                            res.getString("DATA_START"),
+                            res.getString("DATA_END"), res.getString("VOLUME")));
                 }
                 return activity;
             }
@@ -65,26 +62,22 @@ public class AccountingDao {
     /**
      * Поиск дествия по id
      */
-    public ArrayList<String> findActivityById(int id) throws DbException {
+    public Accouning findActivityById(int id) throws DbException, SQLException {
         try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM ACCOUNTING WHERE ID = ?")) {
             prsmt.setInt(1, id);
-            ArrayList<String> activity = new ArrayList<String>();
             log.debug("Выполняется поиск действия по id");
             try (ResultSet res = prsmt.executeQuery()) {
-                while (res.next()) {
-                    activity.add(res.getString("ID"));
-                    activity.add(res.getString("LOGIN"));
-                    activity.add(res.getString("ROLE"));
-                    activity.add(res.getString("DATA_START"));
-                    activity.add(res.getString("DATA_END"));
-                    activity.add(res.getString("VOLUME"));
-                    activity.add(res.getString("AUTHORITY_ID"));
+                if (res.next()) {
+                    return new Accouning(res.getLong("ID"), res.getString("DATA_START"),
+                            res.getString("DATA_END"), res.getString("VOLUME"));
+                } else {
+                    log.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
+                    return null;
                 }
-                return activity;
+            } catch (SQLException e) {
+                log.error("В методе findActivityById произошла ошибка бд ", e);
+                throw new DbException("В методе findActivityById произошла ошибка бд", e);
             }
-        } catch (SQLException e) {
-            log.error("В методе findActivityById произошла ошибка бд ", e);
-            throw new DbException("В методе findActivityById произошла ошибка бд", e);
         }
     }
 
@@ -112,20 +105,15 @@ public class AccountingDao {
     /**
      * Поиск дествия по роли
      */
-    public ArrayList<String> findActivityByRole(String role) throws DbException {
+    public ArrayList<Accouning> findActivityByRole(String role) throws DbException {
         try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM ACCOUNTING WHERE ROLE = ?")) {
             prsmt.setString(1, role);
-            ArrayList<String> activity = new ArrayList<String>();
+            ArrayList<Accouning> activity = new ArrayList<Accouning>();
             log.debug("Выполняется поиск в userres");
             try (ResultSet res = prsmt.executeQuery()) {
                 while (res.next()) {
-                    activity.add(res.getString("ID"));
-                    activity.add(res.getString("LOGIN"));
-                    activity.add(res.getString("ROLE"));
-                    activity.add(res.getString("DATA_START"));
-                    activity.add(res.getString("DATA_END"));
-                    activity.add(res.getString("VOLUME"));
-                    activity.add(res.getString("AUTHORITY_ID"));
+                    activity.add(new Accouning(res.getLong("ID"), res.getString("DATA_START"),
+                            res.getString("DATA_END"), res.getString("VOLUME")));
                 }
                 return activity;
             }

@@ -20,4 +20,9 @@ class User {
         this.password = password;
         this.salt = salt;
     }
+
+    public User(Long id, String login) {
+        this.id = id;
+        this.login = login;
+    }
 }

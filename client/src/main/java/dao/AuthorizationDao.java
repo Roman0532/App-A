@@ -1,6 +1,7 @@
 package dao;
 
 
+import domain.UserRes;
 import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
@@ -23,13 +24,14 @@ public class AuthorizationDao {
     /**
      * Поиск всех ролей
      */
-    public ArrayList<String> findAllRoles() throws DbException {
-        ArrayList<String> roles = new ArrayList<>();
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT DISTINCT ROLE FROM USER_RES")) {
+    public ArrayList<UserRes> findAllRoles() throws DbException {
+        ArrayList<UserRes> roles = new ArrayList<UserRes>();
+        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM USER_RES")) {
             log.debug("Выполняется поиск ролей");
             try (ResultSet res = prsmt.executeQuery()) {
                 while (res.next()) {
-                    roles.add(res.getString("ROLE"));
+                    roles.add(new UserRes(res.getLong("ID"),
+                            res.getString("PATH"), res.getString("ROLE")));
                 }
                 return roles;
             }
@@ -42,13 +44,13 @@ public class AuthorizationDao {
     /**
      * Поиск роли по id
      */
-    public String findRoleById(int id) throws DbException {
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT ROLE FROM USER_RES WHERE ID = ?")) {
+    public UserRes findRoleById(int id) throws DbException {
+        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM USER_RES WHERE ID = ?")) {
             prsmt.setInt(1, id);
             log.debug("Выполняется поиск роли");
             try (ResultSet res = prsmt.executeQuery()) {
                 if (res.next()) {
-                    return res.getString("ROLE");
+                    return new UserRes(res.getLong("ID"), res.getString("PATH"), res.getString("ROLE"));
                 } else {
                     log.debug("В бд отсутствуют записи, удовлетворяющие критерию поиска");
                     return null;
@@ -63,14 +65,15 @@ public class AuthorizationDao {
     /**
      * Поиск всех ролей пользователя по userId
      */
-    public ArrayList<String> findUserRole(int userId) throws DbException {
-        ArrayList<String> userRoles = new ArrayList<>();
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT DISTINCT ROLE FROM USER_RES WHERE USER_ID = ?")) {
+    public ArrayList<UserRes> findUserRole(int userId) throws DbException {
+        ArrayList<UserRes> userRoles = new ArrayList<UserRes>();
+        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM USER_RES WHERE USER_ID = ?")) {
             prsmt.setInt(1, userId);
             log.debug("Выполняется поиск роли");
             try (ResultSet res = prsmt.executeQuery()) {
                 while (res.next()) {
-                    userRoles.add(res.getString("ROLE"));
+                    userRoles.add(new UserRes(res.getLong("ID"),
+                            res.getString("PATH"), res.getString("ROLE")));
                 }
                 return userRoles;
             }

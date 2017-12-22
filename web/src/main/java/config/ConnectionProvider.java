@@ -1,7 +1,7 @@
 package config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import exception.ExceptionProviders;
+import exception.IConnectionProvider;
 import org.apache.logging.log4j.Logger;
 import org.flywaydb.core.Flyway;
 import service.DbException;
@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.util.Properties;
 
-public class ConnectionProvider implements ExceptionProviders<Connection> {
+public class ConnectionProvider implements IConnectionProvider<Connection> {
     @InjectLogger
     private
     Logger logger;

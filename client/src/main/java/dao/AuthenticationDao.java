@@ -1,5 +1,6 @@
 package dao;
 
+import domain.User;
 import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 @Log4j2
 public class AuthenticationDao {
+
     private Connection dbConn;
 
     public AuthenticationDao(Connection dbConn) {
@@ -20,15 +22,15 @@ public class AuthenticationDao {
     /**
      * Поиск всех пользователей
      */
-    public ArrayList<String> findAllUsers() throws DbException {
+    public ArrayList<User> findAllUsers() throws DbException {
         log.debug("Выполняется поиск пользователей в базе данных");
 
-        ArrayList<String> users = new ArrayList<String>();
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER")) {
+        ArrayList<User> users = new ArrayList<>();
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT * FROM USER")) {
             try (ResultSet res = pstmt.executeQuery()) {
                 while (res.next()) {
                     log.debug("Запрос выполнен успешно");
-                    users.add(res.getString("LOGIN"));
+                    users.add(new User(res.getLong("ID"), res.getString("LOGIN")));
                 }
                 return users;
             }
@@ -64,15 +66,15 @@ public class AuthenticationDao {
     /**
      * Поиск пользователя по id
      */
-    public String findLoginById(int id) throws DbException {
+    public User findLoginById(int id) throws DbException {
         log.debug("Выполняется поиск пользователя в базе данных");
 
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE ID = ?")) {
+        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT * FROM USER WHERE ID = ?")) {
             pstmt.setInt(1, id);
             try (ResultSet res = pstmt.executeQuery()) {
                 if (res.next()) {
                     log.debug("Запрос выполнен успешно");
-                    return res.getString("LOGIN");
+                    return new User(res.getLong("ID"), res.getString("LOGIN"));
                 } else {
                     log.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");
                     return null;
@@ -117,7 +119,6 @@ public class AuthenticationDao {
             prsmt.setString(1, login);
             try (ResultSet res = prsmt.executeQuery()) {
                 if (res.next()) {
-                    //       logger.debug("Запрос выполнен успешно.");
                     return res.getString("PASSWORD");
                 } else {
                     log.error("В бд отсутствуют записи, удовлетворяющие критерию поиска");

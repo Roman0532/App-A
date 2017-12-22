@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import config.ConnectionProvider;
 import config.InjectLogger;
 import dao.AccountingDao;
+import domain.Accouning;
 import org.apache.logging.log4j.Logger;
 import service.DbException;
 
@@ -81,9 +82,9 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private void findActivityById(HttpServletRequest req,
-                                  AccountingDao accountingDao) throws DbException {
-        ArrayList activity;
-        activity = accountingDao.findActivityById(Integer.parseInt(req.getParameter("id")));
+                                  AccountingDao accountingDao) throws DbException, SQLException {
+
+        Accouning activity = accountingDao.findActivityById(Integer.parseInt(req.getParameter("id")));
         if (activity != null) {
             json = gson.toJson(activity);
         } else {

@@ -1,5 +1,5 @@
 package exception;
 
-public interface CheckedProviders<T> {
+public interface ICheckedProvider<T> {
     T get() throws Exception;
 }

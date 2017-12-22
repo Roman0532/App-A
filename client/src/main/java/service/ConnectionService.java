@@ -1,51 +1,29 @@
 package service;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import exception.IConnectionProvider;
 import lombok.extern.log4j.Log4j2;
 import org.flywaydb.core.Flyway;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 @Log4j2
-public class ConnectionService {
+public class ConnectionService implements IConnectionProvider<Connection>{
     private static final String DRIVER = "driver";
     private static final String URL = "url";
     private static final String LOGIN = "LOGIN";
     private static final String PASSWORD = "PASSWORD";
     private static final String CONFIG_PROPERTIES = "../config.properties";
 
+    private ComboPooledDataSource cpds = new ComboPooledDataSource();
+
     /**
      * Подключение к БД
      */
-    public Connection getDbConnection() throws DbException {
-        Properties property = new Properties();
-        try (InputStream fileInputStream = this.getClass().getResourceAsStream(CONFIG_PROPERTIES)) {
-            property.load(fileInputStream);
-        } catch (IOException e) {
-            log.error("Файл не найден ", e);
-            throw new DbException("Файл не найден ", e);
-        }
-
-        try {
-            Class.forName(property.getProperty(DRIVER));
-        } catch (ClassNotFoundException e) {
-            log.error("Ошибка драйвера ", e);
-            throw new DbException("Ошибка драйвера", e);
-        }
-
-        try {
-            return DriverManager.getConnection(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
-        } catch (SQLException e) {
-            log.error("Подключение не удалось ", e);
-            throw new DbException("Подключение не удалось", e);
-        }
-    }
-
-    public void dbMigration() throws DbException {
+    private void dbMigration() throws DbException {
         Properties property = new Properties();
         try (InputStream fileInputStream = this.getClass().getResourceAsStream(CONFIG_PROPERTIES)) {
             property.load(fileInputStream);
@@ -61,6 +39,32 @@ public class ConnectionService {
         } catch (Exception e) {
             log.error("Не могу мигрировать", e);
             throw new DbException("Не могу мигрировать", e);
+        }
+    }
+
+    @Override
+    public Connection get() throws DbException {
+        Properties property = new Properties();
+
+        try (InputStream fileInputStream = this.getClass().getResourceAsStream(CONFIG_PROPERTIES)) {
+            property.load(fileInputStream);
+
+            cpds.setDriverClass(property.getProperty(DRIVER));
+            cpds.setJdbcUrl(property.getProperty(URL));
+            cpds.setUser(System.getenv(LOGIN));
+            cpds.setPassword(System.getenv(PASSWORD));
+
+            cpds.setMaxStatements(180);
+            cpds.setMaxStatementsPerConnection(180);
+            cpds.setMinPoolSize(50);
+            cpds.setAcquireIncrement(10);
+            cpds.setMaxPoolSize(60);
+            cpds.setMaxIdleTime(30);
+            dbMigration();
+            return cpds.getConnection();
+        } catch (Exception e) {
+            log.error("Ошибка соеденения с базой данных");
+            throw new DbException("Соеденение не установленно", e);
         }
     }
 }

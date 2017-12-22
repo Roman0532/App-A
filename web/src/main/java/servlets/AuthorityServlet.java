@@ -5,6 +5,7 @@ import config.ConnectionProvider;
 import config.InjectLogger;
 import dao.AuthenticationDao;
 import dao.AuthorizationDao;
+import domain.UserRes;
 import org.apache.logging.log4j.Logger;
 import service.DbException;
 
@@ -77,7 +78,7 @@ public class AuthorityServlet extends HttpServlet {
     }
 
     private void findRoleById(HttpServletRequest req, AuthorizationDao authorizationDao) throws DbException {
-        String role = authorizationDao.findRoleById(Integer.parseInt(req.getParameter("id")));
+        UserRes role = authorizationDao.findRoleById(Integer.parseInt(req.getParameter("id")));
         if (role != null) {
             json = gson.toJson(role);
         } else {

@@ -10,8 +10,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Log4j2
+
 public class Main {
     public static void main(String[] args) throws ParseException, NoSuchAlgorithmException, SQLException {
+
         int exitCode = 0;
         log.debug("Приложение App-A запущено");
         //Передача аргументов парсеру
@@ -21,9 +23,9 @@ public class Main {
         ConnectionService connectionService = new ConnectionService();
         PasswordService passwordService = new PasswordService();
         log.debug("---Установка соеденения---");
-        try (Connection dbConn = connectionService.getDbConnection()) {
+        try (Connection dbConn = connectionService.get()) {
             log.debug("Выполнение миграций");
-            connectionService.dbMigration();
+//            connectionService.dbMigration();
             log.debug("Соеденение прошло успешно");
             AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
             AuthorizationDao authorizationDao = new AuthorizationDao(dbConn, authenticationDao);

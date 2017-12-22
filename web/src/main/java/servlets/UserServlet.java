@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import config.ConnectionProvider;
 import config.InjectLogger;
 import dao.AuthenticationDao;
+import domain.User;
 import org.apache.logging.log4j.Logger;
 import service.DbException;
 
@@ -65,7 +66,7 @@ public class UserServlet extends HttpServlet {
     }
 
     private void findUserById(HttpServletRequest req, AuthenticationDao authenticationDao) throws DbException {
-        String user = authenticationDao.findLoginById(Integer.parseInt(req.getParameter("id")));
+        User user = authenticationDao.findLoginById(Integer.parseInt(req.getParameter("id")));
         if (user != null) {
             json = gson.toJson(user);
         } else {

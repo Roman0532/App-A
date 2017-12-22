@@ -5,7 +5,9 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString()
-public @Getter @Setter class UserData {
+public @Getter
+@Setter
+class UserData {
     private String login;
     private String password;
     private String role;
