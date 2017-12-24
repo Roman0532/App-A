@@ -1,6 +1,10 @@
 package dao;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import domain.Accouning;
+import provider.ConnectionProvider;
+import provider.DaoProvider;
 import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
@@ -11,11 +15,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Log4j2
+@Singleton
 public class AccountingDao {
-
-    private Connection dbConn;
-
-    public AccountingDao(Connection dbConn) {
+    private ConnectionProvider<Connection> dbConn;
+    @Inject
+    public AccountingDao(@DaoProvider ConnectionProvider<Connection> dbConn) {
         this.dbConn = dbConn;
     }
 
@@ -24,7 +28,7 @@ public class AccountingDao {
      */
     public void addAccounting(String login, String dateStart, String dateEnd, String volume) throws DbException {
         log.debug("Пользователь {} успешно прошел аккаунтинг выполняется добавление в базу", login);
-        try (PreparedStatement prsmt = dbConn.prepareStatement
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement
                 ("INSERT INTO ACCOUNTING (LOGIN,DATA_START,DATA_END,VOLUME) VALUES (?,?,?,?)")) {
             prsmt.setString(1, login);
             prsmt.setString(2, dateStart);
@@ -42,7 +46,7 @@ public class AccountingDao {
      */
     public ArrayList<Accouning> findAllActivity() throws DbException {
 
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM ACCOUNTING")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT * FROM ACCOUNTING")) {
             ArrayList<Accouning> activity = new ArrayList<Accouning>();
             log.debug("Выполняется поиск всех действий");
             try (ResultSet res = prsmt.executeQuery()) {
@@ -63,7 +67,7 @@ public class AccountingDao {
      * Поиск дествия по id
      */
     public Accouning findActivityById(int id) throws DbException, SQLException {
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM ACCOUNTING WHERE ID = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT * FROM ACCOUNTING WHERE ID = ?")) {
             prsmt.setInt(1, id);
             log.debug("Выполняется поиск действия по id");
             try (ResultSet res = prsmt.executeQuery()) {
@@ -85,7 +89,7 @@ public class AccountingDao {
      * Поиск роли по authorityId
      */
     public String findRoleByAuthorityId(int authorityId) throws DbException {
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT ROLE FROM ACCOUNTING WHERE AUTHORITY_ID = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT ROLE FROM ACCOUNTING WHERE AUTHORITY_ID = ?")) {
             prsmt.setInt(1, authorityId);
             log.debug("Выполняется поиск роли");
             try (ResultSet res = prsmt.executeQuery()) {
@@ -106,7 +110,7 @@ public class AccountingDao {
      * Поиск дествия по роли
      */
     public ArrayList<Accouning> findActivityByRole(String role) throws DbException {
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM ACCOUNTING WHERE ROLE = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT * FROM ACCOUNTING WHERE ROLE = ?")) {
             prsmt.setString(1, role);
             ArrayList<Accouning> activity = new ArrayList<Accouning>();
             log.debug("Выполняется поиск в userres");

@@ -1,9 +1,7 @@
 package servlets;
 
 import com.google.gson.Gson;
-import config.ConnectionProvider;
 import config.InjectLogger;
-import dao.AuthenticationDao;
 import dao.AuthorizationDao;
 import domain.UserRes;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Singleton
@@ -31,19 +27,13 @@ public class AuthorityServlet extends HttpServlet {
     Gson gson;
     @Inject
     private
-    ConnectionProvider connectionProvider;
+    AuthorizationDao authorizationDao;
     private String json;
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-
-        logger.debug("Установка соеденения");
-        try (Connection dbConn = connectionProvider.get()) {
-            logger.debug("Соединение прошло успешно");
-            AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
-            AuthorizationDao authorizationDao = new AuthorizationDao(dbConn, authenticationDao);
-
+        try {
             if (req.getParameter("id") != null) {
                 findRoleById(req, authorizationDao);
             } else if (req.getParameter("userId") != null) {
@@ -52,7 +42,7 @@ public class AuthorityServlet extends HttpServlet {
                 findAllRoles(authorizationDao);
             }
             out.println(json);
-        } catch (DbException | SQLException e) {
+        } catch (DbException e) {
             logger.error("Произошла ошибка связанная с работой базы данных");
             getServletContext().getRequestDispatcher("/error500.jsp").forward(req, resp);
         }

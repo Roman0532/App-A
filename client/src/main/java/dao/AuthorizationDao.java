@@ -1,7 +1,11 @@
 package dao;
 
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import domain.UserRes;
+import provider.ConnectionProvider;
+import provider.DaoProvider;
 import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
@@ -12,21 +16,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Log4j2
+@Singleton
 public class AuthorizationDao {
-    private Connection dbConn;
+    private ConnectionProvider<Connection> dbConn;
     private AuthenticationDao authenticationDao;
-
-    public AuthorizationDao(Connection dbConn, AuthenticationDao authenticationDao) {
-        this.authenticationDao = authenticationDao;
+    @Inject
+    public AuthorizationDao(@DaoProvider ConnectionProvider<Connection> dbConn, AuthenticationDao authenticationDao) {
         this.dbConn = dbConn;
+        this.authenticationDao = authenticationDao;
+
     }
 
     /**
      * Поиск всех ролей
      */
+
     public ArrayList<UserRes> findAllRoles() throws DbException {
         ArrayList<UserRes> roles = new ArrayList<UserRes>();
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM USER_RES")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT * FROM USER_RES")) {
             log.debug("Выполняется поиск ролей");
             try (ResultSet res = prsmt.executeQuery()) {
                 while (res.next()) {
@@ -45,7 +52,7 @@ public class AuthorizationDao {
      * Поиск роли по id
      */
     public UserRes findRoleById(int id) throws DbException {
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM USER_RES WHERE ID = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT * FROM USER_RES WHERE ID = ?")) {
             prsmt.setInt(1, id);
             log.debug("Выполняется поиск роли");
             try (ResultSet res = prsmt.executeQuery()) {
@@ -67,7 +74,7 @@ public class AuthorizationDao {
      */
     public ArrayList<UserRes> findUserRole(int userId) throws DbException {
         ArrayList<UserRes> userRoles = new ArrayList<UserRes>();
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT * FROM USER_RES WHERE USER_ID = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT * FROM USER_RES WHERE USER_ID = ?")) {
             prsmt.setInt(1, userId);
             log.debug("Выполняется поиск роли");
             try (ResultSet res = prsmt.executeQuery()) {
@@ -87,7 +94,7 @@ public class AuthorizationDao {
      * Поиск PATH в БД
      */
     public String isFindRes(String login, String resource, String role) throws DbException {
-        try (PreparedStatement prsmt = dbConn.prepareStatement
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement
                 ("SELECT PATH FROM USER_RES WHERE USER_ID = ? AND ROLE = ?  AND PATH||'.'= LEFT(?||'.',length(PATH)+1)")) {
             prsmt.setInt(1, authenticationDao.findId(login));
             prsmt.setString(2, role);

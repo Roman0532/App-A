@@ -1,6 +1,9 @@
 package dao;
 
+import com.google.inject.Inject;
 import domain.User;
+import provider.ConnectionProvider;
+import provider.DaoProvider;
 import lombok.extern.log4j.Log4j2;
 import service.DbException;
 
@@ -12,10 +15,9 @@ import java.util.ArrayList;
 
 @Log4j2
 public class AuthenticationDao {
-
-    private Connection dbConn;
-
-    public AuthenticationDao(Connection dbConn) {
+    private ConnectionProvider<Connection> dbConn;
+    @Inject
+    public AuthenticationDao(@DaoProvider ConnectionProvider<Connection> dbConn) {
         this.dbConn = dbConn;
     }
 
@@ -26,7 +28,7 @@ public class AuthenticationDao {
         log.debug("Выполняется поиск пользователей в базе данных");
 
         ArrayList<User> users = new ArrayList<>();
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT * FROM USER")) {
+        try (PreparedStatement pstmt = dbConn.get().prepareStatement("SELECT * FROM USER")) {
             try (ResultSet res = pstmt.executeQuery()) {
                 while (res.next()) {
                     log.debug("Запрос выполнен успешно");
@@ -46,7 +48,7 @@ public class AuthenticationDao {
     int findId(String login) throws DbException {
         log.debug("Выполняется поиск id пользователя - {} в базе", login);
 
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT ID FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement pstmt = dbConn.get().prepareStatement("SELECT ID FROM USER WHERE LOGIN = ?")) {
             pstmt.setString(1, login);
             try (ResultSet res = pstmt.executeQuery()) {
                 if (res.next()) {
@@ -69,7 +71,7 @@ public class AuthenticationDao {
     public User findLoginById(int id) throws DbException {
         log.debug("Выполняется поиск пользователя в базе данных");
 
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT * FROM USER WHERE ID = ?")) {
+        try (PreparedStatement pstmt = dbConn.get().prepareStatement("SELECT * FROM USER WHERE ID = ?")) {
             pstmt.setInt(1, id);
             try (ResultSet res = pstmt.executeQuery()) {
                 if (res.next()) {
@@ -92,7 +94,7 @@ public class AuthenticationDao {
     public String findLogin(String login) throws DbException {
         log.debug("Выполняется поиск перданного логина - {} в базе", login);
 
-        try (PreparedStatement pstmt = dbConn.prepareStatement("SELECT LOGIN FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement pstmt = dbConn.get().prepareStatement("SELECT LOGIN FROM USER WHERE LOGIN = ?")) {
             pstmt.setString(1, login);
             try (ResultSet res = pstmt.executeQuery()) {
                 if (res.next()) {
@@ -115,7 +117,7 @@ public class AuthenticationDao {
     public String findPassword(String login) throws DbException {
         log.debug("Выполняется поиск пароля пользователя- {} в базе", login);
 
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT PASSWORD FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT PASSWORD FROM USER WHERE LOGIN = ?")) {
             prsmt.setString(1, login);
             try (ResultSet res = prsmt.executeQuery()) {
                 if (res.next()) {
@@ -136,7 +138,7 @@ public class AuthenticationDao {
      */
     public String findSalt(String login) throws DbException {
         log.debug("Выполняется поиск соли пользователя - {} в базе", login);
-        try (PreparedStatement prsmt = dbConn.prepareStatement("SELECT SALT FROM USER WHERE LOGIN = ?")) {
+        try (PreparedStatement prsmt = dbConn.get().prepareStatement("SELECT SALT FROM USER WHERE LOGIN = ?")) {
             prsmt.setString(1, login);
             try (ResultSet res = prsmt.executeQuery()) {
                 if (res.next()) {

@@ -2,7 +2,6 @@ package servlets;
 
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import config.ConnectionProvider;
 import config.InjectLogger;
 import dao.AuthenticationDao;
 import domain.User;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Singleton
@@ -28,29 +25,22 @@ public class UserServlet extends HttpServlet {
     @Inject
     private
     Gson gson;
-    private String json;
-
     @Inject
-    private
-    ConnectionProvider connectionProvider;
+    private AuthenticationDao authenticationDao;
+    private String json;
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         req.setCharacterEncoding("UTF-8");
         PrintWriter out = resp.getWriter();
-
-        logger.debug("Установка соеденения");
-        try (Connection dbConn = connectionProvider.get()) {
-            logger.debug("Соединение прошло успешно");
-            AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
-
+        try {
             if (req.getParameter("id") != null) {
                 findUserById(req, authenticationDao);
             } else {
                 findAllUsers(authenticationDao);
             }
             out.println(json);
-        } catch (DbException | SQLException e) {
+        } catch (DbException e) {
             logger.error("Произошла ошибка связанная с работой базы данных");
             getServletContext().getRequestDispatcher("/error500.jsp").forward(req, resp);
         }

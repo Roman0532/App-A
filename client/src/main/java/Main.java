@@ -6,30 +6,26 @@ import org.apache.commons.cli.ParseException;
 import service.*;
 
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 @Log4j2
 
 public class Main {
-    public static void main(String[] args) throws ParseException, NoSuchAlgorithmException, SQLException {
+    public static void main(String[] args) throws DbException, ParseException, NoSuchAlgorithmException {
 
         int exitCode = 0;
         log.debug("Приложение App-A запущено");
         //Передача аргументов парсеру
         ParseService cmd = new ParseService();
         UserData userData = cmd.parse(args);
-
         ConnectionService connectionService = new ConnectionService();
         PasswordService passwordService = new PasswordService();
         log.debug("---Установка соеденения---");
-        try (Connection dbConn = connectionService.get()) {
+        try {
             log.debug("Выполнение миграций");
-//            connectionService.dbMigration();
             log.debug("Соеденение прошло успешно");
-            AuthenticationDao authenticationDao = new AuthenticationDao(dbConn);
-            AuthorizationDao authorizationDao = new AuthorizationDao(dbConn, authenticationDao);
-            AccountingDao accountingDao = new AccountingDao(dbConn);
+            AuthenticationDao authenticationDao = new AuthenticationDao(connectionService);
+            AuthorizationDao authorizationDao = new AuthorizationDao(connectionService, authenticationDao);
+            AccountingDao accountingDao = new AccountingDao(connectionService);
 
             AuthenticationService authenticationService = new AuthenticationService(authenticationDao, passwordService);
             AuthorizationService authorizationService = new AuthorizationService(authorizationDao);

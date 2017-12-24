@@ -3,12 +3,10 @@ package servlets;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import config.ConnectionProvider;
 import config.InjectLogger;
 import dao.AccountingDao;
 import domain.Accouning;
 import org.apache.logging.log4j.Logger;
-import service.DbException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Singleton
@@ -27,7 +23,7 @@ public class ActivityServlet extends HttpServlet {
     Logger logger;
     @Inject
     private
-    ConnectionProvider connectionProvider;
+    AccountingDao accountingDao;
     @Inject
     private
     Gson gson;
@@ -36,12 +32,7 @@ public class ActivityServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-
-        logger.debug("Установка соеденения");
-        try (Connection dbConn = connectionProvider.get()) {
-            logger.debug("Соединение прошло успешно");
-            AccountingDao accountingDao = new AccountingDao(dbConn);
-
+        try {
             if (req.getParameter("id") != null) {
                 findActivityById(req, accountingDao);
             } else if (req.getParameter("authorityId") != null) {
@@ -50,13 +41,13 @@ public class ActivityServlet extends HttpServlet {
                 findAllActivity(accountingDao);
             }
             out.println(json);
-        } catch (DbException | SQLException e) {
+        } catch (Exception e) {
             logger.error("Произошла ошибка связанная с работой базы данных");
             getServletContext().getRequestDispatcher("/error500.jsp").forward(req, resp);
         }
     }
 
-    private void findActivityByAuthorityId(HttpServletRequest req, AccountingDao accountingDao) throws DbException {
+    private void findActivityByAuthorityId(HttpServletRequest req, AccountingDao accountingDao) throws Exception {
         ArrayList activity;
         String role = accountingDao.findRoleByAuthorityId(Integer.parseInt(req.getParameter("authorityId")));
         if (role == null) {
@@ -71,7 +62,7 @@ public class ActivityServlet extends HttpServlet {
         }
     }
 
-    private void findAllActivity(AccountingDao accountingDao) throws DbException {
+    private void findAllActivity(AccountingDao accountingDao) throws Exception {
         ArrayList activity;
         activity = accountingDao.findAllActivity();
         if (activity != null) {
@@ -82,7 +73,7 @@ public class ActivityServlet extends HttpServlet {
     }
 
     private void findActivityById(HttpServletRequest req,
-                                  AccountingDao accountingDao) throws DbException, SQLException {
+                                  AccountingDao accountingDao) throws Exception {
 
         Accouning activity = accountingDao.findActivityById(Integer.parseInt(req.getParameter("id")));
         if (activity != null) {
