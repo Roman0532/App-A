@@ -16,7 +16,7 @@ public class ConnectionService implements ConnectionProvider<Connection> {
     private static final String URL = "url";
     private static final String LOGIN = "LOGIN";
     private static final String PASSWORD = "PASSWORD";
-    private static final String CONFIG_PROPERTIES = "../config.properties";
+    private static final String CONFIG_PROPERTIES = "/config.properties";
 
     private ComboPooledDataSource cpds = new ComboPooledDataSource();
     public Connection get() throws DbException {
@@ -53,6 +53,7 @@ public class ConnectionService implements ConnectionProvider<Connection> {
 
         try {
             Flyway flyway = new Flyway();
+            flyway.setValidateOnMigrate(false);
             flyway.setDataSource(property.getProperty(URL), System.getenv(LOGIN), System.getenv(PASSWORD));
             flyway.migrate();
         } catch (Exception e) {

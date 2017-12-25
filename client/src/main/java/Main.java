@@ -22,6 +22,7 @@ public class Main {
         log.debug("---Установка соеденения---");
         try {
             log.debug("Выполнение миграций");
+            connectionService.dbMigration();
             log.debug("Соеденение прошло успешно");
             AuthenticationDao authenticationDao = new AuthenticationDao(connectionService);
             AuthorizationDao authorizationDao = new AuthorizationDao(connectionService, authenticationDao);
